@@ -13,6 +13,7 @@
           </div>
           <div v-else class="flex place-items-center">
             <input
+              ref="projectTitleInput"
               v-model="payload.title"
               type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
@@ -63,6 +64,8 @@ const state = reactive({
   temp_title: null,
 })
 const payload = computed(() => store.getters['vuello/getVuelloDatas'])
+const projectTitleInput = ref(null);
+
 
 onBeforeMount(async () => {
   const data = store.getters['vuello/getVuelloDatas']
@@ -78,9 +81,12 @@ const handleEditTitle = (type) => {
   if (type === 'edit') {
     state.is_editing_title = true
     state.temp_title = payload.value.title
+    const inputElement = projectTitleInput.value;
+    inputElement.focus();
+    inputElement.select();   
   } else if (type === 'save') {
     state.is_editing_title = false
-    payload.value.last_modified = new Date().toLocaleString('en-GB')
+    payload.value.last_modified = new Date().toLocaleString('zh-TW')
     store.dispatch('vuello/setVuello', payload.value)
   } else {
     state.is_editing_title = false
