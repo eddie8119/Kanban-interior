@@ -1,5 +1,5 @@
 {
-  "name": "vite-vue3-tailwind-starter",
+  "name": "室內工程專案助手",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --host",

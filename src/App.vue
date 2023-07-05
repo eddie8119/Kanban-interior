@@ -8,7 +8,7 @@
               class="rounded-md px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-slate-200"
               @click="handleEditTitle('edit')"
             >
-              {{ payload.title }}
+              {{ payload.title }} 工程案
             </span>
           </div>
           <div v-else class="flex place-items-center">
@@ -16,33 +16,23 @@
               v-model="payload.title"
               type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-              placeholder="Add Board Title"
+              placeholder="取名工程案"
               @keypress.enter="handleEditTitle('save')"
-            />
-            <div class="ml-2 flex place-items-center justify-center">
-              <SaveIcon
-                height="30px"
-                class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-                @click="handleEditTitle('save')"
-              />
-              <CloseIcon
-                height="30px"
-                class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                @click="handleEditTitle('cancel')"
-              />
-            </div>
+            />  
           </div>
         </Transition>
         <h3 class="my-2 px-2 text-sm">
-          Last Modified : {{ payload.last_modified }}
+          上次編輯時間 : {{ payload.last_modified }}
         </h3>
       </div>
       <div class="mt-px flex place-items-start justify-center">
         <div
-          class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200"
-          @click="openRepo"
+          class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200"          
         >
-          <GithubIcon height="30px" />
+        <a class="btn" role="menuitem" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
+					target="_blank">
+					網站意見反映
+				</a>          
         </div>
       </div>
     </div>
@@ -66,7 +56,6 @@ import KanbanBoard from './components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/modals/ContainerModal.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
 import SaveIcon from '@/components/icons/SaveIcon.vue'
-import GithubIcon from '@/components/icons/GithubIcon.vue'
 
 const store = useStore()
 const displayContainerModal = ref(false)
@@ -99,9 +88,6 @@ const handleEditTitle = (type) => {
     state.is_editing_title = false
     payload.value.title = state.temp_title
   }
-}
-const openRepo = () => {
-  window.open('https://github.com/kurnyaannn/vuello', '_blank')
 }
 </script>
 

@@ -250,7 +250,6 @@ import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
 import SaveIcon from '@/components/icons/SaveIcon.vue'
-import { container } from 'tailwindcss/defaultTheme'
 
 const props = defineProps({
   payload: {
