@@ -64,7 +64,7 @@
             </div>
             <div class="m-1 flex flex-col place-items-center justify-center">
               <Transition name="fade">
-                <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
+                <div v-if="container.is_adding_card" v-click-outside="leaveAddTask" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
                   <input v-model="newCardData.title" type="text"
                     class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Add Card Title" @keypress.enter="addTask(container.id, container)" />
@@ -138,6 +138,13 @@ import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
 import SaveIcon from '@/components/icons/SaveIcon.vue'
+import vClickOutside from 'click-outside-vue3'
+
+const directives = {
+  clickOutside: () => {
+    vClickOutside.directive
+  }
+}
 
 const props = defineProps({
   payload: {
@@ -249,6 +256,10 @@ const addTask = (containerId, payload) => {
       : (payload.is_editing_card = false)
   }
   cardChangedInitialize()
+}
+const leaveAddTask = () => {
+  payload.is_adding_card = false
+  cardChangedInitialize() 
 }
 const deleteTask = (payload) => {
   payload.is_adding_card = false
