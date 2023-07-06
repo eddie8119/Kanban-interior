@@ -242,6 +242,7 @@ const deleteItem = (type) => {
   state.isRemovingCard = false
 }
 const addTask = (containerId, payload) => {
+  if( !newCardData.title && !newCardData.content ) return payload.is_adding_card = false
   const newCard = {
     id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
     id_container: containerId,
