@@ -130,9 +130,7 @@
                     type="text"
                     class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Add Card Title"
-                    @keypress.enter="
-                      handleKanbanAction('add', 'card', container.id, container)
-                    "
+                    @keypress.enter="addTask(container.id, container)"
                   />
                   <textarea
                     v-model="newCardData.content"
@@ -149,9 +147,7 @@
                   <SaveIcon
                     height="30px"
                     class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-                    @click="
-                      handleKanbanAction('add', 'card', container.id, container)
-                    "
+                    @click="addTask(container.id, container)"
                   />
                   <CloseIcon
                     height="30px"
@@ -316,7 +312,7 @@ const dropItem = (event, containerId) => {
   const id = event.dataTransfer.getData('id')
   const item = vuello.cards.find((card) => card.id == id)
   item.id_container = containerId
-  vuello.last_modified = new Date().toLocaleString('en-GB')
+  vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
 }
 const handleDeleteItem = (type, id) => {
@@ -346,6 +342,24 @@ const deleteItem = (type) => {
   state.isRemovingContainer = false
   state.isRemovingCard = false
 }
+const addTask = (containerId, payload) => {
+  const newCard = {
+    id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
+    id_container: containerId,
+    title: newCardData.title,
+    content: newCardData.content,
+  }  
+  vuello.cards.push(newCard)
+  payload.is_adding_card = false
+  newCardDataInitialize()
+}
+
+const newCardDataInitialize = () => {
+  newCardData.id = null
+  newCardData.id_container = null
+  newCardData.title = null
+  newCardData.content = null  
+}
 const handleKanbanAction = (mode, type, containerId, payload) => {
   if (mode === 'add') {
     if (type === 'container') {
@@ -358,15 +372,6 @@ const handleKanbanAction = (mode, type, containerId, payload) => {
       }
       vuello.containers.push(newContainer)
       state.isAddingContainer = false
-    } else {      
-      const newCard = {
-        id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
-        id_container: containerId,
-        title: newCardData.title,
-        content: newCardData.content,
-      }
-      vuello.cards.push(newCard)
-      payload.is_adding_card = false
     }
   } else if (mode === 'delete') {
     if (type === 'container') {
@@ -384,12 +389,9 @@ const handleKanbanAction = (mode, type, containerId, payload) => {
       ? (payload.is_editing_container = false)
       : (payload.is_editing_card = false)
   }
-  vuello.last_modified = new Date().toLocaleString('en-GB')
+  vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
-  newCardData.id = null
-  newCardData.id_container = null
-  newCardData.title = null
-  newCardData.content = null
+  newCardDataInitialize()
 }
 const handleEditCard = (type, selectedCard) => {
   if (type === 'change') {
