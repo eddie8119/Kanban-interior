@@ -1,116 +1,59 @@
 <template>
-  <div
-    class="flex h-full w-full overflow-auto rounded-lg bg-red-100 px-2 py-3"
-  >
+  <div class="flex h-full w-full overflow-auto rounded-lg bg-red-100 px-2 py-3">
     <TransitionGroup name="list">
-      <div
-        v-for="container in vuello.containers"
-        :key="container.id"
-        class="mx-1"
-      >
-        <div
-          class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#E4E5EC] p-1"
-          @drop="dropItem($event, container.id)"
-          @dragenter.prevent
-          @dragover.prevent
-        >
-          <div
-            class="flex h-full w-full place-items-center justify-between p-1"
-          >
+      <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
+        <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#E4E5EC] p-1"
+          @drop="dropItem($event, container.id)" @dragenter.prevent @dragover.prevent>
+          <div class="flex h-full w-full place-items-center justify-between p-1">
             <Transition name="fade" mode="out-in">
-              <input
-                v-if="container.is_editing_container"
-                v-model="container.name"
-                type="text"
+              <input v-if="container.is_editing_container" v-model="container.name" type="text"
                 class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                placeholder="輸入工程類型"
-                @keypress.enter="
+                placeholder="輸入工程類型" @keypress.enter="
                   handleKanbanAction(null, null, null, container)
-                "
-                @blur="container.is_editing_container = false"
-              />
-              <div
-                v-else
-                class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
-                @click="container.is_editing_container = true"
-              >
+                  " @blur="container.is_editing_container = false" />
+              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
+                @click="container.is_editing_container = true">
                 {{ container.name }}工種 ({{ cardList(container.id).length }})
               </div>
             </Transition>
-            <TrashIcon
-              height="25px"
+            <TrashIcon height="25px"
               class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
-              @click="handleDeleteItem('container', container.id)"
-            />
+              @click="handleDeleteItem('container', container.id)" />
           </div>
-          <div
-            class="flex flex-col overflow-y-auto"
-            style="max-height: calc(100vh - 165px)"
-          >
-            <div
-              v-for="card in cardList(container.id)"
-              :key="card.id"
-              class="m-1 cursor-pointer rounded-lg bg-white p-2"
-              :draggable="state.isDraggable"
-              @dragstart="dragItem($event, card)"
-            >
+          <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
+            <div v-for="card in cardList(container.id)" :key="card.id" class="m-1 cursor-pointer rounded-lg bg-white p-2"
+              :draggable="state.isDraggable" @dragstart="dragItem($event, card)">
               <Transition name="fade" mode="out-in">
-                <div
-                  v-if="card.is_editing_card"
-                  class="flex w-full flex-col rounded-md border-gray-400 bg-white"
-                >
-                  <input
-                    v-model="card.title"
-                    type="text"
+                <div v-if="card.is_editing_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white">
+                  <input v-model="card.title" type="text"
                     class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Title"
-                  />
-                  <textarea
-                    v-model="card.content"
+                    placeholder="Add Card Title" />
+                  <textarea v-model="card.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Content"
-                  />
-                  <div
-                    class="mt-2 flex w-full place-items-center justify-between"
-                  >
-                    <Button
-                      model="outline"
-                      size="sm"
-                      rounded="sm"
-                      @click="handleDeleteItem('card', card.id)"
-                    >
+                    placeholder="Add Card Content" />
+                  <div class="mt-2 flex w-full place-items-center justify-between">
+                    <Button model="outline" size="sm" rounded="sm" @click="handleDeleteItem('card', card.id)">
                       Delete Card {{ index }}
                     </Button>
                     <div class="flex">
-                      <SaveIcon
-                        height="30px"
+                      <SaveIcon height="30px"
                         class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-                        @click="handleEditCard('save', card)"
-                      />
-                      <CloseIcon
-                        height="30px"
+                        @click="handleEditCard('save', card)" />
+                      <CloseIcon height="30px"
                         class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                        @click="handleEditCard('cancel', card)"
-                      />
+                        @click="handleEditCard('cancel', card)" />
                     </div>
                   </div>
                 </div>
                 <div v-else>
-                  <div
-                    class="flex flex-col"
-                    @click="handleEditCard('change', card)"
-                  >
+                  <div class="flex flex-col" @click="handleEditCard('change', card)">
                     <div class="flex place-items-center justify-between">
                       <h1 class="text-sm font-semibold">
                         {{ card.title }}
                       </h1>
-                      <MoveIcon
-                        height="25px"
+                      <MoveIcon height="25px"
                         class="cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
-                        @click.stop=""
-                        @mouseenter="state.isDraggable = true"
-                        @mouseleave="state.isDraggable = false"
-                      />
+                        @click.stop="" @mouseenter="state.isDraggable = true" @mouseleave="state.isDraggable = false" />
                     </div>
                     <pre class="mt-1 whitespace-pre-wrap font-sans text-sm">{{
                       card.content
@@ -121,49 +64,26 @@
             </div>
             <div class="m-1 flex flex-col place-items-center justify-center">
               <Transition name="fade">
-                <div
-                  v-if="container.is_adding_card"
-                  class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2"
-                >
-                  <input
-                    v-model="newCardData.title"
-                    type="text"
+                <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
+                  <input v-model="newCardData.title" type="text"
                     class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Title"
-                    @keypress.enter="addTask(container.id, container)"
-                  />
-                  <textarea
-                    v-model="newCardData.content"
+                    placeholder="Add Card Title" @keypress.enter="addTask(container.id, container)" />
+                  <textarea v-model="newCardData.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Content"
-                  />
+                    placeholder="Add Card Content" />
                 </div>
               </Transition>
               <Transition name="fade" mode="out-in">
-                <div
-                  v-if="container.is_adding_card"
-                  class="mt-2 flex w-full place-items-center justify-end"
-                >
-                  <SaveIcon
-                    height="30px"
+                <div v-if="container.is_adding_card" class="mt-2 flex w-full place-items-center justify-end">
+                  <SaveIcon height="30px"
                     class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-                    @click="addTask(container.id, container)"
-                  />
-                  <CloseIcon
-                    height="30px"
+                    @click="addTask(container.id, container)" />
+                  <CloseIcon height="30px"
                     class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                    @click="container.is_adding_card = false"
-                  />
+                    @click="deleteTask(container)" />
                 </div>
-                <Button
-                  v-else
-                  type="primary"
-                  model="outline"
-                  size="sm"
-                  rounded="sm"
-                  class="mt-1"
-                  @click="container.is_adding_card = true"
-                >
+                <Button v-else type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
+                  @click="container.is_adding_card = true">
                   <PlusIcon height="15px" />
                   新增施做項目
                 </Button>
@@ -175,42 +95,21 @@
     </TransitionGroup>
     <div class="mx-1">
       <div
-        class="opacity-80 flex min-h-[50px] min-w-[300px] flex-col place-items-center justify-center rounded-lg bg-[#E4E5EC] p-2"
-      >
+        class="opacity-80 flex min-h-[50px] min-w-[300px] flex-col place-items-center justify-center rounded-lg bg-[#E4E5EC] p-2">
         <Transition name="fade">
-          <input
-            v-if="state.isAddingContainer"
-            v-model="newContainerTitle"
-            type="text"
+          <input v-if="state.isAddingContainer" v-model="newContainerTitle" type="text"
             class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-            placeholder="輸入新增工程類型"
-            @keypress.enter="handleKanbanAction('add', 'container')"
-          />
+            placeholder="輸入新增工程類型" @keypress.enter="addContainer()" />
         </Transition>
         <Transition name="fade" mode="out-in">
-          <div
-            v-if="state.isAddingContainer"
-            class="mb-1 flex w-full place-items-center justify-end"
-          >
-            <SaveIcon
-              height="30px"
-              class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-              @click="handleKanbanAction('add', 'container')"
-            />
-            <CloseIcon
-              height="30px"
+          <div v-if="state.isAddingContainer" class="mb-1 flex w-full place-items-center justify-end">
+            <SaveIcon height="30px" class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
+              @click="addContainer()" />
+            <CloseIcon height="30px"
               class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-              @click="state.isAddingContainer = false"
-            />
+              @click="state.isAddingContainer = false" />
           </div>
-          <Button
-            v-else
-            type="primary"
-            model="outline"
-            size="sm"
-            rounded="sm"
-            @click="state.isAddingContainer = true"
-          >
+          <Button v-else type="primary" model="outline" size="sm" rounded="sm" @click="state.isAddingContainer = true">
             <PlusIcon height="15px" />
             新增工程類型
           </Button>
@@ -220,18 +119,11 @@
   </div>
 
   <!-- Confirmation Modal -->
-  <ConfirmationModal
-    :value="state.isRemovingContainer"
-    @confirm="deleteItem('container')"
-    @close="state.isRemovingContainer = false"
-  >
+  <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteItem('container')"
+    @close="state.isRemovingContainer = false">
     All Contents inside this Container will also be deleted. Are you sure?
   </ConfirmationModal>
-  <ConfirmationModal
-    :value="state.isRemovingCard"
-    @confirm="deleteItem('card')"
-    @close="state.isRemovingCard = false"
-  >
+  <ConfirmationModal :value="state.isRemovingCard" @confirm="deleteItem('card')" @close="state.isRemovingCard = false">
     確認刪除此項施做卡片?
   </ConfirmationModal>
 </template>
@@ -251,7 +143,7 @@ const props = defineProps({
   payload: {
     type: Object,
     required: true,
-    default: () => {},
+    default: () => { },
   },
 })
 
@@ -348,31 +240,44 @@ const addTask = (containerId, payload) => {
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
-  }  
+  }
   vuello.cards.push(newCard)
   payload.is_adding_card = false
-  newCardDataInitialize()
+  if (payload) {
+    payload.is_editing_container
+      ? (payload.is_editing_container = false)
+      : (payload.is_editing_card = false)
+  }
+  cardChangedInitialize()
+}
+const deleteTask = (payload) => {
+  payload.is_adding_card = false
+  cardChangedInitialize()
+}
+const addContainer = () => {
+  const newContainer = {
+    id:
+      vuello.containers.length > 0
+        ? [...vuello.containers].pop().id + 1
+        : 1,
+    name: newContainerTitle.value,
+  }
+  vuello.containers.push(newContainer)
+  state.isAddingContainer = false
+  cardChangedInitialize()
 }
 
-const newCardDataInitialize = () => {
+const cardChangedInitialize = () => {
+  vuello.last_modified = new Date().toLocaleString('zh-TW')
+  store.dispatch('vuello/setVuello', vuello)
   newCardData.id = null
   newCardData.id_container = null
   newCardData.title = null
-  newCardData.content = null  
+  newCardData.content = null
 }
 const handleKanbanAction = (mode, type, containerId, payload) => {
   if (mode === 'add') {
-    if (type === 'container') {
-      const newContainer = {
-        id:
-          vuello.containers.length > 0
-            ? [...vuello.containers].pop().id + 1
-            : 1,
-        name: newContainerTitle.value,
-      }
-      vuello.containers.push(newContainer)
-      state.isAddingContainer = false
-    }
+
   } else if (mode === 'delete') {
     if (type === 'container') {
       vuello.containers = vuello.containers.filter(
@@ -389,9 +294,7 @@ const handleKanbanAction = (mode, type, containerId, payload) => {
       ? (payload.is_editing_container = false)
       : (payload.is_editing_card = false)
   }
-  vuello.last_modified = new Date().toLocaleString('zh-TW')
-  store.dispatch('vuello/setVuello', vuello)
-  newCardDataInitialize()
+  cardChangedInitialize()
 }
 const handleEditCard = (type, selectedCard) => {
   if (type === 'change') {
@@ -414,6 +317,7 @@ const handleEditCard = (type, selectedCard) => {
 .list-leave-active {
   transition: all 0.5s ease-in-out;
 }
+
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
