@@ -64,25 +64,26 @@
             </div>
             <div class="m-1 flex flex-col place-items-center justify-center">
               <Transition name="fade">
-                <div v-if="container.is_adding_card" v-click-outside="leaveAddTask" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                  <input v-model="newCardData.title" type="text"
-                    class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Title" @keypress.enter="addTask(container.id, container)" />
-                  <textarea v-model="newCardData.content"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Content" />
+                <div v-if="container.is_adding_card" v-click-outside="leaveAddTask"
+                  class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
+                  <form @submit.prevent="addTask(container.id, container)">
+                    <input v-model="newCardData.title" type="text"
+                      class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                      placeholder="Add Card Title" />
+                    <textarea v-model="newCardData.content"
+                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                      placeholder="Add Card Content" />
+                    <div class="mt-2 flex w-full place-items-center">
+                      <button class="add-card-btn">新增本待辦施做</button>
+                      <CloseIcon height="30px"
+                        class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
+                        @click="deleteTask(container)" />
+                    </div>
+                  </form>
                 </div>
               </Transition>
               <Transition name="fade" mode="out-in">
-                <div v-if="container.is_adding_card" class="mt-2 flex w-full place-items-center justify-end">
-                  <SaveIcon height="30px"
-                    class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-                    @click="addTask(container.id, container)" />
-                  <CloseIcon height="30px"
-                    class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                    @click="deleteTask(container)" />
-                </div>
-                <Button v-else type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
+                <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
                   @click="container.is_adding_card = true">
                   <PlusIcon height="15px" />
                   新增施做項目
@@ -97,17 +98,19 @@
       <div
         class="opacity-80 flex min-h-[50px] min-w-[300px] flex-col place-items-center justify-center rounded-lg bg-[#E4E5EC] p-2">
         <Transition name="fade">
+          <!-- <form @submit.prevent="addTask(container.id, container)">
+          </form> -->
           <input v-if="state.isAddingContainer" v-model="newContainerTitle" type="text"
             class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-            placeholder="輸入新增工程類型" @keypress.enter="addContainer()" />
+            placeholder="輸入新增工程類型" @keypress.enter="addContainer" />
         </Transition>
         <Transition name="fade" mode="out-in">
           <div v-if="state.isAddingContainer" class="mb-1 flex w-full place-items-center justify-end">
             <SaveIcon height="30px" class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
-              @click="addContainer()" />
+              @click="addContainer" />
             <CloseIcon height="30px"
               class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-              @click="state.isAddingContainer = false" />
+              @click="deleteContainer" />
           </div>
           <Button v-else type="primary" model="outline" size="sm" rounded="sm" @click="state.isAddingContainer = true">
             <PlusIcon height="15px" />
@@ -242,7 +245,7 @@ const deleteItem = (type) => {
   state.isRemovingCard = false
 }
 const addTask = (containerId, payload) => {
-  if( !newCardData.title && !newCardData.content ) return payload.is_adding_card = false
+  if (!newCardData.title) return payload.is_adding_card = false
   const newCard = {
     id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
     id_container: containerId,
@@ -260,13 +263,14 @@ const addTask = (containerId, payload) => {
 }
 const leaveAddTask = () => {
   payload.is_adding_card = false
-  cardChangedInitialize() 
+  cardChangedInitialize()
 }
 const deleteTask = (payload) => {
   payload.is_adding_card = false
   cardChangedInitialize()
 }
 const addContainer = () => {
+  if( !newContainerTitle.value) return state.isAddingContainer = false
   const newContainer = {
     id:
       vuello.containers.length > 0
@@ -275,6 +279,10 @@ const addContainer = () => {
     name: newContainerTitle.value,
   }
   vuello.containers.push(newContainer)
+  state.isAddingContainer = false
+  cardChangedInitialize()
+}
+const deleteContainer = () => {
   state.isAddingContainer = false
   cardChangedInitialize()
 }
