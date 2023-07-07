@@ -8,9 +8,10 @@
             <Transition name="fade" mode="out-in">
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
                 class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                placeholder="輸入工程類型" @keypress.enter="
-                  handleKanbanAction(null, null, container)
-                  " @blur="container.is_editing_container = false" />
+                placeholder="輸入工程類型" 
+                  @keypress.enter="handleKanbanAction(null, null, container)" 
+                  @focus="$event.target.select()"
+                  @blur="container.is_editing_container = false" />
               <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                 @click="container.is_editing_container = true">
                 {{ container.name }}工種 ({{ cardList(container.id).length }})
@@ -57,9 +58,9 @@
       </div>
     </TransitionGroup>    
       <addContainerArea :is-addingContainer="state.isAddingContainer"
-      @toggleAddContainer ='toggleAddContainer'
-      @addContainer ="addContainer" 
-      @deleteContainer ='deleteContainer'
+        @toggleAddContainer ='toggleAddContainer'
+        @addContainer ="addContainer" 
+        @deleteContainer ='deleteContainer'
        />    
   </div>
 

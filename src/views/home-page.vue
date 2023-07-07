@@ -14,11 +14,12 @@
           <div v-else class="flex place-items-center">
             <input
               ref="projectTitleInput"
-              @focus="$event.target.select()"
               v-model="payload.title"
               type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
               placeholder="取名工程案"
+              @focus="$event.target.select()"
+              @blur="state.is_editing_title = false"
               @keypress.enter="handleEditTitle('save')"
             />  
           </div>
