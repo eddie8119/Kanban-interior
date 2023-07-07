@@ -9,7 +9,7 @@
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
                 class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                 placeholder="輸入工程類型" @keypress.enter="
-                  handleKanbanAction(null, null, null, container)
+                  handleKanbanAction(null, null, container)
                   " @blur="container.is_editing_container = false" />
               <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                 @click="container.is_editing_container = true">
@@ -55,39 +55,20 @@
           </div>
         </div>
       </div>
-    </TransitionGroup>
-    <div class="mx-1">
-      <div
-        class="opacity-80 flex min-h-[50px] min-w-[300px] flex-col place-items-center justify-center rounded-lg bg-[#E4E5EC] p-2">
-        <Transition name="fade" v-if="state.isAddingContainer">
-          <form @submit.prevent="addContainer" class="w-full flex-col">
-            <input v-model="newContainerTitle" type="text"
-              class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-              placeholder="輸入新增工程類型" @keypress.enter="addContainer" />
-            <div class="mb-1 flex w-full place-items-center justify-end">
-              <button>新增</button>
-              <CloseIcon height="30px"
-                class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                @click="deleteContainer" />
-            </div>
-          </form>
-        </Transition>
-        <Transition name="fade" mode="out-in">
-          <Button v-if="!state.isAddingContainer" type="primary" model="outline" size="sm" rounded="sm" @click="state.isAddingContainer = true">
-            <PlusIcon height="15px" />
-            新增工程類型
-          </Button>
-        </Transition>
-      </div>
-    </div>
+    </TransitionGroup>    
+      <addContainerArea :is-addingContainer="state.isAddingContainer"
+      @toggleAddContainer ='toggleAddContainer'
+      @addContainer ="addContainer" 
+      @deleteContainer ='deleteContainer'
+       />    
   </div>
 
   <!-- Confirmation Modal -->
-  <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteItem('container')"
+  <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteDialog('container')"
     @close="state.isRemovingContainer = false">
     All Contents inside this Container will also be deleted. Are you sure?
   </ConfirmationModal>
-  <ConfirmationModal :value="state.isRemovingCard" @confirm="deleteItem('card')" @close="state.isRemovingCard = false">
+  <ConfirmationModal :value="state.isRemovingCard" @confirm="deleteDialog('card')" @close="state.isRemovingCard = false">
     確認刪除此項施做卡片?
   </ConfirmationModal>
 </template>
@@ -100,9 +81,8 @@ import Button from '@/components/base/Button.vue'
 import MoveIcon from '@/components/icons/MoveIcon.vue'
 import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
-import CloseIcon from '@/components/icons/CloseIcon.vue'
-import SaveIcon from '@/components/icons/SaveIcon.vue'
 import taskPreview from './taskPreview.vue'
+import addContainerArea from './addContainerArea.vue'
 import vClickOutside from 'click-outside-vue3'
 
 const directives = {
@@ -129,7 +109,6 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
-const newContainerTitle = ref(null)
 const newCardData = reactive({
   id: null,
   id_container: null,
@@ -153,15 +132,6 @@ watch(
     vuello.cards = newValue.cards
   },
   { immediate: true }
-)
-watch(
-  () => state.isAddingContainer,
-  (newValue) => {
-    if (!newValue) {
-      newContainerTitle.value = null
-    }
-  },
-  { deep: true }
 )
 
 const cardList = (containerId) => {
@@ -189,7 +159,7 @@ const handleDeleteCard = (id) => {
   state.isRemovingCard = true
 }
 
-const deleteItem = (type) => {
+const deleteDialog = (type) => {
   if (type === 'container') {
     vuello.containers = vuello.containers.filter(
       (container) => container.id !== state.selectedContainerId
@@ -236,14 +206,16 @@ const deleteTask = (payload) => {
   payload.is_adding_card = false
   cardChangedInitialize()
 }
-const addContainer = () => {
-  if (!newContainerTitle.value) return state.isAddingContainer = false
+
+// 增加白板
+const addContainer = (newContainerTitle) => {
+  if (!newContainerTitle) return state.isAddingContainer = false
   const newContainer = {
     id:
       vuello.containers.length > 0
         ? [...vuello.containers].pop().id + 1
         : 1,
-    name: newContainerTitle.value,
+    name: newContainerTitle,
   }
   vuello.containers.push(newContainer)
   state.isAddingContainer = false
@@ -252,6 +224,9 @@ const addContainer = () => {
 const deleteContainer = () => {
   state.isAddingContainer = false
   cardChangedInitialize()
+}
+const toggleAddContainer = () => {
+  state.isAddingContainer = true
 }
 
 const cardChangedInitialize = () => {
@@ -263,20 +238,16 @@ const cardChangedInitialize = () => {
   newCardData.content = null
 }
 // 
-const handleKanbanAction = (mode, type, containerId, payload) => {
-  if (mode === 'add') {
-
-  } else if (mode === 'delete') {
-    if (type === 'container') {
-      vuello.containers = vuello.containers.filter(
-        (container) => container.id !== containerId
-      )
-      state.isRemovingContainer = false
-    }
-    vuello.cards = vuello.cards.filter(
-      (card) => card.id_container !== containerId
+const handleKanbanAction = (type, containerId, payload) => {
+  if (type === 'container') {
+    vuello.containers = vuello.containers.filter(
+      (container) => container.id !== containerId
     )
+    state.isRemovingContainer = false
   }
+  vuello.cards = vuello.cards.filter(
+    (card) => card.id_container !== containerId
+  )
   if (payload) {
     payload.is_editing_container
       ? (payload.is_editing_container = false)
@@ -291,7 +262,7 @@ const handleEditCard = (type, selectedCard) => {
       state.tempCards = vuello.cards.map((card) => ({ ...card }))
       break
     case 'save':
-      handleKanbanAction(null, null, null, selectedCard)
+      handleKanbanAction(null, null, selectedCard)
       break
     case 'cancel':
       const data = state.tempCards.find((card) => card.id === selectedCard.id)
