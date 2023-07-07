@@ -54,8 +54,8 @@
 import { ref, reactive, watch, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
-import KanbanBoard from '../components/kanban/KanbanBoard.vue'
-import ContainerModal from '../components/modals/ContainerModal.vue'
+import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
+import ContainerModal from '@/components/dialog/ContainerModal.vue'
 
 const store = useStore()
 const displayContainerModal = ref(false)
