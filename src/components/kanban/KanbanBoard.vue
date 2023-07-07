@@ -9,11 +9,10 @@
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
                 class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                 placeholder="輸入工程類型" 
-                  @keypress.enter="handleKanbanAction(null, null, container)" 
-                  @focus="$event.target.select()"
-                  @blur="container.is_editing_container = false" />
-              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
-                @click="container.is_editing_container = true">
+                @keypress.enter="handleKanbanAction(null, null, container)"
+                @focus="$event.target.select()" 
+                @blur="blurWorkType(container)" />
+              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold" @click="addWorkType(container)">
                 {{ container.name }}工種 ({{ cardList(container.id).length }})
               </div>
             </Transition>
@@ -56,12 +55,9 @@
           </div>
         </div>
       </div>
-    </TransitionGroup>    
-      <addContainerArea :is-addingContainer="state.isAddingContainer"
-        @toggleAddContainer ='toggleAddContainer'
-        @addContainer ="addContainer" 
-        @deleteContainer ='deleteContainer'
-       />    
+    </TransitionGroup>
+    <addContainerArea :is-addingContainer="state.isAddingContainer" @toggleAddContainer='toggleAddContainer'
+      @addContainer="addContainer" @deleteContainer='deleteContainer' />
   </div>
 
   <!-- Confirmation Modal -->
@@ -123,6 +119,7 @@ const vuello = reactive({
   containers: [],
   cards: [],
 })
+const addWorkTypeOnce = ref(true)
 
 watch(
   () => props.payload,
@@ -134,6 +131,20 @@ watch(
   },
   { immediate: true }
 )
+
+// 工種輸入框
+const addWorkType = (container) => {
+  if (!addWorkTypeOnce.value) return
+  else {
+    container.is_editing_container = true
+    addWorkTypeOnce.value = false
+  }
+}
+const blurWorkType = (container) => {
+  container.is_editing_container = false
+  addWorkTypeOnce.value = true
+}
+
 
 const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
@@ -245,6 +256,7 @@ const handleKanbanAction = (type, containerId, payload) => {
       (container) => container.id !== containerId
     )
     state.isRemovingContainer = false
+    addWorkTypeOnce.value = true
   }
   vuello.cards = vuello.cards.filter(
     (card) => card.id_container !== containerId
