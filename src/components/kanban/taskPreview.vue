@@ -8,7 +8,7 @@
         class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
         placeholder="Add Card Content" />
       <div class="mt-2 flex w-full place-items-center justify-between">
-        <Button model="outline" size="sm" rounded="sm" @click="handleDeleteItem('card', card.id)">
+        <Button model="outline" size="sm" rounded="sm" @click="handleDeleteCard(card.id)">
           Delete Card {{ index }}
         </Button>
         <div class="flex">
@@ -48,14 +48,14 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['handleEditCard','handleDeleteItem'])
+const emit = defineEmits(['handleEditCard','handleDeleteCard'])
 
 const handleEditCard = (type, selectedCard) => {
   emit('handleEditCard', type, selectedCard)
 }
 
-const handleDeleteItem = (type, id) => {
-  emit('handleDeleteItem', type, id)
+const handleDeleteCard = (id) => {
+  emit('handleDeleteCard',id)
 }
 
 </script>
