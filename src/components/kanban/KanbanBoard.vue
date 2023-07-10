@@ -114,7 +114,6 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
-// const uploadImgRef = ref(null)
 const newCardData = reactive({
   id: null,
   id_container: null,
@@ -143,6 +142,10 @@ watch(
   { immediate: true }
 )
 
+const cardList =(containerId) => {
+  return vuello.cards.filter((card) => card.id_container === containerId)
+}
+
 // 工種輸入框
 const addWorkType = (container) => {
   if (!addWorkTypeOnce.value) {
@@ -164,10 +167,6 @@ const blurWorkType = (container) => {
   container.is_editing_container = false
   addWorkTypeOnce.value = true
 }
-
-const cardList = (containerId) => {
-  return vuello.cards.filter((card) => card.id_container === containerId)
-}
 // 拖放功能
 const startDragTask = (event, item) => {
   event.dataTransfer.dropEffect = 'move'
@@ -181,16 +180,6 @@ const dropItem = (event, containerId) => {
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
 }
-const handleDeleteContainer = (id) => {
-  state.selectedContainerId = id
-  state.isRemovingContainer = true
-
-}
-const handleDeleteCard = (id) => {
-  state.selectedCardId = id
-  state.isRemovingCard = true
-}
-
 const deleteDialog = (type) => {
   if (type === 'container') {
     vuello.containers = vuello.containers.filter(
@@ -209,13 +198,21 @@ const deleteDialog = (type) => {
   state.isRemovingContainer = false
   state.isRemovingCard = false
 }
+// 任務增減
+const handleDeleteContainer = (id) => {
+  state.selectedContainerId = id
+  state.isRemovingContainer = true
+}
+const handleDeleteCard = (id) => {
+  state.selectedCardId = id
+  state.isRemovingCard = true
+}
 const file = ref(null);
 const uploadFile = (e) => {
   console.log(e.target.files)
   file.value = e.target.files[0]
   console.log(file.value)  
-};
-// 任務
+}
 const addCard = (containerId, payload) => {
   if (!newCardData.title) return payload.is_adding_card = false
   const newCard = {
@@ -241,12 +238,10 @@ const leaveAddCard = () => {
   payload.is_adding_card = false
   cardChangedInitialize()
 }
-
 const deleteTask = (payload) => {
   payload.is_adding_card = false
   cardChangedInitialize()
 }
-
 // 增加白板
 const addContainer = (newContainerTitle) => {
   if (!newContainerTitle) return state.isAddingContainer = false
@@ -314,7 +309,6 @@ const handleEditCard = (type, selectedCard) => {
   }
 }
 </script>
-
 
 <style>
 .list-enter-active,
