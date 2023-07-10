@@ -3,7 +3,9 @@
     <TransitionGroup name="list">
       <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
         <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#E4E5EC] p-1"
-          @drop="dropItem($event, container.id)" @dragenter.prevent @dragover.prevent>
+          @drop="dropItem($event, container.id)" 
+          @dragenter.prevent 
+          @dragover.prevent>
           <div class="flex h-full w-full place-items-center justify-between p-1">
             <Transition name="fade" mode="out-in">
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
@@ -20,20 +22,26 @@
               @click="handleDeleteContainer(container.id)" />
           </div>
           <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <div v-for="card in cardList(container.id)" :key="card.id" class="m-1 cursor-pointer rounded-lg bg-white p-2"
-              :draggable="state.isDraggable" @dragstart="dragItem($event, card)">
+            <div v-for="card in cardList(container.id)" 
+            :key="card.id" 
+            class="m-1 cursor-pointer rounded-lg bg-white p-2"
+              draggable
+              @dragstart="startDragTask($event, card)">
               <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
             </div>
+            <!--  -->
             <div class="m-1 flex flex-col place-items-center justify-center">
               <Transition name="fade">
                 <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                  <form @submit.prevent="addCard(container.id, container)" v-click-outside="onClickOutside">
+                  <form @submit.prevent="addCard(container.id, container)" v-click-outside="onClickOutside"
+                  class="grid grid-cols-1 gap-y-2">
                     <input v-model="newCardData.title" type="text"
-                      class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Card Title" />
                     <textarea v-model="newCardData.content"
                       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Add Card Content" />
+                    <input type="file" accept="image/*" @change="uploadFile">
                     <div class="mt-2 flex w-full place-items-center">
                       <button class="add-card-btn">新增待辦</button>
                       <CloseIcon height="30px"
@@ -75,6 +83,7 @@ import { useStore } from 'vuex'
 import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 import Button from '@/components/base/Button.vue'
 import MoveIcon from '@/components/icons/MoveIcon.vue'
+import CloseIcon from '@/components/icons/CloseIcon.vue'
 import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import taskPreview from './taskPreview.vue'
@@ -105,11 +114,13 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
+// const uploadImgRef = ref(null)
 const newCardData = reactive({
   id: null,
   id_container: null,
   title: null,
   content: null,
+  picture:null,
   created_at: null,
 })
 const vuello = reactive({
@@ -154,11 +165,11 @@ const blurWorkType = (container) => {
   addWorkTypeOnce.value = true
 }
 
-
 const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
 }
-const dragItem = (event, item) => {
+// 拖放功能
+const startDragTask = (event, item) => {
   event.dataTransfer.dropEffect = 'move'
   event.dataTransfer.effectAllowed = 'move'
   event.dataTransfer.setData('id', item.id)
@@ -198,6 +209,12 @@ const deleteDialog = (type) => {
   state.isRemovingContainer = false
   state.isRemovingCard = false
 }
+const file = ref(null);
+const uploadFile = (e) => {
+  console.log(e.target.files)
+  file.value = e.target.files[0]
+  console.log(file.value)  
+};
 // 任務
 const addCard = (containerId, payload) => {
   if (!newCardData.title) return payload.is_adding_card = false
@@ -206,6 +223,10 @@ const addCard = (containerId, payload) => {
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
+    picture:{
+      id: file.value.lastModified,
+      src: URL.createObjectURL(file.value)
+    }
   }
   vuello.cards.push(newCard)
   payload.is_adding_card = false
@@ -220,9 +241,7 @@ const leaveAddCard = () => {
   payload.is_adding_card = false
   cardChangedInitialize()
 }
-// const onClickOutside = (event) => {
-//   console.log('Clicked outside. Event: ', event)
-// }
+
 const deleteTask = (payload) => {
   payload.is_adding_card = false
   cardChangedInitialize()
