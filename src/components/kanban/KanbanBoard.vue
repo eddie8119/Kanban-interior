@@ -8,11 +8,10 @@
             <Transition name="fade" mode="out-in">
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
                 class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                placeholder="輸入工程類型" 
-                @keypress.enter="handleKanbanAction(null, null, container)"
-                @focus="$event.target.select()" 
-                @blur="blurWorkType(container)" />
-              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold" @click="addWorkType(container)">
+                placeholder="輸入工程類型" @keypress.enter="handleKanbanAction(null, null, container)"
+                @focus="$event.target.select()" @blur="blurWorkType(container)" />
+              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
+                @click="addWorkType(container)">
                 {{ container.name }}工種 ({{ cardList(container.id).length }})
               </div>
             </Transition>
@@ -120,6 +119,7 @@ const vuello = reactive({
   cards: [],
 })
 const addWorkTypeOnce = ref(true)
+const addWorkTypeOnceId = ref(null)
 
 watch(
   () => props.payload,
@@ -134,9 +134,18 @@ watch(
 
 // 工種輸入框
 const addWorkType = (container) => {
-  if (!addWorkTypeOnce.value) return
-  else {
+  if (!addWorkTypeOnce.value) {
+    if (addWorkTypeOnceId.value !== container.id) {
+      vuello.containers.map(container => {
+        container.is_editing_container = false
+      }) 
+      container.is_editing_container = true
+      addWorkTypeOnceId.value = container.id
+      addWorkTypeOnce.value = false    
+    } else return 
+  } else {
     container.is_editing_container = true
+    addWorkTypeOnceId.value = container.id
     addWorkTypeOnce.value = false
   }
 }
