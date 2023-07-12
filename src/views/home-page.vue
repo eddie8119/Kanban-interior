@@ -8,7 +8,7 @@
               class="rounded-md px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-slate-200"
               @click="handleEditTitle('edit')"
             >
-              {{ payload.title }} 工
+              {{ payload.title }} 工程案
             </span>
           </div>
           <div v-else class="flex place-items-center">

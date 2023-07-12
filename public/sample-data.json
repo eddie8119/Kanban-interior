@@ -10,25 +10,71 @@
     },
     {
       "id": 2,
-      "name": "隔間",
+      "name": "水電",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 3,
+      "name": "地坪",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 4,
+      "name": "泥做",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 5,
+      "name": "門框",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 6,
+      "name": "輕隔間",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 7,
+      "name": "木做",
+      "is_editing_container": false,
+      "is_adding_card": false
+    },
+    {
+      "id": 8,
+      "name": "油漆",
       "is_editing_container": false,
       "is_adding_card": false
     }
   ],
   "cards": [
     {
-      "id": 1,
-      "id_container": 1,
-      "title": "廁",
-      "content": "Yeah i know. It's just another low quality Trello rip off.",
-      "is_editing_card": false
+      "id": 7,
+      "id_container": 2,
+      "title": "廁所",
+      "content": "浴室的電路應該要掛錫處理，所謂掛錫就是在銅線的導線上放一層錫，防止電線接頭鬆散發熱，造成電路問題。除此之外，水電師傅也提醒大家，浴室的插座務必加",
+      "is_editing_card": false,
+      "isDone":false
     },
     {
       "id": 2,
-      "id_container": 1,
-      "title": "About Data",
-      "content": "Vuello will automatically fetch sample data if none exist inside current State.\n\nVuello is using persisted state, that means data won't be resetted even after full page reload.* \n\n\n *) as long as you did not delete the localStorage",
-      "is_editing_card": false
+      "id_container": 2,
+      "title": "廚房",
+      "content": "琉璃台上20公分背板玻璃開口",
+      "is_editing_card": false,
+      "isDone":false
+    },
+    {
+      "id": 8,
+      "id_container": 3,
+      "title": "缺收邊條",
+      "content": "買 125.5公分 廚房前 ",
+      "is_editing_card": false,
+      "isDone":false
     }
   ]
 }

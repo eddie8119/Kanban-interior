@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-full w-full overflow-auto rounded-lg bg-red-100 px-2 py-3">
+  <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
       <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
-        <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#E4E5EC] p-1"
+        <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#f3f3f3] p-1"
           @drop="dropItem($event, container.id)" @dragenter.prevent @dragover.prevent>
           <div class="flex h-full w-full place-items-center justify-between p-1">
             <Transition name="fade" mode="out-in">
@@ -12,7 +12,7 @@
                 @focus="$event.target.select()" @blur="blurWorkType(container)" />
               <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                 @click="addWorkType(container)">
-                {{ container.name }}工種 ({{ cardList(container.id).length }})
+                {{ container.name }}工程 ({{ cardList(container.id).length }})
               </div>
             </Transition>
             <TrashIcon height="25px"
@@ -20,32 +20,33 @@
               @click="handleDeleteContainer(container.id)" />
           </div>
           <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <div v-for="card in cardList(container.id)" :key="card.id" class="m-1 cursor-pointer rounded-lg bg-white p-2"
+            <div v-for="card in cardList(container.id)" :key="card.id" class="m-[6px] cursor-pointer rounded-lg bg-white p-2"
               draggable @dragstart="startDragTask($event, card)">
-              <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
+              <taskPreview :card="card" 
+              @handleEditCard="handleEditCard" 
+              @handleDeleteCard="handleDeleteCard"              
+               />
             </div>
           </div>
           <!--  -->
           <div class="m-1 flex flex-col place-items-center justify-center">
             <Transition name="fade">
               <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                <form @submit.prevent="addCard(container.id, container)" v-click-outside="onClickOutside"
+                <form @submit.prevent="addCard(container.id, container)" 
                   class="grid grid-cols-1 gap-y-2">
                   <input v-model="newCardData.title" type="text"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Title" />
+                    placeholder="新增標題(必填)" />
                   <textarea v-model="newCardData.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Add Card Content" />
+                    placeholder="新增內容" />
                   <input type="file" accept="image/*" @change="uploadFile">
                   <div class="mt-2 flex w-full place-items-center">
-                    <!-- <button class=" border-red-100 rounded-sm">新增待辦</button> -->
-                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
-                      <PlusIcon height="15px" />
+                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">                      
                       新增待辦
                     </Button>
                     <CloseIcon height="30px"
-                      class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
+                      class="cursor-pointer rounded-full ml-2 p-1 text-red-500 hover:bg-red-600 hover:text-white"
                       @click="deleteTask(container)" />
                   </div>
                 </form>
@@ -55,7 +56,7 @@
               <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
                 @click="toggleAddingCard(container)">
                 <PlusIcon height="15px" />
-                新增施做項目
+                施做項目
               </Button>
             </Transition>
           </div>
@@ -69,7 +70,7 @@
   <!-- Confirmation Modal -->
   <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteDialog('container')"
     @close="state.isRemovingContainer = false">
-    All Contents inside this Container will also be deleted. Are you sure?
+    本欄位和之中的卡片將會一併刪除，確認嗎?
   </ConfirmationModal>
   <ConfirmationModal :value="state.isRemovingCard" @confirm="deleteDialog('card')" @close="state.isRemovingCard = false">
     確認刪除此項施做卡片?
@@ -87,7 +88,6 @@ import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
-import vClickOutside from 'click-outside-vue3'
 
 const props = defineProps({
   payload: {
@@ -220,16 +220,17 @@ const addCard = (containerId, payload) => {
     payload.is_adding_card = false
     addWorkCardOnce.value = true
     return
-  }
+  } 
   const newCard = {
     id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
     picture: {
-      id: file.value.lastModified,
-      src: URL.createObjectURL(file.value)
-    }
+      id: file.value.lastModified || "",
+      src: URL.createObjectURL(file.value) || ""
+    },
+    isDone: false
   }
   vuello.cards.push(newCard)
   payload.is_adding_card = false
@@ -308,6 +309,10 @@ const handleEditCard = (type, selectedCard) => {
     case 'save':
       handleKanbanAction(null, null, selectedCard)
       break
+    case 'isdone':
+      selectedCard.isDone = !selectedCard.isDone
+      handleKanbanAction(null, null, selectedCard)
+      break
     case 'cancel':
       const data = state.tempCards.find((card) => card.id === selectedCard.id)
       selectedCard.title = data.title
@@ -316,6 +321,7 @@ const handleEditCard = (type, selectedCard) => {
       break
   }
 }
+
 </script>
 
 <style>
