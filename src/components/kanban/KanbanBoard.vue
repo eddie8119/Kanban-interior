@@ -3,9 +3,7 @@
     <TransitionGroup name="list">
       <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
         <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#E4E5EC] p-1"
-          @drop="dropItem($event, container.id)" 
-          @dragenter.prevent 
-          @dragover.prevent>
+          @drop="dropItem($event, container.id)" @dragenter.prevent @dragover.prevent>
           <div class="flex h-full w-full place-items-center justify-between p-1">
             <Transition name="fade" mode="out-in">
               <input v-if="container.is_editing_container" v-model="container.name" type="text"
@@ -22,43 +20,44 @@
               @click="handleDeleteContainer(container.id)" />
           </div>
           <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <div v-for="card in cardList(container.id)" 
-            :key="card.id" 
-            class="m-1 cursor-pointer rounded-lg bg-white p-2"
-              draggable
-              @dragstart="startDragTask($event, card)">
+            <div v-for="card in cardList(container.id)" :key="card.id" class="m-1 cursor-pointer rounded-lg bg-white p-2"
+              draggable @dragstart="startDragTask($event, card)">
               <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
             </div>
-            <!--  -->
-            <div class="m-1 flex flex-col place-items-center justify-center">
-              <Transition name="fade">
-                <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                  <form @submit.prevent="addCard(container.id, container)" v-click-outside="onClickOutside"
+          </div>
+          <!--  -->
+          <div class="m-1 flex flex-col place-items-center justify-center">
+            <Transition name="fade">
+              <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
+                <form @submit.prevent="addCard(container.id, container)" v-click-outside="onClickOutside"
                   class="grid grid-cols-1 gap-y-2">
-                    <input v-model="newCardData.title" type="text"
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Add Card Title" />
-                    <textarea v-model="newCardData.content"
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Add Card Content" />
-                    <input type="file" accept="image/*" @change="uploadFile">
-                    <div class="mt-2 flex w-full place-items-center">
-                      <button class="add-card-btn">新增待辦</button>
-                      <CloseIcon height="30px"
-                        class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                        @click="deleteTask(container)" />
-                    </div>
-                  </form>
-                </div>
-              </Transition>
-              <Transition name="fade" mode="out-in">
-                <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm"
-                  class="mt-1" @click="container.is_adding_card = true">
-                  <PlusIcon height="15px" />
-                  新增施做項目
-                </Button>
-              </Transition>
-            </div>
+                  <input v-model="newCardData.title" type="text"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Add Card Title" />
+                  <textarea v-model="newCardData.content"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Add Card Content" />
+                  <input type="file" accept="image/*" @change="uploadFile">
+                  <div class="mt-2 flex w-full place-items-center">
+                    <!-- <button class=" border-red-100 rounded-sm">新增待辦</button> -->
+                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
+                      <PlusIcon height="15px" />
+                      新增待辦
+                    </Button>
+                    <CloseIcon height="30px"
+                      class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
+                      @click="deleteTask(container)" />
+                  </div>
+                </form>
+              </div>
+            </Transition>
+            <Transition name="fade" mode="out-in">
+              <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
+                @click="toggleAddingCard(container)">
+                <PlusIcon height="15px" />
+                新增施做項目
+              </Button>
+            </Transition>
           </div>
         </div>
       </div>
@@ -90,12 +89,6 @@ import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
 import vClickOutside from 'click-outside-vue3'
 
-const directives = {
-  clickOutside: () => {
-    vClickOutside.directive
-  }
-}
-
 const props = defineProps({
   payload: {
     type: Object,
@@ -119,7 +112,7 @@ const newCardData = reactive({
   id_container: null,
   title: null,
   content: null,
-  picture:null,
+  picture: null,
   created_at: null,
 })
 const vuello = reactive({
@@ -128,8 +121,6 @@ const vuello = reactive({
   containers: [],
   cards: [],
 })
-const addWorkTypeOnce = ref(true)
-const addWorkTypeOnceId = ref(null)
 
 watch(
   () => props.payload,
@@ -142,21 +133,24 @@ watch(
   { immediate: true }
 )
 
-const cardList =(containerId) => {
+const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
 }
 
 // 工種輸入框
+const addWorkTypeOnce = ref(true)
+const addWorkTypeOnceId = ref(null)
+
 const addWorkType = (container) => {
   if (!addWorkTypeOnce.value) {
     if (addWorkTypeOnceId.value !== container.id) {
       vuello.containers.map(container => {
         container.is_editing_container = false
-      }) 
+      })
       container.is_editing_container = true
       addWorkTypeOnceId.value = container.id
-      addWorkTypeOnce.value = false    
-    } else return 
+      addWorkTypeOnce.value = false
+    } else return
   } else {
     container.is_editing_container = true
     addWorkTypeOnceId.value = container.id
@@ -199,6 +193,14 @@ const deleteDialog = (type) => {
   state.isRemovingCard = false
 }
 // 任務增減
+const addWorkCardOnce = ref(true)
+const addWorkCardOnceId = ref(null)
+
+const toggleAddingCard = (container) => {
+  if (!addWorkCardOnce.value) return
+  addWorkCardOnce.value = false
+  container.is_adding_card = true
+}
 const handleDeleteContainer = (id) => {
   state.selectedContainerId = id
   state.isRemovingContainer = true
@@ -211,16 +213,20 @@ const file = ref(null);
 const uploadFile = (e) => {
   console.log(e.target.files)
   file.value = e.target.files[0]
-  console.log(file.value)  
+  console.log(file.value)
 }
 const addCard = (containerId, payload) => {
-  if (!newCardData.title) return payload.is_adding_card = false
+  if (!newCardData.title) {
+    payload.is_adding_card = false
+    addWorkCardOnce.value = true
+    return
+  }
   const newCard = {
     id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
-    picture:{
+    picture: {
       id: file.value.lastModified,
       src: URL.createObjectURL(file.value)
     }
@@ -233,6 +239,7 @@ const addCard = (containerId, payload) => {
       : (payload.is_editing_card = false)
   }
   cardChangedInitialize()
+  addWorkCardOnce.value = true
 }
 const leaveAddCard = () => {
   payload.is_adding_card = false
@@ -241,6 +248,7 @@ const leaveAddCard = () => {
 const deleteTask = (payload) => {
   payload.is_adding_card = false
   cardChangedInitialize()
+  addWorkCardOnce.value = true
 }
 // 增加白板
 const addContainer = (newContainerTitle) => {

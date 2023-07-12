@@ -28,6 +28,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
+import Button from '@/components/base/Button.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 
