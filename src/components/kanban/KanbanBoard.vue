@@ -20,20 +20,16 @@
               @click="handleDeleteContainer(container.id)" />
           </div>
           <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <div v-for="card in cardList(container.id)" :key="card.id" class="m-[6px] cursor-pointer rounded-lg bg-white p-2"
-              draggable @dragstart="startDragTask($event, card)">
-              <taskPreview :card="card" 
-              @handleEditCard="handleEditCard" 
-              @handleDeleteCard="handleDeleteCard"              
-               />
+            <div v-for="card in cardList(container.id)" :key="card.id"
+              class="m-[6px] cursor-pointer rounded-lg bg-white p-2" draggable @dragstart="startDragTask($event, card)">
+              <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
             </div>
           </div>
           <!--  -->
           <div class="m-1 flex flex-col place-items-center justify-center">
             <Transition name="fade">
               <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                <form @submit.prevent="addCard(container.id, container)" 
-                  class="grid grid-cols-1 gap-y-2">
+                <form @submit.prevent="addCard(container.id, container)" class="grid grid-cols-1 gap-y-2">
                   <input v-model="newCardData.title" type="text"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="新增標題(必填)" />
@@ -42,7 +38,7 @@
                     placeholder="新增內容" />
                   <input type="file" accept="image/*" @change="uploadFile">
                   <div class="mt-2 flex w-full place-items-center">
-                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">                      
+                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
                       新增待辦
                     </Button>
                     <CloseIcon height="30px"
@@ -145,13 +141,20 @@ const addWorkType = (container) => {
   if (!addWorkTypeOnce.value) {
     if (addWorkTypeOnceId.value !== container.id) {
       vuello.containers.map(container => {
+        container.is_adding_card = false
         container.is_editing_container = false
       })
-      container.is_editing_container = true
-      addWorkTypeOnceId.value = container.id
-      addWorkTypeOnce.value = false
-    } else return
+      addWork()
+    } 
   } else {
+    // 檢查項目編輯狀態
+    vuello.containers.map(container => {
+      container.is_adding_card = false
+    })
+    addWork()
+  }
+  function addWork() {
+    addWorkCardOnce.value = true
     container.is_editing_container = true
     addWorkTypeOnceId.value = container.id
     addWorkTypeOnce.value = false
@@ -192,14 +195,32 @@ const deleteDialog = (type) => {
   state.isRemovingContainer = false
   state.isRemovingCard = false
 }
-// 任務增減
+// 個別工種任務增建
 const addWorkCardOnce = ref(true)
 const addWorkCardOnceId = ref(null)
 
 const toggleAddingCard = (container) => {
-  if (!addWorkCardOnce.value) return
-  addWorkCardOnce.value = false
-  container.is_adding_card = true
+  if (!addWorkCardOnce.value) {
+    if (addWorkCardOnceId.value !== container.id) {
+      vuello.containers.map(container => {
+        container.is_adding_card = false
+        container.is_editing_container = false
+      })
+      addWork()
+    }
+  } else {
+    // 檢查title編輯狀態
+    vuello.containers.map(container => {
+      container.is_editing_container = false
+    })
+    addWork()
+  }
+  function addWork() {
+    addWorkTypeOnce.value = true
+    container.is_adding_card = true
+    addWorkCardOnceId.value = container.id
+    addWorkCardOnce.value = false
+  }
 }
 const handleDeleteContainer = (id) => {
   state.selectedContainerId = id
@@ -220,7 +241,7 @@ const addCard = (containerId, payload) => {
     payload.is_adding_card = false
     addWorkCardOnce.value = true
     return
-  } 
+  }
   const newCard = {
     id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
     id_container: containerId,
