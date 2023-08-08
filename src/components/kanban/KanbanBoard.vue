@@ -36,7 +36,7 @@
                   <textarea v-model="newCardData.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="新增內容" />
-                  <input type="file" accept="image/*" @change="uploadFile" ref="uploadRef">
+                  <input class="" type="file" accept="image/*"  @change="uploadFile">
                   <div class="mt-2 flex w-full place-items-center">
                     <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
                       新增待辦
@@ -110,6 +110,7 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
+
 const newCardData = reactive({
   id: null,
   id_container: null,
@@ -152,7 +153,7 @@ const addWorkType = (container) => {
         container.is_editing_container = false
       })
       addWork()
-    } 
+    }
   } else {
     // 檢查項目編輯狀態
     vuello.containers.map(container => {
@@ -243,12 +244,15 @@ const handleDeleteCard = (id) => {
   state.selectedCardId = id
   state.isRemovingCard = true
 }
-const file = ref(null);
+
+const uploadPreviewImage = reactive({})
 const uploadFile = (e) => {
-  console.log(e.target.files)
-  file.value = e.target.files[0]
-  console.log(file.value)
+  uploadPreviewImage.value = ''
+  const files = e.target.files
+  const file = files[0]
+  uploadPreviewImage.value = { src: URL.createObjectURL(file) };
 }
+
 const addCard = (containerId, payload) => {
   if (!newCardData.title) {
     payload.is_adding_card = false
@@ -257,13 +261,10 @@ const addCard = (containerId, payload) => {
   }
   const newCard = {
     id: Date.now(),
-    id_container: containerId,    
+    id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
-    picture: {
-      id: file.value.lastModified || "",
-      src: URL.createObjectURL(file.value) || ""
-    },
+    picture: uploadPreviewImage.value,
     isDone: false
   }
   vuello.cards.push(newCard)
