@@ -19,12 +19,12 @@
               class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
               @click="handleDeleteContainer(container.id)" />
           </div>
-          <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <Draggable v-for="card in cardList(container.id)" :key="card.id"
-              class="m-[6px] cursor-pointer rounded-lg bg-white p-2" @drop="onDropTask">
+          <div class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
+            <div v-for="card in cardList(container.id)" :key="card.id"
+              class="m-[6px] cursor-pointer rounded-lg bg-white p-2" draggable @dragstart="startDragTask($event, card)">
               <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
-            </Draggable>
-          </Container>
+            </div>
+          </div>
           <!--  -->
           <div class="m-1 flex flex-col place-items-center justify-center">
             <Transition name="fade">
@@ -36,7 +36,7 @@
                   <textarea v-model="newCardData.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="新增內容" />
-                  <input type="file" accept="image/*" @change="uploadFile" ref="uploadRef">
+                  <input type="file" accept="image/*" @change="uploadFile">
                   <div class="mt-2 flex w-full place-items-center">
                     <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
                       新增待辦
@@ -63,10 +63,6 @@
       @addContainer="addContainer" @deleteContainer='deleteContainer' />
   </div>
 
-  <div>
-    <!-- <smoothdemo></smoothdemo> -->
-  </div>
-
   <!-- Confirmation Modal -->
   <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteDialog('container')"
     @close="state.isRemovingContainer = false">
@@ -80,7 +76,6 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { Container, Draggable } from "vue3-smooth-dnd";
 
 import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 import Button from '@/components/base/Button.vue'
@@ -90,7 +85,6 @@ import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
-import smoothdemo from './smoothdemo.vue'
 
 const props = defineProps({
   payload: {
@@ -180,16 +174,10 @@ const startDragTask = (event, item) => {
 const dropItem = (event, containerId) => {
   const id = event.dataTransfer.getData('id')
   const item = vuello.cards.find((card) => card.id == id)
-  // const  nowContainerList = vuello.cards.filter((card) => card.id_container === containerId)
-  // console.log(nowContainerList)
   item.id_container = containerId
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
 }
-const onDropTask = (dropResult) => {
-
-}
-
 const deleteDialog = (type) => {
   if (type === 'container') {
     vuello.containers = vuello.containers.filter(
@@ -256,8 +244,8 @@ const addCard = (containerId, payload) => {
     return
   }
   const newCard = {
-    id: Date.now(),
-    id_container: containerId,    
+    id: vuello.cards.length > 0 ? [...vuello.cards].pop().id + 1 : 1,
+    id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
     picture: {
