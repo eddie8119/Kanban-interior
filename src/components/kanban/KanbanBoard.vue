@@ -250,7 +250,9 @@ const uploadFile = (e) => {
   uploadPreviewImage.value = ''
   const files = e.target.files
   const file = files[0]
+  console.log(URL.createObjectURL(file))
   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
+  console.log(uploadPreviewImage)
 }
 
 const addCard = (containerId, payload) => {

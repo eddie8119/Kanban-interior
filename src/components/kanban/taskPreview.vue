@@ -36,13 +36,17 @@
           </div>
           <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
         </div>
-        <button class="
+        <div class="flex justify-between text-sm items-center">
+          <button class="
         mt-[10px]
-        w-[20%] 
-        text-sm 
+        w-[20%]          
         rounded 
         py-1" :class="[card.isDone ? 'bg-[#f4592b]' : 'bg-[#5cdb95] text-white']" @click="handleEditCard('isdone', card)">{{
           card.isDone ? '完成' : '未完成' }}</button>
+        <p v-show="card.picture">圖片顯示</p>
+        </div>
+        
+        <img v-if="card.picture?.src" :src="card.picture.src" alt="" class="w-full">
       </div>
     </div>
   </Transition>
@@ -57,6 +61,7 @@ import SaveIcon from '@/components/icons/SaveIcon.vue'
 const props = defineProps({
   card: {
     type: Object,
+    required: true,
   },
 })
 
