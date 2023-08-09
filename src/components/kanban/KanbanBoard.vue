@@ -1,4 +1,14 @@
 <template>
+  <div class="flex items-center">
+    <p class="mr-4 px-2">快速全部選取</p>
+    <select class="w-[200px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
+    v-model="selectedGlobal" placeholder="篩選">
+    <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
+      @click="changeSelectGlobal(list.key)">
+      {{ list.key }}
+    </option>
+  </select>
+  </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
       <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
@@ -15,12 +25,19 @@
                 {{ container.name }}工程 ({{ cardList(container.id).length }})
               </div>
             </Transition>
+            <select class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
+              v-model="container.selected_done" placeholder="篩選">
+              <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
+                @click="changeSelect(container, list.key)">
+                {{ list.key }}
+              </option>
+            </select>
             <TrashIcon height="25px"
               class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
               @click="handleDeleteContainer(container.id)" />
           </div>
           <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <Draggable v-for="card in cardList(container.id)" :key="card.id"
+            <Draggable v-for="card in cardListFilter(container.id, container.selected_done) " :key="card.id"
               class="m-[6px] cursor-pointer rounded-lg bg-white p-2" @drop="onDropTask">
               <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
             </Draggable>
@@ -36,7 +53,7 @@
                   <textarea v-model="newCardData.content"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                     placeholder="新增內容" />
-                  <input class="" type="file" accept="image/*"  @change="uploadFile">
+                  <input class="" type="file" accept="image/*" @change="uploadFile">
                   <div class="mt-2 flex w-full place-items-center">
                     <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
                       新增待辦
@@ -92,6 +109,28 @@ import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
 import smoothdemo from './smoothdemo.vue'
 
+
+const selectedGlobal = ref("all")
+const doneStatusListGlobal = reactive([
+  {
+    key: "done"
+  },
+  {
+    key: "undone"
+  },
+  {
+    key: "all"
+  },
+])
+const changeSelectGlobal = (value) => {
+  selectedGlobal.value = value
+  vuello.containers.map( container => container.selected_done = value )
+
+}
+const changeSelect = (container, value) => {
+  container.selected_done = value
+}
+
 const props = defineProps({
   payload: {
     type: Object,
@@ -139,6 +178,18 @@ watch(
 
 const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
+}
+
+const cardListFilter = (containerId, selected = 'all') => {
+  let originCardList = vuello.cards.filter((card) => card.id_container === containerId)
+  switch (selected) {
+    case 'all':
+      return originCardList
+    case 'done':
+      return originCardList.filter((card) => card.isDone === true)
+    case 'undone':
+      return originCardList.filter((card) => card.isDone === false)
+  }
 }
 
 // 工種輸入框
@@ -292,11 +343,22 @@ const deleteTask = (payload) => {
 const addContainer = (newContainerTitle) => {
   if (!newContainerTitle) return state.isAddingContainer = false
   const newContainer = {
-    id:
-      vuello.containers.length > 0
-        ? [...vuello.containers].pop().id + 1
-        : 1,
+    id: Date.now(),
     name: newContainerTitle,
+    is_editing_container: false,
+    is_adding_card: false,
+    selected_done: "all",
+    doneStatus: [
+      {
+        "key": "all"
+      },
+      {
+        "key": "done"
+      },
+      {
+        "key": "undone"
+      }
+    ]
   }
   vuello.containers.push(newContainer)
   state.isAddingContainer = false

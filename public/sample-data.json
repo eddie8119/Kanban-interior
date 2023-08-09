@@ -1,54 +1,150 @@
 {
-  "title": "Board Title",
-  "last_modified": "23/07/2023, 06:42:32",
+  "title": "名稱",
+  "last_modified": "23/07/2023, 23:59:59",
   "containers": [
     {
       "id": 1,
       "name": "機電",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 2,
       "name": "水電",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 3,
       "name": "地坪",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 4,
       "name": "泥做",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 5,
       "name": "門框",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 6,
       "name": "輕隔間",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 7,
       "name": "木做",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     },
     {
       "id": 8,
       "name": "油漆",
       "is_editing_container": false,
-      "is_adding_card": false
+      "is_adding_card": false,
+      "selected_done": "all",
+      "doneStatus":[
+        {
+          "key": "all"
+        },
+        {
+          "key": "done"
+        },
+        {
+          "key": "undone"
+        }
+      ]
     }
   ],
   "cards": [
