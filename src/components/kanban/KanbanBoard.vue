@@ -25,7 +25,7 @@
                 {{ container.name }}工程 ({{ cardList(container.id).length }})
               </div>
             </Transition>
-            <select class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
+            <select v-if="checkSelectShow(container.id) === true" class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
               v-model="container.selected_done" placeholder="篩選">
               <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
                 @click="changeSelect(container, list.key)">
@@ -129,6 +129,11 @@ const changeSelectGlobal = (value) => {
 }
 const changeSelect = (container, value) => {
   container.selected_done = value
+}
+
+const checkSelectShow = (containerId) => {
+  let thisCardList = cardList(containerId)
+  return thisCardList.some( card => card.isDone === true)
 }
 
 const props = defineProps({
