@@ -1,172 +1,52 @@
 {
-  "title": "名稱",
+  "title": "取名稱",
   "last_modified": "23/07/2023, 23:59:59",
   "containers": [
     {
-      "id": 1,
-      "name": "機電",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "機電"
     },
     {
-      "id": 2,
-      "name": "水電",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "水電"
     },
     {
-      "id": 3,
-      "name": "地坪",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "地坪"
     },
     {
-      "id": 4,
-      "name": "泥做",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "泥做"
     },
     {
-      "id": 5,
-      "name": "門框",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "門框"
     },
     {
-      "id": 6,
-      "name": "輕隔間",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "輕隔間"
     },
     {
-      "id": 7,
-      "name": "木做",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+      "name": "木做"
     },
-    {
-      "id": 8,
-      "name": "油漆",
-      "is_editing_container": false,
-      "is_adding_card": false,
-      "selected_done": "all",
-      "doneStatus":[
-        {
-          "key": "all"
-        },
-        {
-          "key": "done"
-        },
-        {
-          "key": "undone"
-        }
-      ]
+    {      
+      "name": "油漆"
     }
   ],
   "cards": [
     {
-      "id": 7,
-      "id_container": 2,
+      "id":0,
+      "id_container": 1,
       "title": "廁所",
       "content": "浴室的電路應該要掛錫處理，所謂掛錫就是在銅線的導線上放一層錫，防止電線接頭鬆散發熱，造成電路問題。除此之外，水電師傅也提醒大家，浴室的插座務必加",
       "is_editing_card": false,
       "isDone":false
     },
     {
-      "id": 2,
-      "id_container": 2,
+      "id":1,
+      "id_container": 1,
       "title": "廚房",
       "content": "琉璃台上20公分背板玻璃開口",
       "is_editing_card": false,
       "isDone":false
     },
     {
-      "id": 8,
-      "id_container": 3,
+      "id":2,
+      "id_container": 2,
       "title": "缺收邊條",
       "content": "買 125.5公分 廚房前 ",
       "is_editing_card": false,

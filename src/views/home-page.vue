@@ -74,6 +74,29 @@ onBeforeMount(async () => {
   if (!data) {
     await axios.get('/sample-data.json')
     .then(({ data }) => {
+      const {containers} = data
+      const containersHandler = containers.map( (item, index) => {
+        return {          
+          id:index,
+          name:item.name,
+          is_editing_container: false,
+          is_adding_card: false,
+          selected_done: "all",
+          doneStatus:[
+            {
+              "key": "all"
+            },
+            {
+              "key": "done"
+            },
+            {
+              "key": "undone"
+            }
+          ]
+
+        }
+      } )
+      data.containers = containersHandler
       store.dispatch('vuello/setVuello', data)
     })
   }
