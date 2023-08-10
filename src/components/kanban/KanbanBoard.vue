@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center">
-    <p class="mr-4 px-2">快速全部選取</p>
-    <select class="w-[200px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
-      v-model="selectedGlobal" placeholder="篩選">
+    <p class="mr-4 px-2 text-sm">快速全部選取:</p>
+    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center"
+      v-model="selectedGlobal">
       <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
         @click="changeSelectGlobal(list.key)">
         {{ list.key }}
@@ -22,7 +22,7 @@
                   @focus="$event.target.select()" @blur="blurWorkType(container)" />
                 <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                   @click="addWorkType(container)">
-                  {{ container.name }}工程 ({{ container.cardList.length }})
+                  {{ container.name }}工程 ({{ containerCardLength(container) }})
                 </div>
               </Transition>
               <select v-if="checkSelectShow(container.cardList) === true"
@@ -38,8 +38,8 @@
                 @click="handleDeleteContainer(container.id)" />
             </div>
             <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
-              @drop="onCardDrop(container.id, e)" :get-child-payload="getCardPayload(container.id)"
-              drag-class="card-ghost" drop-class="card-ghost-drop">
+              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"           
+              >
               <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
@@ -180,8 +180,10 @@ watch(
   },
   { immediate: true }
 )
-
-
+const containerCardLength = (container) => {
+  const cardList = container.cardList
+  return  Object.keys(cardList).length
+}
 const cardListFilter = (cardList, selected) => {
   switch (selected) {
     case 'all':
@@ -251,17 +253,17 @@ const onCardDrop = (columnId, dropResult) => {
     if (addedIndex !== null && payload) {
       dropResult.payload = {
         ...payload,
-        status: column.name,
+        id_container: column.id,
       }
     }
-    column.list = applyDrag(column.list, dropResult)
+    column.cardList = applyDrag(column.cardList, dropResult)
+    store.dispatch('vuello/setVuello', vuello)
   }
 }
 const getCardPayload = (columnId) => {
   return index =>
-    vuello.containers.find(p => p.id === columnId).list[index]
+    vuello.containers.find(container => container.id === columnId).cardList[index]
 }
-
 
 // 
 const deleteDialog = (type) => {
