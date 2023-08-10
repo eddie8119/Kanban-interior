@@ -32,7 +32,7 @@
               </h2>
             </div>
             <MoveIcon height="25px"
-              class="cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" @click.stop="" />
+              class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" @click.stop="" />
           </div>
           <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
         </div>
@@ -75,4 +75,3 @@ const handleDeleteCard = (id) => {
   emit('handleDeleteCard', id)
 }
 </script>
-
