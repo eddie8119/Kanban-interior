@@ -101,10 +101,11 @@ onBeforeMount(async () => {
             {
               "key": "undone"
             }
-          ]
-
+          ],
+          cardList: cardsHandler.filter(card => card.id_container === index)
         }
       } )
+
       data.cards = cardsHandler
       data.containers = containersHandler
       store.dispatch('vuello/setVuello', data)

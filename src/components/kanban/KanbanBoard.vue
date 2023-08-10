@@ -25,7 +25,7 @@
                 {{ container.name }}工程 ({{ cardList(container.id).length }})
               </div>
             </Transition>
-            <select v-if="checkSelectShow(container.id) === true" class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
+            <select v-if="checkSelectShow(container.cardList) === true" class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
               v-model="container.selected_done" placeholder="篩選">
               <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
                 @click="changeSelect(container, list.key)">
@@ -37,7 +37,7 @@
               @click="handleDeleteContainer(container.id)" />
           </div>
           <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <Draggable v-for="card in cardListFilter(container.id, container.selected_done) " :key="card.id"
+            <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
               class="m-[6px] cursor-pointer rounded-lg bg-white p-2" @drop="onDropTask">
               <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
             </Draggable>
@@ -136,9 +136,8 @@ const changeSelectGlobal = (value) => {
 const changeSelect = (container, value) => {
   container.selected_done = value
 }
-const checkSelectShow = (containerId) => {
-  let thisCardList = cardList(containerId)
-  return thisCardList.some( card => card.isDone === true)
+const checkSelectShow = (cardList) => {  
+  return cardList.some( card => card.isDone === true)
 }
 
 // 資料區
@@ -181,15 +180,15 @@ watch(
 const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
 }
-const cardListFilter = (containerId, selected) => {
-  let originCardList = cardList(containerId)
+const cardListFilter = (cardList, selected) => {
+  // let originCardList = cardList(containerId)
   switch (selected) {
     case 'all':
-      return originCardList
+      return cardList
     case 'done':
-      return originCardList.filter((card) => card.isDone === true)
+      return cardList.filter((card) => card.isDone === true)
     case 'undone':
-      return originCardList.filter((card) => card.isDone === false)
+      return cardList.filter((card) => card.isDone === false)
   }
 }
 
@@ -317,7 +316,7 @@ const addCard = (containerId, payload) => {
     picture: uploadPreviewImage.value,
     isDone: false
   }
-  vuello.cards.push(newCard)
+  payload.cardList.push(newCard)
   payload.is_adding_card = false
   if (payload) {
     payload.is_editing_container
