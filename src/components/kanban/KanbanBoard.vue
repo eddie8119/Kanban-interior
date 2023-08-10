@@ -109,7 +109,14 @@ import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
 import smoothdemo from './smoothdemo.vue'
 
-
+const props = defineProps({
+  payload: {
+    type: Object,
+    required: true,
+    default: () => { },
+  },
+})
+//select區
 const selectedGlobal = ref("all")
 const doneStatusListGlobal = reactive([
   {
@@ -125,36 +132,23 @@ const doneStatusListGlobal = reactive([
 const changeSelectGlobal = (value) => {
   selectedGlobal.value = value
   vuello.containers.map( container => container.selected_done = value )
-
 }
 const changeSelect = (container, value) => {
   container.selected_done = value
 }
-
 const checkSelectShow = (containerId) => {
   let thisCardList = cardList(containerId)
   return thisCardList.some( card => card.isDone === true)
 }
 
-const props = defineProps({
-  payload: {
-    type: Object,
-    required: true,
-    default: () => { },
-  },
-})
-
+// 資料區
 const store = useStore()
-const state = reactive({
-  isDraggable: false,
-  isAddingContainer: false,
-  isRemovingContainer: false,
-  isRemovingCard: false,
-  selectedContainerId: null,
-  selectedCardId: null,
-  tempCards: [],
+const vuello = reactive({
+  title: null,
+  last_modified: null,
+  containers: [],
+  cards: [],
 })
-
 const newCardData = reactive({
   id: null,
   id_container: null,
@@ -163,11 +157,14 @@ const newCardData = reactive({
   picture: null,
   created_at: null,
 })
-const vuello = reactive({
-  title: null,
-  last_modified: null,
-  containers: [],
-  cards: [],
+const state = reactive({
+  isDraggable: false,
+  isAddingContainer: false,
+  isRemovingContainer: false,
+  isRemovingCard: false,
+  selectedContainerId: null,
+  selectedCardId: null,
+  tempCards: [],
 })
 
 watch(
@@ -184,9 +181,8 @@ watch(
 const cardList = (containerId) => {
   return vuello.cards.filter((card) => card.id_container === containerId)
 }
-
-const cardListFilter = (containerId, selected = 'all') => {
-  let originCardList = vuello.cards.filter((card) => card.id_container === containerId)
+const cardListFilter = (containerId, selected) => {
+  let originCardList = cardList(containerId)
   switch (selected) {
     case 'all':
       return originCardList
@@ -237,16 +233,13 @@ const startDragTask = (event, item) => {
 const dropItem = (event, containerId) => {
   const id = event.dataTransfer.getData('id')
   const item = vuello.cards.find((card) => card.id == id)
-  // const  nowContainerList = vuello.cards.filter((card) => card.id_container === containerId)
-  // console.log(nowContainerList)
   item.id_container = containerId
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
 }
 const onDropTask = (dropResult) => {
-
 }
-
+// 
 const deleteDialog = (type) => {
   if (type === 'container') {
     vuello.containers = vuello.containers.filter(
@@ -306,9 +299,8 @@ const uploadFile = (e) => {
   uploadPreviewImage.value = ''
   const files = e.target.files
   const file = files[0]
-  console.log(URL.createObjectURL(file))
   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
-  console.log(uploadPreviewImage)
+  // console.log(uploadPreviewImage)
 }
 
 const addCard = (containerId, payload) => {

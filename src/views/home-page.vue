@@ -68,17 +68,26 @@ const state = reactive({
 const payload = computed(() => store.getters['vuello/getVuelloDatas'])
 const projectTitleInput = ref(null);
 
-
 onBeforeMount(async () => {
   const data = store.getters['vuello/getVuelloDatas']
   if (!data) {
     await axios.get('/sample-data.json')
     .then(({ data }) => {
-      const {containers} = data
+      const {containers, cards} = data
+      const cardsHandler = cards.map( (item, index) => {
+        return{
+          id: index,
+          id_container: item.id_container,
+          title: item.title,
+          content : item.content,
+          is_editing_card: false,
+          isDone:false
+        }
+      })
       const containersHandler = containers.map( (item, index) => {
         return {          
           id:index,
-          name:item.name,
+          name:item,
           is_editing_container: false,
           is_adding_card: false,
           selected_done: "all",
@@ -96,6 +105,7 @@ onBeforeMount(async () => {
 
         }
       } )
+      data.cards = cardsHandler
       data.containers = containersHandler
       store.dispatch('vuello/setVuello', data)
     })

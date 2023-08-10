@@ -1,56 +1,24 @@
 {
-  "title": "取名稱",
+  "title": "取個名稱",
   "last_modified": "23/07/2023, 23:59:59",
   "containers": [
-    {
-      "name": "機電"
-    },
-    {
-      "name": "水電"
-    },
-    {
-      "name": "地坪"
-    },
-    {
-      "name": "泥做"
-    },
-    {
-      "name": "門框"
-    },
-    {
-      "name": "輕隔間"
-    },
-    {
-      "name": "木做"
-    },
-    {      
-      "name": "油漆"
-    }
+    "機電","水電","地坪","泥做","門框","輕隔間","木做","油漆"    
   ],
   "cards": [
-    {
-      "id":0,
+    {      
       "id_container": 1,
-      "title": "廁所",
-      "content": "浴室的電路應該要掛錫處理，所謂掛錫就是在銅線的導線上放一層錫，防止電線接頭鬆散發熱，造成電路問題。除此之外，水電師傅也提醒大家，浴室的插座務必加",
-      "is_editing_card": false,
-      "isDone":false
+      "title": "廁所(系統範例)",
+      "content": "浴室的電路應該要掛錫處理，所謂掛錫就是在銅線的導線上放一層錫，防止電線接頭鬆散發熱，造成電路問題。除此之外，水電師傅也提醒大家，浴室的插座務必加"
     },
-    {
-      "id":1,
+    {     
       "id_container": 1,
-      "title": "廚房",
-      "content": "琉璃台上20公分背板玻璃開口",
-      "is_editing_card": false,
-      "isDone":false
+      "title": "廚房(系統範例)",
+      "content": "琉璃台上20公分背板玻璃開口"
     },
-    {
-      "id":2,
+    {      
       "id_container": 2,
-      "title": "缺收邊條",
-      "content": "買 125.5公分 廚房前 ",
-      "is_editing_card": false,
-      "isDone":false
+      "title": "缺收邊條(系統範例)",
+      "content": "買 125.5公分 廚房前 "
     }
   ]
 }

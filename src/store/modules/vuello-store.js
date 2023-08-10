@@ -4,15 +4,15 @@ const state = {
   vuello: null
 }
 
-const getters = {
-  getVuelloDatas(state) {
-    return state.vuello
-  }
-}
-
 const mutations = {
   SET_VUELLO(state, data) {
     state.vuello = data
+  }
+}
+
+const getters = {
+  getVuelloDatas(state) {
+    return state.vuello
   }
 }
 
