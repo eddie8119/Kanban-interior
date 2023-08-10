@@ -2,84 +2,87 @@
   <div class="flex items-center">
     <p class="mr-4 px-2">快速全部選取</p>
     <select class="w-[200px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
-    v-model="selectedGlobal" placeholder="篩選">
-    <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
-      @click="changeSelectGlobal(list.key)">
-      {{ list.key }}
-    </option>
-  </select>
+      v-model="selectedGlobal" placeholder="篩選">
+      <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
+        @click="changeSelectGlobal(list.key)">
+        {{ list.key }}
+      </option>
+    </select>
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
-      <div v-for="container in vuello.containers" :key="container.id" class="mx-1">
-        <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#f3f3f3] p-1"
-          @drop="dropItem($event, container.id)" @dragenter.prevent @dragover.prevent>
-          <div class="flex h-full w-full place-items-center justify-between p-1">
-            <Transition name="fade" mode="out-in">
-              <input v-if="container.is_editing_container" v-model="container.name" type="text"
-                class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                placeholder="輸入工程類型" @keypress.enter="handleKanbanAction(null, null, container)"
-                @focus="$event.target.select()" @blur="blurWorkType(container)" />
-              <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
-                @click="addWorkType(container)">
-                {{ container.name }}工程 ({{ cardList(container.id).length }})
-              </div>
-            </Transition>
-            <select v-if="checkSelectShow(container.cardList) === true" class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
-              v-model="container.selected_done" placeholder="篩選">
-              <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
-                @click="changeSelect(container, list.key)">
-                {{ list.key }}
-              </option>
-            </select>
-            <TrashIcon height="25px"
-              class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
-              @click="handleDeleteContainer(container.id)" />
+      <Container orientation="horizontal" @drop="onColumnDrop($event)">
+        <Draggable v-for="container in vuello.containers" :key="container.id" class="mx-1">
+          <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#f3f3f3] p-1">
+            <div class="flex h-full w-full place-items-center justify-between p-1">
+              <Transition name="fade" mode="out-in">
+                <input v-if="container.is_editing_container" v-model="container.name" type="text"
+                  class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                  placeholder="輸入工程類型" @keypress.enter="handleKanbanAction(null, null, container)"
+                  @focus="$event.target.select()" @blur="blurWorkType(container)" />
+                <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
+                  @click="addWorkType(container)">
+                  {{ container.name }}工程 ({{ container.cardList.length }})
+                </div>
+              </Transition>
+              <select v-if="checkSelectShow(container.cardList) === true"
+                class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
+                v-model="container.selected_done" placeholder="篩選">
+                <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
+                  @click="changeSelect(container, list.key)">
+                  {{ list.key }}
+                </option>
+              </select>
+              <TrashIcon height="25px"
+                class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
+                @click="handleDeleteContainer(container.id)" />
+            </div>
+            <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
+              @drop="onCardDrop(container.id, e)" :get-child-payload="getCardPayload(container.id)"
+              drag-class="card-ghost" drop-class="card-ghost-drop">
+              <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
+                class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
+                <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
+              </Draggable>
+            </Container>
+            <!--  -->
+            <div class="m-1 flex flex-col place-items-center justify-center">
+              <Transition name="fade">
+                <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
+                  <form @submit.prevent="addCard(container.id, container)" class="grid grid-cols-1 gap-y-2">
+                    <input v-model="newCardData.title" type="text"
+                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                      placeholder="新增標題(必填)" />
+                    <textarea v-model="newCardData.content"
+                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
+                      placeholder="新增內容" />
+                    <input class="" type="file" accept="image/*" @change="uploadFile">
+                    <div class="mt-2 flex w-full place-items-center">
+                      <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
+                        新增待辦
+                      </Button>
+                      <CloseIcon height="30px"
+                        class="cursor-pointer rounded-full ml-2 p-1 text-red-500 hover:bg-red-600 hover:text-white"
+                        @click="deleteTask(container)" />
+                    </div>
+                  </form>
+                </div>
+              </Transition>
+              <Transition name="fade" mode="out-in">
+                <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm"
+                  class="mt-1" @click="toggleAddingCard(container)">
+                  <PlusIcon height="15px" />
+                  施做項目
+                </Button>
+              </Transition>
+            </div>
           </div>
-          <Container class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)">
-            <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
-              class="m-[6px] cursor-pointer rounded-lg bg-white p-2" @drop="onDropTask">
-              <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
-            </Draggable>
-          </Container>
-          <!--  -->
-          <div class="m-1 flex flex-col place-items-center justify-center">
-            <Transition name="fade">
-              <div v-if="container.is_adding_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white p-2">
-                <form @submit.prevent="addCard(container.id, container)" class="grid grid-cols-1 gap-y-2">
-                  <input v-model="newCardData.title" type="text"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="新增標題(必填)" />
-                  <textarea v-model="newCardData.content"
-                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="新增內容" />
-                  <input class="" type="file" accept="image/*" @change="uploadFile">
-                  <div class="mt-2 flex w-full place-items-center">
-                    <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
-                      新增待辦
-                    </Button>
-                    <CloseIcon height="30px"
-                      class="cursor-pointer rounded-full ml-2 p-1 text-red-500 hover:bg-red-600 hover:text-white"
-                      @click="deleteTask(container)" />
-                  </div>
-                </form>
-              </div>
-            </Transition>
-            <Transition name="fade" mode="out-in">
-              <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm" class="mt-1"
-                @click="toggleAddingCard(container)">
-                <PlusIcon height="15px" />
-                施做項目
-              </Button>
-            </Transition>
-          </div>
-        </div>
-      </div>
+        </Draggable>
+        <addContainerArea :is-addingContainer="state.isAddingContainer" @toggleAddContainer='toggleAddContainer'
+          @addContainer="addContainer" @deleteContainer='deleteContainer' />
+      </Container>
     </TransitionGroup>
-    <addContainerArea :is-addingContainer="state.isAddingContainer" @toggleAddContainer='toggleAddContainer'
-      @addContainer="addContainer" @deleteContainer='deleteContainer' />
   </div>
-
   <div>
     <!-- <smoothdemo></smoothdemo> -->
   </div>
@@ -98,6 +101,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { Container, Draggable } from "vue3-smooth-dnd";
+import { applyDrag } from '../../utils/helpers'
 
 import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 import Button from '@/components/base/Button.vue'
@@ -131,13 +135,13 @@ const doneStatusListGlobal = reactive([
 ])
 const changeSelectGlobal = (value) => {
   selectedGlobal.value = value
-  vuello.containers.map( container => container.selected_done = value )
+  vuello.containers.map(container => container.selected_done = value)
 }
 const changeSelect = (container, value) => {
   container.selected_done = value
 }
-const checkSelectShow = (cardList) => {  
-  return cardList.some( card => card.isDone === true)
+const checkSelectShow = (cardList) => {
+  return cardList.some(card => card.isDone === true)
 }
 
 // 資料區
@@ -177,11 +181,8 @@ watch(
   { immediate: true }
 )
 
-const cardList = (containerId) => {
-  return vuello.cards.filter((card) => card.id_container === containerId)
-}
+
 const cardListFilter = (cardList, selected) => {
-  // let originCardList = cardList(containerId)
   switch (selected) {
     case 'all':
       return cardList
@@ -223,6 +224,7 @@ const blurWorkType = (container) => {
   container.is_editing_container = false
   addWorkTypeOnce.value = true
 }
+
 // 拖放功能
 const startDragTask = (event, item) => {
   event.dataTransfer.dropEffect = 'move'
@@ -236,8 +238,31 @@ const dropItem = (event, containerId) => {
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
 }
-const onDropTask = (dropResult) => {
+const onColumnDrop = (dropResult) => {
+  vuello.containers = applyDrag(vuello.containers, dropResult)
+  vuello.last_modified = new Date().toLocaleString('zh-TW')
+  store.dispatch('vuello/setVuello', vuello)
 }
+const onCardDrop = (columnId, dropResult) => {
+  let { removedIndex, addedIndex, payload } = dropResult
+  console.log("dropResult", dropResult)
+  if (removedIndex !== null || addedIndex !== null) {
+    const column = vuello.containers.find(container => container.id === columnId)
+    if (addedIndex !== null && payload) {
+      dropResult.payload = {
+        ...payload,
+        status: column.name,
+      }
+    }
+    column.list = applyDrag(column.list, dropResult)
+  }
+}
+const getCardPayload = (columnId) => {
+  return index =>
+    vuello.containers.find(p => p.id === columnId).list[index]
+}
+
+
 // 
 const deleteDialog = (type) => {
   if (type === 'container') {
@@ -429,5 +454,15 @@ const handleEditCard = (type, selectedCard) => {
 .list-leave-to {
   opacity: 0;
   transform: translateY(-30px);
+}
+
+.card-ghost {
+  transition: transform 0.18s ease;
+  transform: rotateZ(5deg)
+}
+
+.card-ghost-drop {
+  transition: transform 0.18s ease-in-out;
+  transform: rotateZ(0deg)
 }
 </style>
