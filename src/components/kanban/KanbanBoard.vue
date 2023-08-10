@@ -11,7 +11,7 @@
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
-      <Container orientation="horizontal" @drop="onColumnDrop($event)">
+      <Container orientation="horizontal" @drop="onColumnDrop($event)" drag-handle-selector=".column-drag-handle">
         <Draggable v-for="container in vuello.containers" :key="container.id" class="mx-1">
           <div class="min-h-[50px] min-w-[300px] max-w-[300px] rounded-lg bg-[#f3f3f3] p-1">
             <div class="flex h-full w-full place-items-center justify-between p-1">
@@ -20,14 +20,16 @@
                   class="block w-full rounded-lg border-2 border-blue-500 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                   placeholder="輸入工程類型" @keypress.enter="handleKanbanAction(null, null, container)"
                   @focus="$event.target.select()" @blur="blurWorkType(container)" />
-                <div v-else class="text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
+                <div v-else class="flex text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                   @click="addWorkType(container)">
+                  <MoveIcon height="25px"                 
+              class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" />
                   {{ container.name }}工程 ({{ containerCardLength(container) }})
                 </div>
               </Transition>
               <select v-if="checkSelectShow(container.cardList) === true"
                 class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
-                v-model="container.selected_done" placeholder="篩選">
+                v-model="container.selected_done">
                 <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
                   @click="changeSelect(container, list.key)">
                   {{ list.key }}
@@ -467,4 +469,8 @@ const handleEditCard = (type, selectedCard) => {
   transition: transform 0.18s ease-in-out;
   transform: rotateZ(0deg)
 }
+.column-drag-handle {
+      cursor: move;
+      padding: 5px;
+  }
 </style>
