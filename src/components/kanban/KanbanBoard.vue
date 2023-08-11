@@ -177,6 +177,7 @@ const state = reactive({
 //用於輸出報表
 const json_data = reactive([])
 const updateJson = () => {
+  json_data.splice(0)
   vuello.containers.forEach(container => {
     const eachCardLists = container.cardList
     eachCardLists.forEach(list => {
@@ -189,14 +190,14 @@ const updateJson = () => {
     })
   })
 }
-
 watch(
   () => props.payload,
-  (newValue) => {
+  (newValue) => {    
     vuello.title = newValue.title
     vuello.last_modified = newValue.last_modified
     vuello.containers = newValue.containers
-    vuello.cards = newValue.cards
+    vuello.cards = newValue.cards    
+    updateJson()
   },
   { immediate: true }
 )
@@ -248,18 +249,18 @@ const blurWorkType = (container) => {
 }
 
 // 拖放功能
-const startDragTask = (event, item) => {
-  event.dataTransfer.dropEffect = 'move'
-  event.dataTransfer.effectAllowed = 'move'
-  event.dataTransfer.setData('id', item.id)
-}
-const dropItem = (event, containerId) => {
-  const id = event.dataTransfer.getData('id')
-  const item = vuello.cards.find((card) => card.id == id)
-  item.id_container = containerId
-  vuello.last_modified = new Date().toLocaleString('zh-TW')
-  store.dispatch('vuello/setVuello', vuello)
-}
+// const startDragTask = (event, item) => {
+//   event.dataTransfer.dropEffect = 'move'
+//   event.dataTransfer.effectAllowed = 'move'
+//   event.dataTransfer.setData('id', item.id)
+// }
+// const dropItem = (event, containerId) => {
+//   const id = event.dataTransfer.getData('id')
+//   const item = vuello.cards.find((card) => card.id == id)
+//   item.id_container = containerId
+//   vuello.last_modified = new Date().toLocaleString('zh-TW')
+//   store.dispatch('vuello/setVuello', vuello)
+// }
 const onColumnDrop = (dropResult) => {
   vuello.containers = applyDrag(vuello.containers, dropResult)
   vuello.last_modified = new Date().toLocaleString('zh-TW')
@@ -267,7 +268,6 @@ const onColumnDrop = (dropResult) => {
 }
 const onCardDrop = (columnId, dropResult) => {
   let { removedIndex, addedIndex, payload } = dropResult
-  console.log("dropResult", dropResult)
   if (removedIndex !== null || addedIndex !== null) {
     const column = vuello.containers.find(container => container.id === columnId)
     if (addedIndex !== null && payload) {
@@ -346,7 +346,6 @@ const uploadFile = (e) => {
   const files = e.target.files
   const file = files[0]
   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
-  // console.log(uploadPreviewImage)
 }
 
 const addCard = (containerId, payload) => {
