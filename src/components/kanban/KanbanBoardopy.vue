@@ -1,16 +1,18 @@
 <template>
   <div class="flex items-center">
     <p class="mr-4 px-2 text-sm">快速全部選取:</p>
-    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center"
-      v-model="selectedGlobal">
+    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
       <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
         @click="changeSelectGlobal(list.key)">
         {{ list.key }}
       </option>
     </select>
+
     <download-excel :data="json_data">
         Download Data  
     </download-excel>
+
+
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
@@ -25,8 +27,8 @@
                   @focus="$event.target.select()" @blur="blurWorkType(container)" />
                 <div v-else class="flex text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                   @click="addWorkType(container)">
-                  <MoveIcon height="25px"                 
-              class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" />
+                  <MoveIcon height="25px"
+                    class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" />
                   {{ container.name }}工程 ({{ containerCardLength(container) }})
                 </div>
               </Transition>
@@ -43,8 +45,8 @@
                 @click="handleDeleteContainer(container.id)" />
             </div>
             <Container group-name="col" class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
-              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"           
-              drag-handle-selector=".column-drag-handle" >
+              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"
+              drag-handle-selector=".column-drag-handle">
               <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
@@ -88,10 +90,6 @@
       </Container>
     </TransitionGroup>
   </div>
-  <div>
-    <!-- <smoothdemo></smoothdemo> -->
-  </div>
-
   <!-- Confirmation Modal -->
   <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteDialog('container')"
     @close="state.isRemovingContainer = false">
@@ -116,7 +114,7 @@ import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
 import taskPreview from './taskPreview.vue'
 import addContainerArea from './addContainerArea.vue'
-import smoothdemo from './smoothdemo.vue'
+
 
 const props = defineProps({
   payload: {
@@ -174,15 +172,9 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
-const json_data = reactive(
-  [
-    {
-      工種: "Tony Peña",
-      標題: "New York",
-      明細: "United States",
-    }
-  ]
-)
+const json_data = reactive({
+})
+
 
 watch(
   () => props.payload,
@@ -190,13 +182,13 @@ watch(
     vuello.title = newValue.title
     vuello.last_modified = newValue.last_modified
     vuello.containers = newValue.containers
-    vuello.cards = newValue.cards
+    vuello.cards = newValue.cards    
   },
   { immediate: true }
 )
 const containerCardLength = (container) => {
   const cardList = container.cardList
-  return  Object.keys(cardList).length
+  return Object.keys(cardList).length
 }
 const cardListFilter = (cardList, selected) => {
   switch (selected) {
@@ -242,18 +234,18 @@ const blurWorkType = (container) => {
 }
 
 // 拖放功能
-const startDragTask = (event, item) => {
-  event.dataTransfer.dropEffect = 'move'
-  event.dataTransfer.effectAllowed = 'move'
-  event.dataTransfer.setData('id', item.id)
-}
-const dropItem = (event, containerId) => {
-  const id = event.dataTransfer.getData('id')
-  const item = vuello.cards.find((card) => card.id == id)
-  item.id_container = containerId
-  vuello.last_modified = new Date().toLocaleString('zh-TW')
-  store.dispatch('vuello/setVuello', vuello)
-}
+// const startDragTask = (event, item) => {
+//   event.dataTransfer.dropEffect = 'move'
+//   event.dataTransfer.effectAllowed = 'move'
+//   event.dataTransfer.setData('id', item.id)
+// }
+// const dropItem = (event, containerId) => {
+//   const id = event.dataTransfer.getData('id')
+//   const item = vuello.cards.find((card) => card.id == id)
+//   item.id_container = containerId
+//   vuello.last_modified = new Date().toLocaleString('zh-TW')
+//   store.dispatch('vuello/setVuello', vuello)
+// }
 const onColumnDrop = (dropResult) => {
   vuello.containers = applyDrag(vuello.containers, dropResult)
   vuello.last_modified = new Date().toLocaleString('zh-TW')
@@ -481,8 +473,9 @@ const handleEditCard = (type, selectedCard) => {
   transition: transform 0.18s ease-in-out;
   transform: rotateZ(0deg)
 }
+
 .column-drag-handle {
-      cursor: move;
-      padding: 5px;
-  }
+  cursor: move;
+  padding: 5px;
+}
 </style>
