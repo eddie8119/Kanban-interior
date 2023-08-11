@@ -1,14 +1,14 @@
 <template>
   <div class="flex items-center">
-    <p class="mr-4 px-2 text-sm">快速全部選取:</p>
+    <p class="mr-4 px-2 text-sm">全案施做狀態過濾:</p>
     <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
       <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
         @click="changeSelectGlobal(list.key)">
-        {{ list.key }}
+        {{ list.name }}
       </option>
     </select>
     <download-excel :data="json_data">
-      輸出 Excel
+      輸出 Excel 報表
     </download-excel>
     <button @click="updateJson()">updateJson</button>
   </div>
@@ -35,7 +35,7 @@
                 v-model="container.selected_done">
                 <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
                   @click="changeSelect(container, list.key)">
-                  {{ list.key }}
+                  {{ list.name }}
                 </option>
               </select>
               <TrashIcon height="25px"
@@ -123,17 +123,20 @@ const props = defineProps({
   },
 })
 //select區
-const selectedGlobal = ref("all")
+const selectedGlobal = ref("全部")
 const doneStatusListGlobal = reactive([
   {
-    key: "done"
+    key: "all",
+    name: "全部"
   },
   {
-    key: "undone"
+    key: "done",
+    name: "完成"
   },
   {
-    key: "all"
-  },
+    key: "undone",
+    name: "未完成"
+  }
 ])
 const changeSelectGlobal = (value) => {
   selectedGlobal.value = value
@@ -181,9 +184,9 @@ const updateJson = () => {
         工種分類: vuello.containers.find(container => container.id === list.id_container).name,
         標題: list.title,
         明細: list.content,
-        完成狀態: list.isDone === true? '完成':'未完成' ,
+        完成狀態: list.isDone === true ? '完成' : '未完成',
       })
-    })  
+    })
   })
 }
 

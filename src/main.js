@@ -5,7 +5,6 @@ import router from '@/router/index.js'
 import vuelloStore from './store/index.js'
 import JsonExcel from "vue-json-excel3"
 
-
 const app = createApp(App)
 app.use(router)
 app.use(vuelloStore)

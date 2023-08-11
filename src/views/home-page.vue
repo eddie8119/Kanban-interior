@@ -6,22 +6,15 @@
           <div v-if="!state.is_editing_title">
             <span
               class="rounded-md px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-slate-200"
-              @click="handleEditTitle('edit')"
-            >
+              @click="handleEditTitle('edit')">
               {{ payload.title }} 工程案
             </span>
           </div>
           <div v-else class="flex place-items-center">
-            <input
-              ref="projectTitleInput"
-              v-model="payload.title"
-              type="text"
+            <input ref="projectTitleInput" v-model="payload.title" type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-              placeholder="取名工程案"
-              @focus="$event.target.select()"
-              @blur="state.is_editing_title = false"
-              @keypress.enter="handleEditTitle('save')"
-            />  
+              placeholder="取名工程案" @focus="$event.target.select()" @blur="state.is_editing_title = false"
+              @keypress.enter="handleEditTitle('save')" />
           </div>
         </Transition>
         <h3 class="my-2 px-2 text-sm">
@@ -29,26 +22,18 @@
         </h3>
       </div>
       <div class="mt-px flex place-items-start justify-center">
-        <div
-          class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200"          
-        >
-        <a class="btn" role="menuitem" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
-					target="_blank">
-					網站意見反映
-				</a>          
+        <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
+          <a class="btn" role="menuitem"
+            href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
+            網站意見反映
+          </a>
         </div>
       </div>
     </div>
-    <KanbanBoard
-      :payload="payload"
-      @addContainer="displayContainerModal = true"
-    />
+    <KanbanBoard :payload="payload" @addContainer="displayContainerModal = true" />
   </div>
   <!-- Container Modal -->
-  <ContainerModal
-    :value="displayContainerModal"
-    @close="displayContainerModal = false"
-  />
+  <ContainerModal :value="displayContainerModal" @close="displayContainerModal = false" />
 </template>
 
 <script setup>
@@ -70,46 +55,49 @@ const projectTitleInput = ref(null);
 
 onBeforeMount(async () => {
   const data = store.getters['vuello/getVuelloDatas']
-  if (!data) {
+  if (data) {
     await axios.get('/sample-data.json')
-    .then(({ data }) => {
-      const {containers, cards} = data
-      const cardsHandler = cards.map( (item, index) => {
-        return{
-          id: index,
-          id_container: item.id_container,
-          title: item.title,
-          content : item.content,
-          is_editing_card: false,
-          isDone:false
-        }
-      })
-      const containersHandler = containers.map( (item, index) => {
-        return {          
-          id:index,
-          name:item,
-          is_editing_container: false,
-          is_adding_card: false,
-          selected_done: "all",
-          doneStatus:[
-            {
-              "key": "all"
-            },
-            {
-              "key": "done"
-            },
-            {
-              "key": "undone"
-            }
-          ],
-          cardList: cardsHandler.filter(card => card.id_container === index)
-        }
-      } )
+      .then(({ data }) => {
+        const { containers, cards } = data
+        const cardsHandler = cards.map((item, index) => {
+          return {
+            id: index,
+            id_container: item.id_container,
+            title: item.title,
+            content: item.content,
+            is_editing_card: false,
+            isDone: false
+          }
+        })
+        const containersHandler = containers.map((item, index) => {
+          return {
+            id: index,
+            name: item,
+            is_editing_container: false,
+            is_adding_card: false,
+            selected_done: "all",
+            doneStatus: [
+              {
+                key: "all",
+                name: "全部"
+              },
+              {
+                key: "done",
+                name: "完成"
+              },
+              {
+                key: "undone",
+                name: "未完成"
+              }
+            ],
+            cardList: cardsHandler.filter(card => card.id_container === index)
+          }
+        })
 
-      data.cards = cardsHandler
-      data.containers = containersHandler
-      store.dispatch('vuello/setVuello', data)
-    })
+        data.cards = cardsHandler
+        data.containers = containersHandler
+        store.dispatch('vuello/setVuello', data)
+      })
   }
 })
 
@@ -119,7 +107,7 @@ const handleEditTitle = (type) => {
     state.temp_title = payload.value.title
     const inputElement = projectTitleInput.value;
     inputElement.focus();
-    inputElement.select();   
+    inputElement.select();
   } else if (type === 'save') {
     state.is_editing_title = false
     payload.value.last_modified = new Date().toLocaleString('zh-TW')
