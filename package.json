@@ -9,7 +9,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "click-outside-vue3": "^4.0.1",
-    "prettier": "^2.5.1",
+    "prettier": "^3.0.1",
     "vue": "^3.2.31",
     "vue-json-excel3": "^1.0.1",
     "vue-router": "^4.2.2",    
