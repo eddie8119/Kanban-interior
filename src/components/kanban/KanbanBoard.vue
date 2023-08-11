@@ -1,16 +1,16 @@
 <template>
   <div class="flex items-center">
     <p class="mr-4 px-2 text-sm">快速全部選取:</p>
-    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center"
-      v-model="selectedGlobal">
+    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
       <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
         @click="changeSelectGlobal(list.key)">
         {{ list.key }}
       </option>
     </select>
     <download-excel :data="json_data">
-        Download Data  
+      輸出 Excel
     </download-excel>
+    <button @click="updateJson()">updateJson</button>
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
@@ -25,8 +25,8 @@
                   @focus="$event.target.select()" @blur="blurWorkType(container)" />
                 <div v-else class="flex text-md my-[0.30rem] w-full cursor-pointer p-1 font-semibold"
                   @click="addWorkType(container)">
-                  <MoveIcon height="25px"                 
-              class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" />
+                  <MoveIcon height="25px"
+                    class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" />
                   {{ container.name }}工程 ({{ containerCardLength(container) }})
                 </div>
               </Transition>
@@ -43,8 +43,8 @@
                 @click="handleDeleteContainer(container.id)" />
             </div>
             <Container group-name="col" class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
-              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"           
-              drag-handle-selector=".column-drag-handle" >
+              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"
+              drag-handle-selector=".column-drag-handle">
               <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
@@ -87,9 +87,6 @@
           @addContainer="addContainer" @deleteContainer='deleteContainer' />
       </Container>
     </TransitionGroup>
-  </div>
-  <div>
-    <!-- <smoothdemo></smoothdemo> -->
   </div>
 
   <!-- Confirmation Modal -->
@@ -174,15 +171,21 @@ const state = reactive({
   selectedCardId: null,
   tempCards: [],
 })
-const json_data = reactive(
-  [
-    {
-      工種: "Tony Peña",
-      標題: "New York",
-      明細: "United States",
-    }
-  ]
-)
+//用於輸出報表
+const json_data = reactive([])
+const updateJson = () => {
+  vuello.containers.forEach(container => {
+    const eachCardLists = container.cardList
+    eachCardLists.forEach(list => {
+      json_data.push({
+        工種分類: vuello.containers.find(container => container.id === list.id_container).name,
+        標題: list.title,
+        明細: list.content,
+        完成狀態: list.isDone === true? '完成':'未完成' ,
+      })
+    })  
+  })
+}
 
 watch(
   () => props.payload,
@@ -196,7 +199,7 @@ watch(
 )
 const containerCardLength = (container) => {
   const cardList = container.cardList
-  return  Object.keys(cardList).length
+  return Object.keys(cardList).length
 }
 const cardListFilter = (cardList, selected) => {
   switch (selected) {
@@ -481,8 +484,9 @@ const handleEditCard = (type, selectedCard) => {
   transition: transform 0.18s ease-in-out;
   transform: rotateZ(0deg)
 }
+
 .column-drag-handle {
-      cursor: move;
-      padding: 5px;
-  }
+  cursor: move;
+  padding: 5px;
+}
 </style>
