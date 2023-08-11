@@ -1,5 +1,5 @@
 {
-  "name": "室內現場工程管理手帳助理",
+  "name": "室內現場工程管理手帳",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --host",

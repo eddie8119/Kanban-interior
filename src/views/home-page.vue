@@ -55,7 +55,7 @@ const projectTitleInput = ref(null);
 
 onBeforeMount(async () => {
   const data = store.getters['vuello/getVuelloDatas']
-  if (data) {
+  if (!data) {
     await axios.get('/sample-data.json')
       .then(({ data }) => {
         const { containers, cards } = data
