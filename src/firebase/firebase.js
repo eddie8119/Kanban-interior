@@ -67,5 +67,5 @@ export {
   orderBy,
   onSnapshot,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
 }

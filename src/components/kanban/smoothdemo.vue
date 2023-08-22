@@ -1,46 +1,7 @@
 <template>
   <Container
-    class="h-full flex overflow-x-auto gap-8  p-8"
-    group-name="cols"
-    tag="div"
-    orientation="horizontal"
-    @drop="onColumnDrop($event)">
-    <Draggable class="bg-gray-200 dark:bg-gray-700 rounded-lg h-full w-96 flex-shrink-0 shadow-xl"
-      v-for="column in scene.children" :key="column.id">
-      <div class="h-full flex flex-col">
+    >
 
-        <!-- header-->
-        <div class="cursor-move rounded-t-lg p-4 space-x-4 bg-primary text-white flex space-x-2">
-          <!-- <HandIcon class="h-6 w-6"></HandIcon> -->
-          <span class="text-lg">{{ column.name }}</span>
-        </div>
-        <!-- column -->
-        <Container
-          class="flex-grow overflow-y-auto overflow-x-hidden"
-          
-          group-name="col-items"
-          :shouldAcceptDrop="(e, payload) =>  (e.groupName === 'col-items' && !payload.loading)"
-          :get-child-payload="getCardPayload(column.id)"
-          :drop-placeholder="{ className: 
-            `bg-primary bg-opacity-20  
-            border-dotted border-2 
-            border-primary rounded-lg mx-4 my-2`, 
-          animationDuration: '200', 
-          showOnTop: true }"
-          drag-class="bg-primary dark:bg-primary 
-            border-2 border-primary-hover text-white 
-            transition duration-100 ease-in z-50
-            transform rotate-6 scale-110"
-          drop-class="transition duration-100 
-            ease-in z-50 transform 
-            -rotate-2 scale-90"
-          @drop="(e) => onCardDrop(column.id, e)">
-
-            <!-- Items -->
-            <KanbanItem v-for="item in column.children" :key="item.id" :item="item"></KanbanItem>
-        </Container>
-      </div>
-    </Draggable>
   </Container>
 </template>
 

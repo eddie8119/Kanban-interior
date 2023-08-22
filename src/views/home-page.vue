@@ -23,8 +23,8 @@
       </div>
       <div class="mt-px flex place-items-start justify-center">
         <div class="flex cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
-          <router-link to="/login"  class="btn" role="menuitem">註冊</router-link>
-          <div class="btn"  @click="logoutUser">登出</div>
+          <router-link v-if="!fbAuth.getCurrentUser()"  to="/login"  class="btn" role="menuitem">註冊</router-link>
+          <div v-else class="btn"  @click="logoutUser">登出</div>
         </div>
         <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
           <a class="btn" role="menuitem"
@@ -41,6 +41,7 @@
 </template>
 
 <script setup>
+import { fbAuth } from '../firebase/firebase.js'
 import { ref, reactive, watch, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
@@ -48,6 +49,7 @@ import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/dialog/ContainerModal.vue'
 
 const store = useStore()
+// const { isLogin } = useAuth()
 const displayContainerModal = ref(false)
 const displayCardModal = ref(false)
 const state = reactive({

@@ -13,7 +13,6 @@
     </download-excel>
     <button class="ml-2" @click="updateJson()">先刷新資料</button>
     </div>
-
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
