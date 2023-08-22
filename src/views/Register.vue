@@ -25,16 +25,21 @@
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>
+    <!-- Confirmation Modal -->
+    <!-- <ConfirmationModal :value="true" @confirm="deleteDialog('card')" @close="state.isRemovingCard = false">
+    註冊成功
+  </ConfirmationModal> -->
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from "vue-router"
 // import email from "../assets/Icons/envelope-regular.svg"
 // import password from "../assets/Icons/lock-alt-solid.svg"
 // import user from "../assets/Icons/user-alt-light.svg"
+import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -55,8 +60,9 @@ const register = () => {
     formData.username !== ''
   ) {
     error.value = false
-    errorMsg.value = ''
-    store.dispatch('user/registerUser', formData)
+    errorMsg.value = ''    
+    const data = store.getters['vuello/getVuelloDatas']   
+    store.dispatch('user/registerUser', {formData, data})    
     router.replace("/")
   } else {
     error.value = true

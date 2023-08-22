@@ -23,15 +23,17 @@ const mutations = {
 
 const actions = {
   async registerUser({ }, payload) {
-    await createUserWithEmailAndPassword(fbAuth, payload.email, payload.password)
+    const {formData, data} = payload    
+    await createUserWithEmailAndPassword(fbAuth, formData.email, formData.password)
       .then( (res) => {
         if (res) {
           const userId = fbAuth.currentUser.uid
           try {
             setDoc(doc(db, "users", userId), {
-              username: payload.username,
-              password: payload.password,
-              email: payload.email,
+              username: formData.username,
+              password: formData.password,
+              email: formData.email,
+              data
             })
           } catch (err) {
             alert("創建帳號失敗:", err)
