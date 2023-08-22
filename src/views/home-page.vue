@@ -22,6 +22,10 @@
         </h3>
       </div>
       <div class="mt-px flex place-items-start justify-center">
+        <div class="flex cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
+          <router-link to="/login"  class="btn" role="menuitem">註冊</router-link>
+          <div class="btn"  @click="logoutUser">登出</div>
+        </div>
         <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
           <a class="btn" role="menuitem"
             href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
@@ -116,6 +120,10 @@ const handleEditTitle = (type) => {
     state.is_editing_title = false
     payload.value.title = state.temp_title
   }
+}
+
+const logoutUser = () =>{
+  store.dispatch('user/logoutUser')  
 }
 </script>
 

@@ -10,15 +10,15 @@ const mutations = {
   }
 }
 
-const getters = {
-  getVuelloDatas(state) {
-    return state.vuello
-  }
-}
-
 const actions = {
   setVuello({ commit }, data) {
     commit('SET_VUELLO', data)
+  }
+}
+
+const getters = {
+  getVuelloDatas(state) {
+    return state.vuello
   }
 }
 

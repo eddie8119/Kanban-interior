@@ -1,6 +1,6 @@
 import {
   fbAuth,
-  fbDB,
+  db,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -16,26 +16,21 @@ const state = {
 }
 
 const mutations = {
-  setUserDetails(state, payload) {
+  SET_USER_DETAILS(state, payload) {
     state.userDetails = payload
   },
 }
 
-const getters = {
-  getVuelloDatas(state) {
-    return state.vuello
-  }
-}
-
 const actions = {
-  registerUser({ }, payload) {
-    createUserWithEmailAndPassword(fbAuth, payload.email, payload.password)
-      .then(res => {
+  async registerUser({ }, payload) {
+    await createUserWithEmailAndPassword(fbAuth, payload.email, payload.password)
+      .then( (res) => {
         if (res) {
           const userId = fbAuth.currentUser.uid
           try {
-            setDoc(doc(fbDB, "users", userId), {
-              name: payload.name,
+            setDoc(doc(db, "users", userId), {
+              username: payload.username,
+              password: payload.password,
               email: payload.email,
             })
           } catch (err) {
@@ -74,9 +69,9 @@ const actions = {
     onAuthStateChanged(fbAuth, async user => {
       if (user) {
         try {
-          const docSnap = await getDoc(doc(fbDB, "users", user.uid));
+          const docSnap = await getDoc(doc(db, "users", user.uid));
           const userDetails = docSnap.data()
-          commit('setUserDetails', {
+          commit('SET_USER_DETAILS', {
             name: userDetails.name,
             email: userDetails.email,
             userId: user.uid
@@ -90,10 +85,16 @@ const actions = {
         }
       } else {
         await this.$router.replace('/login')
-        commit('setUserDetails', null)
+        commit('SET_USER_DETAILS', null)
         commit('boards/clearBoardsData', null, { root: true })
       }
     })
+  }
+}
+
+const getters = {
+  getUserDetails(state) {
+    return state.userDetails
   }
 }
 

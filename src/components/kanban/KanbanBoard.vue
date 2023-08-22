@@ -7,10 +7,13 @@
         {{ list.name }}
       </option>
     </select>
-    <download-excel :data="json_data">
+    <div class="flex">
+      <download-excel :data="json_data">
       輸出 Excel 報表
     </download-excel>
-    <button @click="updateJson()">updateJson</button>
+    <button class="ml-2" @click="updateJson()">先刷新資料</button>
+    </div>
+
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">

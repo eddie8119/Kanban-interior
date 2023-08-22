@@ -26,6 +26,7 @@ import {
 var firebaseConfig = {
   apiKey: "AIzaSyDZE5297XjsKrSTqQN8bMecu4SRqG3e1W8",
   authDomain: "vue-fire-auth-a07e3.firebaseapp.com",
+  databaseURL: "https://vue-fire-auth-a07e3-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "vue-fire-auth-a07e3",
   storageBucket: "vue-fire-auth-a07e3.appspot.com",
   messagingSenderId: "72244899703",
@@ -35,7 +36,7 @@ var firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const fbAuth = getAuth(firebaseApp)
-const fbDB = getFirestore(firebaseApp)
+const db = getFirestore(firebaseApp)
 
 fbAuth.getCurrentUser = () => {
   return new Promise((resolve, reject) => {
@@ -48,7 +49,7 @@ fbAuth.getCurrentUser = () => {
 
 export {
   fbAuth,
-  fbDB,
+  db,
   firebaseApp,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
