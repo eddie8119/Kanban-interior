@@ -10,13 +10,11 @@ import {
   getDoc,
   doc,
 } from '../../firebase/firebase'
+import { useRouter } from 'vue-router'
+
 
 const state = {
   userDetails: {},
-  // userId: null,
-  // userEmail: null,
-  // userName: null,
-  // userData: null
 }
 
 const mutations = {
@@ -72,6 +70,8 @@ const actions = {
       });
   },
   handleAuthStateChanged({ commit, dispatch }) {
+    const router = useRouter()
+
     onAuthStateChanged(fbAuth, async user => {    
       if (user) {
         try {
@@ -86,12 +86,12 @@ const actions = {
         } catch (err) {
          
         }
-        // if (router.currentRoute.value.name === 'auth') {
-        //   await router.replace('/')
-        // }
+        if (router.currentRoute.value.name === 'auth') {
+          await router.replace('/')
+        }
       } else {
-        await router.replace('/login')
-        commit('SET_USER_DETAILS', null)       
+        await router.replace('/')
+        commit('SET_USER_INF', null)       
       }
     })
   }

@@ -8,6 +8,11 @@ import {useStore} from 'vuex'
 import {useRoute, useRouter} from 'vue-router'
 
 export default {
+  name: "layout",
+  created(){
+  
+
+  }
 
 }
 </script>
