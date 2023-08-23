@@ -1,3 +1,11 @@
+<template>
+  <button class="flex place-items-center justify-center font-semibold"
+    :class="`${buttonType} ${buttonModel} ${buttonSize} ${roundedSize} transition-all duration-300 ease-in-out`"
+    @click="buttonAction($event)">
+    <slot></slot>
+  </button>
+</template>
+
 <script setup>
 import { computed } from 'vue'
 
@@ -17,15 +25,13 @@ const buttonType = computed(() => {
 })
 const buttonModel = computed(() => {
   if (props.model === 'outline') {
-    return `border hover:border-transparent ${
-      props.type === 'primary' ? 'hover:bg-blue-700' : 'hover:bg-red-500'
-    } hover:text-white`
+    return `border hover:border-transparent ${props.type === 'primary' ? 'hover:bg-blue-700' : 'hover:bg-red-500'
+      } hover:text-white`
   } else {
-    return `border ${
-      props.type === 'primary'
+    return `border ${props.type === 'primary'
         ? 'bg-blue-600 hover:bg-blue-700'
         : 'red-500 hover:bg-red-600'
-    } text-white`
+      } text-white`
   }
 })
 const buttonSize = computed(() => {
@@ -56,12 +62,4 @@ const buttonAction = (event) => {
 }
 </script>
 
-<template>
-  <button
-    class="flex place-items-center justify-center font-semibold"
-    :class="`${buttonType} ${buttonModel} ${buttonSize} ${roundedSize} transition-all duration-300 ease-in-out`"
-    @click="buttonAction($event)"
-  >
-    <slot></slot>
-  </button>
-</template>
+
