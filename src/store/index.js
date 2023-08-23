@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import vuello from './modules/vuello-store'
+import vuello from './modules/vuello'
 import user from './modules/user'
 
 const vuelloStore = createStore({

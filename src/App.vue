@@ -5,12 +5,19 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import Navigation from "./components/base/Navigation.vue"
+import {defineComponent} from 'vue'
+import {mapActions} from 'vuex'
 
-// import firebase from "firebase/app";
-// import "firebase/auth";
-
-
+export default {
+  components: { Navigation },
+  methods: {
+    ...mapActions('userStore', ['handleAuthStateChanged'])
+  },
+  mounted() {
+    this.handleAuthStateChanged()
+  },
+}
 </script>
 

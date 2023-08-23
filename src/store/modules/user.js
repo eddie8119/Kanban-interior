@@ -5,27 +5,31 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  sendPasswordResetEmail,
   setDoc,
   getDoc,
   doc,
 } from '../../firebase/firebase'
 
-
 const state = {
   userDetails: {},
+  // userId: null,
+  // userEmail: null,
+  // userName: null,
+  // userData: null
 }
 
 const mutations = {
-  SET_USER_DETAILS(state, payload) {
+  SET_USER_INF(state, payload) {
     state.userDetails = payload
   },
 }
 
 const actions = {
   async registerUser({ }, payload) {
-    const {formData, data} = payload    
+    const { formData, data } = payload
     await createUserWithEmailAndPassword(fbAuth, formData.email, formData.password)
-      .then( (res) => {
+      .then((res) => {
         if (res) {
           const userId = fbAuth.currentUser.uid
           try {
@@ -61,34 +65,33 @@ const actions = {
   },
   async logoutUser({ dispatch }) {
     await signOut(fbAuth)
-      .then(() => {
+      .then(() => {        
       })
       .catch((err) => {
         console.log(err.message)
       });
   },
   handleAuthStateChanged({ commit, dispatch }) {
-    onAuthStateChanged(fbAuth, async user => {
+    onAuthStateChanged(fbAuth, async user => {    
       if (user) {
         try {
-          const docSnap = await getDoc(doc(db, "users", user.uid));
-          const userDetails = docSnap.data()
-          commit('SET_USER_DETAILS', {
-            name: userDetails.name,
+          const docSnap = await getDoc(doc(db, "users", user.uid))         
+          const userDetails = docSnap.data()          
+          commit('SET_USER_INF', {
+            name: userDetails.username,
             email: userDetails.email,
+            data: userDetails.data,
             userId: user.uid
           })
-          this.$router.push('/')
         } catch (err) {
-          console.log(err)
+         
         }
-        if (this.$router.currentRoute.value.name === 'auth') {
-          await this.$router.push('/')
-        }
+        // if (router.currentRoute.value.name === 'auth') {
+        //   await router.replace('/')
+        // }
       } else {
-        await this.$router.replace('/login')
-        commit('SET_USER_DETAILS', null)
-        commit('boards/clearBoardsData', null, { root: true })
+        await router.replace('/login')
+        commit('SET_USER_DETAILS', null)       
       }
     })
   }

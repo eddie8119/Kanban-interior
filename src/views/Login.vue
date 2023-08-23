@@ -28,11 +28,13 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import emailIcon from "../components/icons/emailIcon.vue"
 import passwordIcon from "../components/icons/passwordIcon.vue"
 
 const store = useStore()
-const formData = reactive({  
+const router = useRouter()
+const formData = reactive({
   email: 'demo@gmail.com',
   password: '123123'
 })
@@ -40,7 +42,8 @@ const error = ref(null)
 const errorMsg = ref('')
 
 const login = async () => {
-  store.dispatch('user/loginUser', formData)
+  await store.dispatch('user/loginUser', formData)
+  router.replace("/")
 }
 
 </script>

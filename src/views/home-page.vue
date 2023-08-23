@@ -23,6 +23,7 @@
       </div>
       <div class="mt-px flex place-items-start justify-center">
         <div class="flex cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
+          <div @click="logoutUser">登出</div>
           <router-link   to="/login"  class="btn" role="menuitem">註冊</router-link>          
         </div>
         <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
@@ -121,6 +122,10 @@ const handleEditTitle = (type) => {
     state.is_editing_title = false
     payload.value.title = state.temp_title
   }
+}
+
+const logoutUser = () => {
+  store.dispatch('user/logoutUser') 
 }
 </script>
 

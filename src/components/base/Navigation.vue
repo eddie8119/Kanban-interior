@@ -18,7 +18,7 @@
               <p class="initials">{{ store.state.profileInitials }}</p>
               <div class="right">              
                 <p>{{ store.state.profileUsername }}</p>
-                <p>{{ store.state.profileEmail }}</p>
+                <p>{{ store.state.userEmail }}</p>
               </div>
             </div>
             <div class="options">
@@ -34,7 +34,7 @@
                   <p>Admin</p>
                 </router-link>
               </div>
-              <div @click="signOut" class="option">
+              <div @click.prevent="logoutUser" class="option">
                 <signOutIcon class="icon" />
                 <p>登出</p>
               </div>
@@ -73,16 +73,16 @@ const profile = ref(null)
 // window.addEventListener("resize", checkScreen);
 // checkScreen();
 
-const checkScreen = () => {
-  windownWidth.value = window.innerWidth;
-  if (windownWidth.value <= 750) {
-    mobile.value = true;
-    return;
-  }
-  mobile.value = false;
-  mobileNav.value = false;
-  return;
-}
+// const checkScreen = () => {
+//   windownWidth.value = window.innerWidth;
+//   if (windownWidth.value <= 750) {
+//     mobile.value = true;
+//     return;
+//   }
+//   mobile.value = false;
+//   mobileNav.value = false;
+//   return;
+// }
 
 const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value;
@@ -94,7 +94,7 @@ const toggleProfileMenu = (e) => {
   }
 }
 
-const signOut = () => {
+const logoutUser = () => {
   store.dispatch('user/logoutUser') 
 }
 
