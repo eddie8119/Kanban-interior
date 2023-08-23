@@ -13,7 +13,7 @@
         <div class="inputs">
           <div class="input">
             <input type="text" placeholder="Email" v-model="email" />
-            <!-- <email class="icon" /> -->
+            <emailIcon class="icon" />
           </div>
         </div>
         <button @click.prevent="resetPassword">Reset</button>
@@ -31,7 +31,7 @@ import {
   sendPasswordResetEmail,
 } from '../firebase/firebase.js'
 // import "firebase/auth"
-// import email from "../assets/Icons/envelope-regular.svg"
+import emailIcon from "../components/icons/emailIcon.vue"
 import Modal from "../components/base/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 

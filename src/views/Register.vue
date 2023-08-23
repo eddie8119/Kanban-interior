@@ -9,15 +9,15 @@
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Username" v-model="formData.username" />
-          <!-- <user class="icon" /> -->
+          <userIcon class="icon" />
         </div>
         <div class="input">
           <input type="text" placeholder="Email" v-model="formData.email" />
-          <!-- <email class="" /> -->
+          <emailIcon class="icon" />
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="formData.password" />
-          <!-- <password class="icon" /> -->
+          <passwordIcon class="icon" />
         </div>
         <div v-show="error" class="error">{{ this.errorMsg }}</div>
       </div>
@@ -36,9 +36,9 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from "vue-router"
-// import email from "../assets/Icons/envelope-regular.svg"
-// import password from "../assets/Icons/lock-alt-solid.svg"
-// import user from "../assets/Icons/user-alt-light.svg"
+import emailIcon from "../components/icons/emailIcon.vue"
+import passwordIcon from "../components/icons/passwordIcon.vue"
+import userIcon from "../components/icons/userIcon.vue"
 import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 
 const store = useStore()

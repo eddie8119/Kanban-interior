@@ -9,9 +9,11 @@
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="formData.email" />
+          <emailIcon class="icon" />
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="formData.password" />
+          <passwordIcon class="icon" />
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
@@ -26,8 +28,8 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-// import emailIcon from "../assets/Icons/envelope-regular.svg";
-// import passwordIcon from "../assets/Icons/lock-alt-solid.svg";
+import emailIcon from "../components/icons/emailIcon.vue"
+import passwordIcon from "../components/icons/passwordIcon.vue"
 
 const store = useStore()
 const formData = reactive({  
