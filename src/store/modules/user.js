@@ -103,12 +103,10 @@ const getters = {
   }
 }
 
-const userModule = {
+export const user= {
   namespaced: true,
   state,
   getters,
   actions,
   mutations
 }
-
-export default userModule

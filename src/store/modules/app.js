@@ -46,12 +46,10 @@ const getters = {
   },  
 }
 
-const appModule = {
+export const app = {
   namespaced: true,
   state,
   getters,
   actions,
   mutations
 }
-
-export default appModule

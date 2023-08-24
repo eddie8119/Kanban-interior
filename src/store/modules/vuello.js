@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 const state = {
   vuello: null
 }
@@ -22,12 +20,10 @@ const getters = {
   }
 }
 
-const vuelloModule = {
+export const vuello = {
   namespaced: true,
   state,
   getters,
   actions,
   mutations
 }
-
-export default vuelloModule
