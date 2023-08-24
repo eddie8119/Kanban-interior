@@ -24,7 +24,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('user/handleAuthStateChanged')
-    this.$store.commit("menu/CLEAR_ALLMENU");
     window.addEventListener("resize", this.detectWindowWidth)
     window.addEventListener("resize", this.detectWindowHeight)
     window.addEventListener("scroll", this.detectWindowScrollY)

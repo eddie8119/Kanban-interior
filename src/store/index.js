@@ -4,7 +4,7 @@ import {vuello} from './modules/vuello'
 import {user} from './modules/user'
 import {app} from './modules/app'
 
-const vuelloStore = createStore({
+export const store = createStore({
   modules: {
     vuello,
     user,
@@ -13,4 +13,3 @@ const vuelloStore = createStore({
   plugins: [createPersistedState()],
 })
 
-export default vuelloStore

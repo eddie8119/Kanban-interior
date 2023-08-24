@@ -16,7 +16,7 @@
           <div v-show="profileMenu" class="profile-menu">
             <div class="info">
               <p class="initials">{{ store.state.profileInitials }}</p>
-              <div class="right">              
+              <div class="right">
                 <p>{{ store.state.profileUsername }}</p>
                 <p>{{ store.state.userEmail }}</p>
               </div>
@@ -28,12 +28,12 @@
                   <p>Profile</p>
                 </router-link>
               </div>
-              <div v-if="admin" class="option">
+              <!-- <div v-if="admin" class="option">
                 <router-link class="option" :to="{ name: '' }">
-                  <!-- <adminIcon class="icon" /> -->
+                  
                   <p>Admin</p>
                 </router-link>
-              </div>
+              </div> -->
               <div @click.prevent="logoutUser" class="option">
                 <signOutIcon class="icon" />
                 <p>登出</p>
@@ -43,14 +43,14 @@
         </div>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
+    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="getWindowWidth <= 750" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
         <router-link class="link" :to="{ name: '' }">Blogs</router-link>
-        <router-link v-if="admin" class="link" :to="{ name: '' }">Create Post</router-link>
+        <!-- <router-link v-if="admin" class="link" :to="{ name: '' }">Create Post</router-link> -->
         <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
-      </ul>
+      </ul>      
     </transition>
   </header>
 </template>
@@ -63,48 +63,41 @@ import userIcon from "../../components/icons/userIcon.vue"
 import menuIcon from "../../components/icons/menuIcon.vue"
 import signOutIcon from "../../components/icons/signOutIcon.vue"
 
-const store = useStore()
 const profileMenu = ref(null)
-const mobile = ref(null)
-const mobileNav = ref(null)
-const windownWidth = ref(null)
+const mobileNav = ref(false)
 const profile = ref(null)
 
-// window.addEventListener("resize", checkScreen);
-// checkScreen();
-
-// const checkScreen = () => {
-//   windownWidth.value = window.innerWidth;
-//   if (windownWidth.value <= 750) {
-//     mobile.value = true;
-//     return;
-//   }
-//   mobile.value = false;
-//   mobileNav.value = false;
-//   return;
-// }
+const store = useStore()
+const windowWidth = computed(() => store.getters.getWindowWidth)
+// const { getWindowWidth } = mapGetters('appModule', ['getWindowWidth'])
+const device = computed(() => {
+  return windowWidth <= 750 ? 'mobile' : 'desktop'
+})
 
 const toggleMobileNav = () => {
-  mobileNav.value = !mobileNav.value;
+  mobileNav.value = !mobileNav.value
 }
 
 const toggleProfileMenu = (e) => {
   if (e.target === profile.value) {
-    profileMenu.value = !profileMenu.value;
+    profileMenu.value = !profileMenu.value
   }
 }
 
 const logoutUser = () => {
-  store.dispatch('user/logoutUser') 
+  store.dispatch('user/logoutUser')
 }
 
-const user = computed(() => {
-  return store.state.user
+const user = computed(() => store.state.user)
+
+watch(windowWidth, () => {
+  if (device.value === 'desktop') {
+    mobileNav.value = false
+  } else {
+    mobileNav.value = true
+  }
 })
 
-const admin = computed(() => {
-  return store.state.profileAdmin
-}) 
 </script>
 
 <style lang="scss" scoped>

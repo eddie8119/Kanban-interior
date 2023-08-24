@@ -47,7 +47,7 @@
             <Container group-name="col" class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
               @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"
               drag-handle-selector=".column-drag-handle">
-              <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
+              <Draggable v-for="card in mobile(container.cardList, container.selected_done) " :key="card.id"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
               </Draggable>
