@@ -10,23 +10,24 @@ import Navigation from "./components/base/Navigation.vue"
 import { defineComponent } from 'vue'
 import { mapActions } from 'vuex'
 
+
 export default {
   components: { Navigation },
   methods: {
-    ...mapActions('user', ['handleAuthStateChanged'])
+    ...mapActions(['handleAuthStateChanged'])
   },
   created() {
     this.$store.commit("app/SET_DIALOG", false)
     this.$store.commit("app/SET_LOADING", false)
     this.detectWindowWidth()
     this.detectWindowHeight()
-    this.detectWindowScrollY()
+    this.detectWindowScrollY()    
   },
-  mounted() {
+  mounted() {    
     this.$store.dispatch('user/handleAuthStateChanged')
     window.addEventListener("resize", this.detectWindowWidth)
     window.addEventListener("resize", this.detectWindowHeight)
-    window.addEventListener("scroll", this.detectWindowScrollY)
+    window.addEventListener("scroll", this.detectWindowScrollY)    
   },
   methods: {
     detectWindowWidth() {

@@ -12,14 +12,31 @@ import {
 } from '../../firebase/firebase'
 import { useRouter } from 'vue-router'
 
-
 const state = {
-  userDetails: {},
+  user: null,
+  userTasks: {},
+  profileEmail: null,
+  profileUsername: null,
+  profileInitials: null,
 }
 
 const mutations = {
-  SET_USER_INF(state, payload) {
-    state.userDetails = payload
+  SET_USER(state, payload) {
+    state.user = payload
+  },
+  SET_USER_TASKS(state, doc) {
+    state.userTasks = doc.data
+  },
+  SET_PROFILE_INFO(state, doc) {
+    state.profileEmail = doc.email
+    state.profileUsername = doc.username
+  },
+  SET_PROFILE_INFO_INIT(state) {
+    state.profileEmail = null
+    state.profileUsername = null
+  },
+  SET_PROFILE_INitials(state) {
+    state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join("")
   },
 }
 
@@ -63,47 +80,71 @@ const actions = {
   },
   async logoutUser({ dispatch }) {
     await signOut(fbAuth)
-      .then(() => {        
+      .then(() => {
+        commit("SET_USER", null)
+        commit('SET_PROFILE_INFO_INIT')
+        commit('SET_USER_TASKS', null)
       })
       .catch((err) => {
         console.log(err.message)
       });
   },
+  async getCurrentUser({ commit }) {
+    onAuthStateChanged(fbAuth, async (user) => {      
+      if (user) {
+        commit("SET_USER", user)
+        const docSnap = await getDoc(doc(db, "users", user.uid))      
+        const dbResults = docSnap.data()      
+        commit("SET_PROFILE_INFO", dbResults)
+        commit('SET_USER_TASKS',dbResults)        
+      }
+    })
+  },
   handleAuthStateChanged({ commit, dispatch }) {
     const router = useRouter()
-
-    onAuthStateChanged(fbAuth, async user => {    
+    console.log("handleAuthStateChanged")
+    onAuthStateChanged(fbAuth, async user => {
       if (user) {
         try {
-          const docSnap = await getDoc(doc(db, "users", user.uid))         
-          const userDetails = docSnap.data()          
-          commit('SET_USER_INF', {
-            name: userDetails.username,
-            email: userDetails.email,
-            data: userDetails.data,
-            userId: user.uid
-          })
+          commit("SET_USER", user)
+          const docSnap = await getDoc(doc(db, "users", user.uid))
+          const userTasks = docSnap.data()
+          commit('SET_USER_TASKS',dbResults)
         } catch (err) {
-         
+
         }
         if (router.currentRoute.value.name === 'auth') {
           await router.replace('/')
         }
       } else {
         await router.replace('/')
-        commit('SET_USER_INF', null)       
+        commit("SET_USER", null)
+        commit('SET_PROFILE_INFO_INIT')
+        commit('SET_USER_TASKS', null)
       }
     })
   }
 }
 
 const getters = {
-  getUserDetails(state) {
-    return state.userDetails
-  }
+  getUser(state) {
+    return state.user
+  },
+  getUserTasks(state) {
+    return state.userTasks
+  },
+  getProfileEmail(state) {
+    return state.profileEmail
+  },
+  getProfileUsername(state) {
+    return state.profileUsername
+  },
+  getProfileInitials(state) {
+    return state.profileInitials
+  },
 }
 
-export const user= {
+export const user = {
   namespaced: true,
   state,
   getters,

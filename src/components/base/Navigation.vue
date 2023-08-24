@@ -5,10 +5,12 @@
         <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
       </div>
       <div class="nav-links">
-        <ul v-show="!mobile">
+        <ul v-show="device !== 'mobile'">
           <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
-          <!-- <router-link class="link" :to="{ name: '' }">Blogs</router-link>
-          <router-link class="link" :to="{ name: '' }">Create Post</router-link> -->
+          <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
+            target="_blank">
+            網站意見
+          </a>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
         <div v-if="user" :class="{ 'mobile-user-menu': mobile }" @click="toggleProfileMenu" class="profile" ref="profile">
@@ -17,8 +19,8 @@
             <div class="info">
               <p class="initials">{{ store.state.profileInitials }}</p>
               <div class="right">
-                <p>{{ store.state.profileUsername }}</p>
-                <p>{{ store.state.userEmail }}</p>
+                <p>{{ user.name }}</p>
+                <p>{{ user.email }}</p>
               </div>
             </div>
             <div class="options">
@@ -43,14 +45,17 @@
         </div>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="getWindowWidth <= 750" />
+    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="device === 'mobile'" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
-        <router-link class="link" :to="{ name: '' }">Blogs</router-link>
+        <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
+          target="_blank">
+          網站意見
+        </a>
         <!-- <router-link v-if="admin" class="link" :to="{ name: '' }">Create Post</router-link> -->
-        <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
-      </ul>      
+        <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
+      </ul>
     </transition>
   </header>
 </template>
@@ -68,10 +73,9 @@ const mobileNav = ref(false)
 const profile = ref(null)
 
 const store = useStore()
-const windowWidth = computed(() => store.getters.getWindowWidth)
-// const { getWindowWidth } = mapGetters('appModule', ['getWindowWidth'])
+const windowWidth = computed(() => store.getters['app/getWindowWidth'])
 const device = computed(() => {
-  return windowWidth <= 750 ? 'mobile' : 'desktop'
+  return windowWidth.value <= 750 ? 'mobile' : 'desktop'
 })
 
 const toggleMobileNav = () => {
@@ -84,17 +88,15 @@ const toggleProfileMenu = (e) => {
   }
 }
 
-const logoutUser = () => {
-  store.dispatch('user/logoutUser')
+const logoutUser = async () => {
+  await store.dispatch('user/logoutUser')
 }
 
-const user = computed(() => store.state.user)
+const user = computed(() => store.getters['user/getUser'])
 
 watch(windowWidth, () => {
   if (device.value === 'desktop') {
     mobileNav.value = false
-  } else {
-    mobileNav.value = true
   }
 })
 

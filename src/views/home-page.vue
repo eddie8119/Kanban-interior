@@ -21,18 +21,6 @@
           上次編輯時間 : {{ payload.last_modified }}
         </h3>
       </div>
-      <div class="mt-px flex place-items-start justify-center">
-        <div class="flex cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
-          <div @click="logoutUser">登出</div>
-          <router-link   to="/login"  class="btn" role="menuitem">註冊</router-link>          
-        </div>
-        <div class="cursor-pointer rounded-full p-2 text-gray-500 hover:bg-slate-200">
-          <a class="btn" role="menuitem"
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
-            網站意見反映
-          </a>
-        </div>
-      </div>
     </div>
     <KanbanBoard :payload="payload" @addContainer="displayContainerModal = true" />
   </div>
@@ -49,9 +37,8 @@ import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/dialog/ContainerModal.vue'
 
 const store = useStore()
-// const { isLogin } = useAuth()
+
 const displayContainerModal = ref(false)
-const displayCardModal = ref(false)
 const state = reactive({
   is_editing_title: false,
   temp_title: null,
@@ -122,10 +109,6 @@ const handleEditTitle = (type) => {
     state.is_editing_title = false
     payload.value.title = state.temp_title
   }
-}
-
-const logoutUser = () => {
-  store.dispatch('user/logoutUser') 
 }
 </script>
 
