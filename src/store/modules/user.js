@@ -14,7 +14,7 @@ import { useRouter } from 'vue-router'
 
 const state = {
   user: null,
-  userTasks: {},
+  userVuello: {},
   profileEmail: null,
   profileUsername: null,
   profileInitials: null,
@@ -24,8 +24,8 @@ const mutations = {
   SET_USER(state, payload) {
     state.user = payload
   },
-  SET_USER_TASKS(state, doc) {
-    state.userTasks = doc.data
+  SET_USER_VUELLO(state, doc) {
+    state.userVuello = doc.data
   },
   SET_PROFILE_INFO(state, doc) {
     state.profileEmail = doc.email
@@ -78,51 +78,44 @@ const actions = {
         }
       })
   },
+  setUserVuello({ commit }, data) {
+    commit('SET_USER_VUELLO', data)
+  },
   async logoutUser({ dispatch }) {
     await signOut(fbAuth)
       .then(() => {
-        commit("SET_USER", null)
-        commit('SET_PROFILE_INFO_INIT')
-        commit('SET_USER_TASKS', null)
+        const userId = fbAuth.currentUser.uid
+        setDoc(doc(db, "users", userId), {
+          // data
+        })
+        
+        dispatch("cleanInfo")
       })
       .catch((err) => {
         console.log(err.message)
-      });
+      })
+    alert("帳號成功登出")
   },
-  async getCurrentUser({ commit }) {
-    onAuthStateChanged(fbAuth, async (user) => {      
+  handleAuthStateChanged({ commit, dispatch }) {   
+    console.log("handleAuthStateChanged")
+    const router = useRouter()
+    onAuthStateChanged(fbAuth, async (user) => {
       if (user) {
         commit("SET_USER", user)
-        const docSnap = await getDoc(doc(db, "users", user.uid))      
-        const dbResults = docSnap.data()      
+        const docSnap = await getDoc(doc(db, "users", user.uid))
+        const dbResults = docSnap.data()
         commit("SET_PROFILE_INFO", dbResults)
-        commit('SET_USER_TASKS',dbResults)        
+        commit("SET_USER_VUELLO", dbResults)
+      } else {
+        await router.replace('/')
+        dispatch("cleanInfo")
       }
     })
   },
-  handleAuthStateChanged({ commit, dispatch }) {
-    const router = useRouter()
-    console.log("handleAuthStateChanged")
-    onAuthStateChanged(fbAuth, async user => {
-      if (user) {
-        try {
-          commit("SET_USER", user)
-          const docSnap = await getDoc(doc(db, "users", user.uid))
-          const userTasks = docSnap.data()
-          commit('SET_USER_TASKS',dbResults)
-        } catch (err) {
-
-        }
-        if (router.currentRoute.value.name === 'auth') {
-          await router.replace('/')
-        }
-      } else {
-        await router.replace('/')
-        commit("SET_USER", null)
-        commit('SET_PROFILE_INFO_INIT')
-        commit('SET_USER_TASKS', null)
-      }
-    })
+  async cleanInfo({ commit }){
+    commit("SET_USER", null)
+    commit('SET_PROFILE_INFO_INIT')
+    commit('SET_USER_VUELLO', null)
   }
 }
 
@@ -130,8 +123,11 @@ const getters = {
   getUser(state) {
     return state.user
   },
-  getUserTasks(state) {
-    return state.userTasks
+  getUserVuello(state) {
+    return state.userVuello
+  },
+  getUserVuello(state) {
+    return state.userVuello
   },
   getProfileEmail(state) {
     return state.profileEmail

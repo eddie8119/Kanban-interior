@@ -2,10 +2,10 @@
   <div class="form-wrap">
     <form class="login">
       <p class="login-register">
-        Don't have an account?
-        <router-link class="router-link" :to="{ name: 'Register' }">Register</router-link>
+        還沒有帳號?
+        <router-link class="router-link" :to="{ name: 'Register' }">註冊</router-link>
       </p>
-      <h2>Login to FireBlogs</h2>
+      <h2>登入 室內工程手帳</h2>
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="formData.email" />
@@ -18,7 +18,7 @@
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">Forgot your password?</router-link>
-      <button @click.prevent="login">Login</button>
+      <button @click.prevent="login">登入</button>
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>

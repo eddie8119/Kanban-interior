@@ -1,11 +1,12 @@
 <template>
-  <header>
-    <nav class="container">
-      <div class="branding">
-        <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
+  <header class="w-full bg-[#fff] px-[25px] z-[10] box-shadow">
+    <nav class=" flex py-[25px]">
+      <div class="flex items-center ">
+        <router-link class="header font-semibold text-[24px] text-black"
+          :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
-      <div class="nav-links">
-        <ul v-show="device !== 'mobile'">
+      <div class="nav-links flex items-center justify-end">
+        <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
           <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
           <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
             target="_blank">
@@ -13,11 +14,38 @@
           </a>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
-        <div v-if="user" :class="{ 'mobile-user-menu': mobile }" @click="toggleProfileMenu" class="profile" ref="profile">
-          <span>{{ store.state.profileInitials }}</span>
-          <div v-show="profileMenu" class="profile-menu">
-            <div class="info">
-              <p class="initials">{{ store.state.profileInitials }}</p>
+        <div v-if="user" :class="[device === 'mobile' ? 'mr-[40px]' : '']" @click="toggleProfileMenu" class="               
+        relative
+        flex
+        items-center
+        justify-center
+        w-[40px]
+        h-[40px]
+        text-[#fff]
+        bg-[#303030]
+        rounded-full
+        cursor-pointer        
+        " ref="profile">
+          <span class="pointer-events-none">{{ store.state.profileInitials }}</span>
+          <div v-show="profileMenu" class="
+          absolute
+          top-[60px]
+          right-0
+          w-[250px]
+          bg-[#303030]
+          box-shadow    
+          rounded-lg      
+          profile-menu          
+          ">
+            <div class="info flex items-center p-[15px] border-b-[#fff]">
+              <p class="initials
+              w-[40px]
+              h-[40px]
+              bg-[#fff]
+              text-[#303030]
+              flex items-center justify-center
+              rounded-full
+              ">{{ store.state.profileInitials }}</p>
               <div class="right">
                 <p>{{ user.name }}</p>
                 <p>{{ user.email }}</p>
@@ -31,8 +59,7 @@
                 </router-link>
               </div>
               <!-- <div v-if="admin" class="option">
-                <router-link class="option" :to="{ name: '' }">
-                  
+                <router-link class="option" :to="{ name: '' }">                  
                   <p>Admin</p>
                 </router-link>
               </div> -->
@@ -45,16 +72,33 @@
         </div>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="device === 'mobile'" />
+    <menuIcon v-show="device === 'mobile'" class=" absolute top-[32px] right-[25px] h-[25px] cursor-pointer"
+      @click="toggleMobileNav" />
     <transition name="mobile-nav">
-      <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
-        <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
-          target="_blank">
+      <ul class="mobile-nav 
+      top-0
+      left-0
+      w-[70%]
+      h-full
+      fixed
+      flex flex-col     
+      max-w-[250px]
+      text-[#fff]
+      bg-[#303030] 
+      p-[20px] 
+      z-[10] 
+      " v-show="mobileNav">
+        <router-link class="py-[15px]" :to="{ name: 'Home' }">首頁</router-link>
+        <a class="py-[15px]" role="link"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
           網站意見
         </a>
+        <a class="py-[15px]" role="link"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
+          室內攝影服務
+        </a>
         <!-- <router-link v-if="admin" class="link" :to="{ name: '' }">Create Post</router-link> -->
-        <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
+        <router-link v-if="!user" class="py-[15px]" :to="{ name: 'Login' }">登入/註冊</router-link>
       </ul>
     </transition>
   </header>
@@ -103,190 +147,96 @@ watch(windowWidth, () => {
 </script>
 
 <style lang="scss" scoped>
-header {
-  background-color: #fff;
-  padding: 0 25px;
+.box-shadow {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  z-index: 99;
+}
 
-  .link {
-    font-weight: 500;
-    padding: 0 8px;
-    transition: 0.3s color ease;
+.link {
+  padding: 0 8px;
+  transition: 0.3s color ease;
 
-    &:hover {
-      color: #1eb8b8;
-    }
+  &:hover {
+    color: #5b5d12;
   }
+}
 
-  nav {
-    display: flex;
-    padding: 25px 0;
 
-    .branding {
-      display: flex;
-      align-items: center;
+.nav-links {
+  flex: 1;
 
-      .header {
-        font-weight: 600;
-        font-size: 24px;
-        color: #000;
-        text-decoration: none;
-      }
-    }
-
-    .nav-links {
-      position: relative;
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: flex-end;
-
-      ul {
-        margin-right: 32px;
-
-        .link {
-          margin-right: 32px;
-        }
-
-        .link:last-child {
-          margin-right: 0;
-        }
-      }
-
-      .profile {
-        position: relative;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        color: #fff;
-        background-color: #303030;
-
-        span {
-          pointer-events: none;
-        }
-
-        .profile-menu {
-          position: absolute;
-          top: 60px;
-          right: 0;
-          width: 250px;
-          background-color: #303030;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-          .info {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #fff;
-
-            .initials {
-              position: initial;
-              width: 40px;
-              height: 40px;
-              background-color: #fff;
-              color: #303030;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 50%;
-            }
-
-            .right {
-              flex: 1;
-              margin-left: 24px;
-
-              p:nth-child(1) {
-                font-size: 14px;
-              }
-
-              p:nth-child(2),
-              p:nth-child(3) {
-                font-size: 12px;
-              }
-            }
-          }
-
-          .options {
-            padding: 15px;
-
-            .option {
-              text-decoration: none;
-              color: #fff;
-              display: flex;
-              align-items: center;
-              margin-bottom: 12px;
-
-              .icon {
-                width: 18px;
-                height: auto;
-              }
-
-              p {
-                font-size: 14px;
-                margin-left: 12px;
-              }
-
-              &:last-child {
-                margin-bottom: 0px;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .mobile-user-menu {
-      margin-right: 40px;
-    }
-  }
-
-  .menu-icon {
-    cursor: pointer;
-    position: absolute;
-    top: 32px;
-    right: 25px;
-    height: 25px;
-    width: auto;
-  }
-
-  .mobile-nav {
-    padding: 20px;
-    width: 70%;
-    max-width: 250px;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    height: 100%;
-    background-color: #303030;
-    top: 0;
-    left: 0;
-
+  ul {
     .link {
-      padding: 15px 0;
-      color: #fff;
+      margin-right: 32px;
+    }
+
+    .link:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.profile-menu {
+  .info {
+    .initials {
+      position: initial;
+    }
+
+    .right {
+      flex: 1;
+      margin-left: 24px;
+
+      p:nth-child(1) {
+        font-size: 14px;
+      }
+
+      p:nth-child(2),
+      p:nth-child(3) {
+        font-size: 12px;
+      }
     }
   }
 
-  .mobile-nav-enter-active,
-  .mobile-nav-leave-active {
-    transition: all 1s ease;
-  }
+  .options {
+    padding: 15px;
 
-  .mobile-nav-enter {
-    transform: translateX(-250px);
-  }
+    .option {
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
 
-  .mobile-nav-enter-to {
-    transform: translateX(0);
-  }
+      .icon {
+        width: 18px;
+        height: auto;
+      }
 
-  .mobile-nav-leave-to {
-    transform: translateX(-250px);
+      p {
+        font-size: 14px;
+        margin-left: 12px;
+      }
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
   }
+}
+
+.mobile-nav-enter-active,
+.mobile-nav-leave-active {
+  transition: all 1s ease;
+}
+
+.mobile-nav-enter {
+  transform: translateX(-250px);
+}
+
+.mobile-nav-enter-to {
+  transform: translateX(0);
+}
+
+.mobile-nav-leave-to {
+  transform: translateX(-250px);
 }
 </style>

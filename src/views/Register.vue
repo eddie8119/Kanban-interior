@@ -2,8 +2,8 @@
   <div class="form-wrap">
     <form class="register">
       <p class="login-register">
-        Already have an account?
-        <router-link class="router-link" :to="{ name: 'Login' }">Login</router-link>
+        已經有帳號了?
+        <router-link class="router-link" :to="{ name: 'Login' }">登入</router-link>
       </p>
       <h2>創立你的帳號</h2>
       <div class="inputs">
