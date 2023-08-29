@@ -1,13 +1,14 @@
 <template>
-  <header class="w-full bg-[#fff] px-[25px] z-[10] box-shadow">
-    <nav class=" flex py-[25px]">
+  <header class="w-full bg-[#fff] px-[25px] fixed z-[10] box-shadow">
+    <nav class=" flex items-center h-[70px]">
       <div class="flex items-center ">
+        <img src="../../assets/img/brand/logo.png" class="w-[40px] mr-2" alt="">
         <router-link class="header font-semibold text-[24px] text-black"
           :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
-          <router-link class="link" :to="{ name: 'Home' }">首頁</router-link>
+          <router-link class="link" :to="{ name: 'Home' }">工進手帳</router-link>
           <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
             target="_blank">
             網站意見
@@ -22,7 +23,7 @@
         w-[40px]
         h-[40px]
         text-[#fff]
-        bg-[#303030]
+        bg-main
         rounded-full
         cursor-pointer        
         " ref="profile">
@@ -32,7 +33,7 @@
           top-[60px]
           right-0
           w-[250px]
-          bg-[#303030]
+          bg-main
           box-shadow    
           rounded-lg      
           profile-menu          
@@ -42,7 +43,7 @@
               w-[40px]
               h-[40px]
               bg-[#fff]
-              text-[#303030]
+              text-main
               flex items-center justify-center
               rounded-full
               ">{{ store.state.profileInitials }}</p>
@@ -53,7 +54,7 @@
             </div>
             <div class="options">
               <div class="option">
-                <router-link class="option" :to="{ name: '' }">
+                <router-link class="option" :to="{ name: 'Profile' }">
                   <userIcon class="icon" />
                   <p>Profile</p>
                 </router-link>
@@ -84,11 +85,11 @@
       flex flex-col     
       max-w-[250px]
       text-[#fff]
-      bg-[#303030] 
+      bg-main 
       p-[20px] 
       z-[10] 
       " v-show="mobileNav">
-        <router-link class="py-[15px]" :to="{ name: 'Home' }">首頁</router-link>
+        <router-link class="py-[15px]" :to="{ name: 'Home' }">工進手帳</router-link>
         <a class="py-[15px]" role="link"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
           網站意見
@@ -134,6 +135,7 @@ const toggleProfileMenu = (e) => {
 
 const logoutUser = async () => {
   await store.dispatch('user/logoutUser')
+  window.location.reload()
 }
 
 const user = computed(() => store.getters['user/getUser'])

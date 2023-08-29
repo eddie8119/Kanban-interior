@@ -9,12 +9,14 @@ import {
   setDoc,
   getDoc,
   doc,
+  updateDoc,
 } from '../../firebase/firebase'
 import { useRouter } from 'vue-router'
 
 const state = {
   user: null,
-  userVuello: {},
+  userTask: {},
+  profileId: null,
   profileEmail: null,
   profileUsername: null,
   profileInitials: null,
@@ -24,10 +26,16 @@ const mutations = {
   SET_USER(state, payload) {
     state.user = payload
   },
-  SET_USER_VUELLO(state, doc) {
-    state.userVuello = doc.data
+  SET_USER_TASK(state, doc) {
+    state.userTask = doc.task
   },
-  SET_PROFILE_INFO(state, doc) {
+  SET_PROFILE_ID(state, payload) {
+    state.profileId = payload
+  },
+  SET_PROFILE_USERNAME(state, payload) {
+    state.profileUsername = payload
+  },
+  SET_PROFILE_INFO(state, doc) {   
     state.profileEmail = doc.email
     state.profileUsername = doc.username
   },
@@ -35,7 +43,7 @@ const mutations = {
     state.profileEmail = null
     state.profileUsername = null
   },
-  SET_PROFILE_INitials(state) {
+  SET_PROFILE_INITIALS(state) {
     state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join("")
   },
 }
@@ -52,7 +60,7 @@ const actions = {
               username: formData.username,
               password: formData.password,
               email: formData.email,
-              data
+              task: data
             })
           } catch (err) {
             alert("創建帳號失敗:", err)
@@ -78,9 +86,6 @@ const actions = {
         }
       })
   },
-  setUserVuello({ commit }, data) {
-    commit('SET_USER_VUELLO', data)
-  },
   async logoutUser({ dispatch }) {
     await signOut(fbAuth)
       .then(() => {
@@ -88,7 +93,7 @@ const actions = {
         setDoc(doc(db, "users", userId), {
           // data
         })
-        
+
         dispatch("cleanInfo")
       })
       .catch((err) => {
@@ -96,38 +101,55 @@ const actions = {
       })
     alert("帳號成功登出")
   },
-  handleAuthStateChanged({ commit, dispatch }) {   
+  handleAuthStateChanged({ commit, dispatch, state }) {
     console.log("handleAuthStateChanged")
     const router = useRouter()
     onAuthStateChanged(fbAuth, async (user) => {
       if (user) {
         commit("SET_USER", user)
+        commit("SET_PROFILE_ID", user.uid)
         const docSnap = await getDoc(doc(db, "users", user.uid))
         const dbResults = docSnap.data()
         commit("SET_PROFILE_INFO", dbResults)
-        commit("SET_USER_VUELLO", dbResults)
+        commit("SET_USER_TASK", dbResults)
+
+        console.log(state.profileUsername)
+        console.log(state.profileEmail)
+        console.log(state.userTask)
+        
       } else {
         await router.replace('/')
         dispatch("cleanInfo")
       }
     })
+
+
   },
-  async cleanInfo({ commit }){
+  async cleanInfo({ commit }) {
     commit("SET_USER", null)
     commit('SET_PROFILE_INFO_INIT')
-    commit('SET_USER_VUELLO', null)
-  }
+    commit('SET_USER_TASK', null)
+  },
+  async updateUserSettings({ commit, state }) {
+    // const docRef = doc(db, "users", state.profileId)
+    // await updateDoc(docRef, {
+    //   username: state.profileUsername,
+    //   email: state.profileEmail,
+    //   task: state.userTask,
+    // })
+    // commit("SET_PROFILE_INFO_INIT")
+  },
 }
 
 const getters = {
   getUser(state) {
     return state.user
   },
-  getUserVuello(state) {
-    return state.userVuello
+  getUserTask(state) {
+    return state.userTask
   },
-  getUserVuello(state) {
-    return state.userVuello
+  getProfileId(state) {
+    return state.profileId
   },
   getProfileEmail(state) {
     return state.profileEmail

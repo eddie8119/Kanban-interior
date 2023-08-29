@@ -18,7 +18,7 @@
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">Forgot your password?</router-link>
-      <button @click.prevent="login">登入</button>
+      <button class="btn-style" @click.prevent="login">登入</button>
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>

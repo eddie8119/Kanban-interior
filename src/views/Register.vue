@@ -5,7 +5,7 @@
         已經有帳號了?
         <router-link class="router-link" :to="{ name: 'Login' }">登入</router-link>
       </p>
-      <h2>創立你的帳號</h2>
+      <h2>創立帳號</h2>
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Username" v-model="formData.username" />
@@ -25,10 +25,6 @@
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>
-    <!-- Confirmation Modal -->
-    <!-- <ConfirmationModal :value="true" @confirm="deleteDialog('card')" @close="state.isRemovingCard = false">
-    註冊成功
-  </ConfirmationModal> -->
   </div>
 </template>
 
@@ -39,7 +35,6 @@ import { useRouter } from "vue-router"
 import emailIcon from "../components/icons/emailIcon.vue"
 import passwordIcon from "../components/icons/passwordIcon.vue"
 import userIcon from "../components/icons/userIcon.vue"
-import ConfirmationModal from '@/components/dialog/ConfirmationModal.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -66,7 +61,7 @@ const register = () => {
     router.replace("/")
   } else {
     error.value = true
-    errorMsg.value = 'Please fill out all the fields!'
+    errorMsg.value = '請填完所有表格'
   }
 }
 </script>

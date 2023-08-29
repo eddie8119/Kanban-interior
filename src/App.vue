@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Navigation />
-    <router-view />
+    <div class="pt-[70px]">
+      <router-view  />
+    </div>    
   </div>
 </template>
 

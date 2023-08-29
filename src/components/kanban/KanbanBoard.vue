@@ -1,17 +1,19 @@
 <template>
-  <div class="flex items-center">
-    <p class="mr-4 px-2 text-sm">全案施做狀態過濾:</p>
-    <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
-      <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
-        @click="changeSelectGlobal(list.key)">
-        {{ list.name }}
-      </option>
-    </select>
+  <div class="w-full flex-col items-center">
+    <div class="flex items-center">
+      <p class="mr-4 px-2 text-sm">施做狀態全部篩選:</p>
+      <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
+        <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
+          @click="changeSelectGlobal(list.key)">
+          {{ list.name }}
+        </option>
+      </select>
+    </div>
     <div class="flex">
       <download-excel :data="json_data">
-      輸出 Excel 報表
-    </download-excel>
-    <button class="ml-2" @click="updateJson()">先刷新資料</button>
+        輸出 Excel 報表
+      </download-excel>
+      <button class="ml-2" @click="updateJson()">先刷新資料</button>
     </div>
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
@@ -194,11 +196,11 @@ const updateJson = () => {
 }
 watch(
   () => props.payload,
-  (newValue) => {    
+  (newValue) => {
     vuello.title = newValue.title
     vuello.last_modified = newValue.last_modified
     vuello.containers = newValue.containers
-    vuello.cards = newValue.cards    
+    vuello.cards = newValue.cards
     updateJson()
   },
   { immediate: true }
