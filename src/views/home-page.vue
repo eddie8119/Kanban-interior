@@ -43,11 +43,11 @@ const state = reactive({
   is_editing_title: false,
   temp_title: null,
 })
-const payload = computed(() => store.getters['vuello/getVuelloDatas'])
+const payload = JSON.parse(localStorage.getItem('myTask'))
 const projectTitleInput = ref(null);
 
 onBeforeMount(async () => {
-  const data = store.getters['vuello/getVuelloDatas']
+  const data = JSON.parse(localStorage.getItem('myTask'))
   if (!data) {
     await axios.get('/sample-data.json')
       .then(({ data }) => {

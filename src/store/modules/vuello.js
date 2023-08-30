@@ -8,11 +8,12 @@ export const vuello = {
   mutations: {
     SET_VUELLO(state, data) {
       state.vuello = data
+      localStorage.setItem('myTask', JSON.stringify(data))      
     }
   },
   actions: {
     setVuello({ commit }, data) {
-      commit('SET_VUELLO', data)
+      commit('SET_VUELLO', data)      
     }
   },
   getters: {

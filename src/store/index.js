@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+
 import {vuello} from './modules/vuello'
 import {user} from './modules/user'
 import {app} from './modules/app'
@@ -12,6 +13,6 @@ export const store = createStore({
     menu,
     app
   },
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],  
 })
 
