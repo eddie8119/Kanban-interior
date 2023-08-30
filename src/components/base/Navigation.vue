@@ -8,10 +8,10 @@
       </div>
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
-          <router-link class="link" :to="{ name: 'Home' }">工進手帳</router-link>
+          <router-link class="link" :to="{ name: 'Home' }">室內工進手帳</router-link>
           <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
             target="_blank">
-            網站意見
+            室內攝影
           </a>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
@@ -139,6 +139,7 @@ const logoutUser = async () => {
 }
 
 const user = computed(() => store.getters['user/getUser'])
+const profileMenun = computed(() => store.getters['menu/getProfileMenu'])
 
 watch(windowWidth, () => {
   if (device.value === 'desktop') {

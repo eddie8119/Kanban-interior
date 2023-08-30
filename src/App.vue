@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="clearMenu">
     <Navigation />
     <div class="pt-[70px]">
       <router-view  />
@@ -27,6 +27,7 @@ export default {
   },
   mounted() {    
     this.$store.dispatch('user/handleAuthStateChanged')
+    this.$store.commit("menu/CLEAR_ALL_MENU")
     window.addEventListener("resize", this.detectWindowWidth)
     window.addEventListener("resize", this.detectWindowHeight)
     window.addEventListener("scroll", this.detectWindowScrollY)    
@@ -40,6 +41,9 @@ export default {
     },
     detectWindowScrollY() {
       this.$store.commit("app/SET_WINDOW_SCROLLY", window.scrollY)
+    },
+    clearMenu(){
+      this.$store.commit("menu/CLEAR_ALL_MENU")
     }
   }
 }
