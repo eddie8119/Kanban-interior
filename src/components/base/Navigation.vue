@@ -24,6 +24,8 @@
         h-[40px]
         text-[#fff]
         bg-main
+        hover:bg-funsugarMain
+        duration-300
         rounded-full
         cursor-pointer        
         " ref="profile">
@@ -72,9 +74,9 @@
           </div>
         </div>
       </div>
+      <menuIcon v-show="device === 'mobile'" class=" absolute   right-[25px] h-[25px] cursor-pointer"
+        @click="toggleMobileNav" />
     </nav>
-    <menuIcon v-show="device === 'mobile'" class=" absolute top-[32px] right-[25px] h-[25px] cursor-pointer"
-      @click="toggleMobileNav" />
     <transition name="mobile-nav">
       <ul class="mobile-nav 
       top-0
@@ -113,11 +115,13 @@ import userIcon from "../../components/icons/userIcon.vue"
 import menuIcon from "../../components/icons/menuIcon.vue"
 import signOutIcon from "../../components/icons/signOutIcon.vue"
 
-const profileMenu = ref(null)
+const store = useStore()
+const profileMenu = ref(false)
 const mobileNav = ref(false)
 const profile = ref(null)
 
-const store = useStore()
+const profileMenuGlobal = computed(() => store.getters['menu/getProfileMenu'])
+const user = computed(() => store.getters['user/getUser'])
 const windowWidth = computed(() => store.getters['app/getWindowWidth'])
 const device = computed(() => {
   return windowWidth.value <= 750 ? 'mobile' : 'desktop'
@@ -128,18 +132,14 @@ const toggleMobileNav = () => {
 }
 
 const toggleProfileMenu = (e) => {
-  if (e.target === profile.value) {
-    profileMenu.value = !profileMenu.value
-  }
+  profileMenu.value = !profileMenu.value
+  store.commit('menu/SET_PROFILE_MENU', profileMenu.value)
 }
 
 const logoutUser = async () => {
   await store.dispatch('user/logoutUser')
   window.location.reload()
 }
-
-const user = computed(() => store.getters['user/getUser'])
-const profileMenun = computed(() => store.getters['menu/getProfileMenu'])
 
 watch(windowWidth, () => {
   if (device.value === 'desktop') {

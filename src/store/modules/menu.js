@@ -14,9 +14,6 @@ export const menu = {
     }
   },
   actions: {
-    // setProfileMenu({ commit }) {
-    //   commit('SET_PROFILE_MENU')
-    // }
   },
   getters: {
     getProfileMenu(state) {

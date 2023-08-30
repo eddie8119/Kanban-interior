@@ -20,6 +20,7 @@ module.exports = {
     extend:{
       colors:{
         main: '#303030', 
+        funsugarMain:'#ffcc00',
       }    
     }    
   }
