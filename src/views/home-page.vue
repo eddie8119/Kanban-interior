@@ -1,4 +1,5 @@
-<template>
+<template>  
+  <Loading v-if="loading" />
   <div v-if="payload" class="flex h-screen flex-col p-4">
     <div class="flex justify-between">
       <div>
@@ -35,6 +36,7 @@ import { useStore } from 'vuex'
 import axios from 'axios'
 import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/dialog/ContainerModal.vue'
+import Loading from '@/components/base/Loading.vue'
 
 const store = useStore()
 
@@ -43,10 +45,12 @@ const state = reactive({
   is_editing_title: false,
   temp_title: null,
 })
-const payload = JSON.parse(localStorage.getItem('myTask'))
-const projectTitleInput = ref(null);
+const payload = ref(null)
+const projectTitleInput = ref(null)
+const loading = ref(false)
 
 onBeforeMount(async () => {
+  loading.value = true
   const data = JSON.parse(localStorage.getItem('myTask'))
   if (!data) {
     await axios.get('/sample-data.json')
@@ -91,7 +95,10 @@ onBeforeMount(async () => {
         data.containers = containersHandler
         store.dispatch('vuello/setVuello', data)
       })
+  } else {
+    payload.value = data
   }
+  loading.value = false
 })
 
 const handleEditTitle = (type) => {
@@ -102,12 +109,14 @@ const handleEditTitle = (type) => {
     inputElement.focus();
     inputElement.select();
   } else if (type === 'save') {
-    state.is_editing_title = false
     payload.value.last_modified = new Date().toLocaleString('zh-TW')
     store.dispatch('vuello/setVuello', payload.value)
-  } else {
     state.is_editing_title = false
+  } else {    
     payload.value.title = state.temp_title
+    payload.value.last_modified = new Date().toLocaleString('zh-TW')
+    store.dispatch('vuello/setVuello', payload.value)
+    state.is_editing_title = false
   }
 }
 </script>

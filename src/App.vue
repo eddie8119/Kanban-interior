@@ -3,18 +3,20 @@
     <Navigation />
     <div class="pt-[70px]">
       <router-view  />
-    </div>    
+    </div> 
+    <Copyright />   
   </div>
 </template>
 
 <script>
 import Navigation from "./components/base/Navigation.vue"
+import Copyright from "./components/base/Copyright.vue"
 import { defineComponent } from 'vue'
 import { mapActions } from 'vuex'
 
 
 export default {
-  components: { Navigation },
+  components: { Navigation, Copyright},
   methods: {
     ...mapActions(['handleAuthStateChanged'])
   },

@@ -8,7 +8,7 @@
       </div>
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
-          <router-link class="link" :to="{ name: 'Home' }">室內工進手帳</router-link>
+          <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
           <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
             target="_blank">
             室內攝影
@@ -155,12 +155,7 @@ watch(windowWidth, () => {
 }
 
 .link {
-  padding: 0 8px;
-  transition: 0.3s color ease;
-
-  &:hover {
-    color: #5b5d12;
-  }
+  @apply px-[8px] hover:text-funsugarMain duration-300;
 }
 
 
