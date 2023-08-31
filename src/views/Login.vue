@@ -1,10 +1,9 @@
 <template>
   <div class="form-wrap">
     <form class="login">
-      <p class="login-register">
-        還沒有帳號?
-        <router-link class="router-link" :to="{ name: 'Register' }">註冊</router-link>
-      </p>
+      <router-link class="flex mb-[32px]" :to="{ name: 'Register' }">
+        <p>還沒有帳號? <span class="text-funsugarMain">註冊</span> </p>
+      </router-link>
       <h2>登入 室內工程手帳</h2>
       <div class="inputs">
         <div class="input">
@@ -17,7 +16,7 @@
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
-      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">Forgot your password?</router-link>
+      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">忘記你的密碼?</router-link>
       <button class="btn-style" @click.prevent="login">登入</button>
       <div class="angle"></div>
     </form>

@@ -1,0 +1,68 @@
+.dialog-mask {
+  @apply fixed top-0 left-0 flex justify-center items-baseline w-full h-full bg-black bg-opacity-40 z-[999] overflow-auto;
+  .dialog-container {
+    @apply relative  text-[#c7c7c7] mx-5 bg-[#212020] border border-[#4c453d] border-opacity-40 rounded;
+    .title-wrap {
+        @apply relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full before:h-[1px] before:border before:border-[#2e2d2d];
+    }
+    .title-wrap-noUnderline {
+      @apply relative before:content-[''] before:absolute before:bottom-0 before:left-0 before:w-full ;
+  }
+    .title {
+      @apply relative text-main text-[22px] font-sans font-bold text-center py-2 lg:py-[15px];
+  }
+  .close-wrap {
+      @apply absolute right-5 top-1/2 -translate-y-1/2;
+      .close {
+          @apply relative cursor-pointer w-[30px] h-[30px] z-[1] rounded-[50%];
+          &:after {
+              content: "";
+              position: absolute;
+              border: 1px solid #9f9f9f;
+              height: 20px;
+              border-radius: 100px;
+              top: 50%;
+              right: 50%;
+              transform: translateY(-50%) translateX(50%) rotate(45deg);
+          }
+          &:before {
+              content: "";
+              position: absolute;
+              border: 1px solid #9f9f9f;
+              height: 20px;
+              border-radius: 100px;
+              top: 50%;
+              right: 50%;
+              transform: translateY(-50%) translateX(50%) rotate(-45deg);
+          }
+      }
+  }
+  .setHeightScroll{
+      @apply max-h-[600px] overflow-auto
+  }
+  .valid-msg {
+      @apply absolute -bottom-5 left-4 w-full text-main text-sm;
+  }
+}
+}
+
+select { 
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  -ms-appearance:none;
+  appearance:none;
+  outline:0;
+  background-color: #212020;
+  // background-image: url(@/assets/img/arrow-down.png);
+  background-repeat: no-repeat;  
+  background-position: right 10px center;
+  color:#ffffff;    
+}
+option{  
+  display: block;
+  cursor:pointer;
+  padding: 0 6px ;    
+  transition: all 0.5s;
+}
+
+

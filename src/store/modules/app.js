@@ -3,6 +3,7 @@ export const app = {
   state() {
     return {
       dialog: false,
+      alertDialog: false,
       loading: false,
       windowWidth: 0,
       windowHeight: 0,
@@ -12,6 +13,9 @@ export const app = {
   mutations: {
     SET_DIALOG(state, payload) {
       state.dialog = payload;
+    },
+    SET_ALERT_DIALOG(state, payload) {
+      state.alertDialog = payload;
     },
     SET_LOADING(state, payload) {
       state.loading = payload;
@@ -32,6 +36,9 @@ export const app = {
   getters: {
     getDialog(state) {
       return state.dialog
+    },
+    getAlertDialog(state) {
+      return state.alertDialog
     },
     getloading(state) {
       return state.loading

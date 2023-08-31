@@ -1,10 +1,9 @@
 <template>
-  <div class="form-wrap">
+  <div class="form-wrap ">
     <form class="register">
-      <p class="login-register">
-        已經有帳號了?
-        <router-link class="router-link" :to="{ name: 'Login' }">登入</router-link>
-      </p>
+      <router-link class="flex mb-[32px]" :to="{ name: 'Login' }">
+        <p>已經有帳號了? <span class="text-funsugarMain">登入</span> </p>
+      </router-link>
       <h2>創立帳號</h2>
       <div class="inputs">
         <div class="input">
@@ -21,7 +20,7 @@
         </div>
         <div v-show="error" class="error">{{ this.errorMsg }}</div>
       </div>
-      <button @click.prevent="register">註冊</button>
+      <button class="btn-style" @click.prevent="register">註冊</button>
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>

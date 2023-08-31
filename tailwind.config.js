@@ -17,11 +17,15 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
   ],
   theme: {
-    extend:{
-      colors:{
-        main: '#303030', 
-        funsugarMain:'#ffcc00',
-      }    
-    }    
+    extend: {
+      colors: {
+        main: '#303030',
+        funsugarMain: '#ffcc00',
+      },
+      minHeight: {
+        innerPage: 'calc(100vh-70px)',
+        'innerPage-mobile': 'calc(100vh - 106px)'
+      },
+    }
   }
 }

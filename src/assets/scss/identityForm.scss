@@ -1,35 +1,23 @@
 .form-wrap {
-  @apply w-full mx-auto flex h-[100vh];
-  overflow: hidden;
-  justify-content: center;
-  align-self: center;
-
-  .login-register {
-    @apply mb-[32px];
-    .router-link {
-      @apply text-[#000];      
-    }
-  }
-
+  @apply w-full mx-auto flex justify-center self-center h-[calc(100vh-70px)] overflow-hidden; 
   form {
     @apply relative px-[10px] flex flex-col items-center justify-center; 
     flex: 1;
-
     h2 {
       @apply text-center text-[32px] text-main mb-[40px]; 
     }
     .inputs {
       @apply w-full max-w-[350px]; 
-      .input {
-        @apply relative flex items-center justify-center mb-[8px] ;       
+      .input {  
+        @apply relative w-full flex items-center justify-center mb-[8px] ; 
         input {
-          @apply w-full h-[50px] max-w-[350px] border-none bg-[#f2f7f6] p-[4px] pb-[30px]; 
+          @apply w-full h-[50px]  border-none bg-[#f2f7f6] p-[4px] pl-[30px]; 
           &:focus {
             outline: none;
           }
         }
         .icon {
-          @apply  w-[12px] left-[6px]; 
+          @apply absolute w-[12px] left-[6px]; 
         }
       }
     }
@@ -64,7 +52,7 @@
   }
 }
 .btn-style {
-  @apply w-[60px] p-[5px] bg-main text-white rounded-full; 
+  @apply w-[60px] p-[5px] bg-funsugarMain text-main  hover:bg-main hover:text-white rounded-full duration-300; 
 }
 
 .background-identity {

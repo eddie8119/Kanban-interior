@@ -3,7 +3,7 @@
     <nav class=" flex items-center h-[70px]">
       <div class="flex items-center ">
         <img src="../../assets/img/brand/logo.png" class="w-[40px] mr-2" alt="">
-        <router-link class="header font-semibold text-[24px] text-black"
+        <router-link class="header font-semibold text-[16px] sm:text-[24px] text-black"
           :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
       <div class="nav-links flex items-center justify-end">

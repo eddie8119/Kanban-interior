@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full grid grid-cols-1 gap-y-2">
+  <div class="w-full grid grid-cols-1 gap-y-4 md:flex md:justify-between">
     <div class="flex items-center">
       <p class="mr-4 text-sm">全案狀態篩選:</p>
       <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
@@ -50,14 +50,16 @@
                 class="cursor-pointer rounded-full p-1 text-red-400 hover:bg-red-200 hover:text-red-700"
                 @click="handleDeleteContainer(container.id)" />
             </div>
-            <Container group-name="col" class="flex flex-col overflow-y-auto" style="max-height: calc(100vh - 165px)"
-              @drop="onCardDrop(container.id, $event)" :get-child-payload="getCardPayload(container.id)"
-              drag-handle-selector=".column-drag-handle">
+            <div class="max-h-[450px] overflow-y-auto">
+              <Container group-name="col" class="flex flex-col " @drop="onCardDrop(container.id, $event)"
+              :get-child-payload="getCardPayload(container.id)" drag-handle-selector=".column-drag-handle">
               <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
               </Draggable>
             </Container>
+            </div>
+
             <!--  -->
             <div class="m-1 flex flex-col place-items-center justify-center">
               <Transition name="fade">

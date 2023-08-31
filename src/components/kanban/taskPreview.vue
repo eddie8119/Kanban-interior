@@ -1,6 +1,6 @@
 <template>
-  <Transition name="fade" mode="out-in">
-    <div v-if="card.is_editing_card" class="flex w-full flex-col rounded-md border-gray-400 bg-white">
+  <Transition name="fade" mode="out-in" class="max-h-[150px]">
+    <div v-if="card.is_editing_card" class="flex w-full h-full flex-col rounded-md  bg-white">
       <input v-model="card.title" type="text"
         class="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
         placeholder="新增標題(必填)" />
@@ -24,7 +24,6 @@
     <div v-else>
       <div class="flex flex-col">
         <div @click="handleEditCard('change', card)">
-          <!-- <img :src="card.src" alt="" class="opacity-20"> -->
           <div class="flex w-full items-center">
             <div class="w-full text-center">
               <h2 class="text-lg font-semibold ">
@@ -34,7 +33,9 @@
             <MoveIcon height="25px"
               class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700" @click.stop="" />
           </div>
-          <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
+          <div class="max-h-[60px] overflow-hidden">
+            <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
+          </div>         
         </div>
         <div class="flex justify-between text-sm items-center">
           <button class="
@@ -43,10 +44,7 @@
         rounded 
         py-1" :class="[card.isDone ? 'bg-[#f4592b]' : 'bg-[#5cdb95] text-white']" @click="handleEditCard('isdone', card)">{{
           card.isDone ? '完成' : '未完成' }}</button>
-        <p v-show="card.picture">圖片顯示</p>
-        </div>
-        
-        <img v-if="card.picture?.src" :src="card.picture.src" alt="" class="w-full">
+        </div>   
       </div>
     </div>
   </Transition>

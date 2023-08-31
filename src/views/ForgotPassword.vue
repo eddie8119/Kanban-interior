@@ -1,6 +1,6 @@
 <template>
   <div class="reset-password">
-    <Modal v-if="modalActive" :modalMessage="modalMessage" @close-modal="closeModal" />
+    <!-- <Modal :modalMessage="modalMessage" @close-modal="closeModal" /> -->
     <Loading v-if="loading" />
     <div class="form-wrap">
       <form class="reset">
@@ -32,7 +32,7 @@ import {
 } from '../firebase/firebase.js'
 // import "firebase/auth"
 import emailIcon from "../components/icons/emailIcon.vue"
-import Modal from "../components/base/Modal.vue"
+import Modal from "../components/dialog/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 
 const store = useStore()
