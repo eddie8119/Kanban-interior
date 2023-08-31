@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full flex-col items-center">
+  <div class="w-full grid grid-cols-1 gap-y-2">
     <div class="flex items-center">
-      <p class="mr-4 px-2 text-sm">施做狀態全部篩選:</p>
+      <p class="mr-4 text-sm">全案狀態篩選:</p>
       <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
         <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
           @click="changeSelectGlobal(list.key)">
@@ -9,11 +9,15 @@
         </option>
       </select>
     </div>
-    <div class="flex">
-      <download-excel :data="json_data">
-        輸出 Excel 報表
-      </download-excel>
-      <button class="ml-2" @click="updateJson()">先刷新資料</button>
+    <div class="flex items-center">
+      <Button type="primary" model="outline" size="sm" rounded="sm">
+        <download-excel :data="json_data">
+          輸出 Excel 報表
+        </download-excel>
+      </Button>
+      <Button class="ml-2" type="primary" model="outline" size="sm" rounded="sm" @click="updateJson()">
+        先刷新資料
+      </Button>
     </div>
   </div>
   <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">

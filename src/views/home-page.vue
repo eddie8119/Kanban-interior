@@ -6,7 +6,7 @@
         <Transition name="fade" mode="out-in">
           <div v-if="!state.is_editing_title">
             <span
-              class="rounded-md px-2 text-3xl font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-slate-200"
+              class="rounded-md text-3xl font-bold transition-all duration-300 ease-in-out hover:cursor-pointer hover:bg-slate-200"
               @click="handleEditTitle('edit')">
               {{ payload.title }} 工程案
             </span>
@@ -18,7 +18,7 @@
               @keypress.enter="handleEditTitle('save')" />
           </div>
         </Transition>
-        <h3 class="my-2 px-2 text-sm">
+        <h3 class="my-2 text-sm">
           上次編輯時間 : {{ payload.last_modified }}
         </h3>
       </div>
