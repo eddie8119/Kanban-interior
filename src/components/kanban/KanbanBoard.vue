@@ -52,12 +52,12 @@
             </div>
             <div class="max-h-[450px] overflow-y-auto">
               <Container group-name="col" class="flex flex-col " @drop="onCardDrop(container.id, $event)"
-              :get-child-payload="getCardPayload(container.id)" drag-handle-selector=".column-drag-handle">
-              <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.key"
-                class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
-                <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
-              </Draggable>
-            </Container>
+                :get-child-payload="getCardPayload(container.id)" drag-handle-selector=".column-drag-handle">
+                <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.key"
+                  class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
+                  <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
+                </Draggable>
+              </Container>
             </div>
 
             <!--  -->
@@ -93,8 +93,7 @@
             </div>
           </div>
         </Draggable>
-        <addContainerArea :is-addingContainer="state.isAddingContainer" @toggleAddContainer='toggleAddContainer'
-          @addContainer="addContainer" @deleteContainer='deleteContainer' />
+        <addContainerArea :is-addingContainer="state.isAddingContainer" @containerHandler='containerHandler' />
       </Container>
     </TransitionGroup>
   </div>
@@ -209,7 +208,8 @@ watch(
     vuello.cards = newValue.cards
     updateJson()
   },
-  { immediate: true }
+  { immediate: true },
+  { deep: true },
 )
 const containerCardLength = (container) => {
   const cardList = container.cardList
@@ -363,8 +363,8 @@ const addCard = (containerId, payload) => {
     title: newCardData.title,
     content: newCardData.content,
     is_editing_card: false,
-    // picture: uploadPreviewImage.value,
-    isDone: false
+    isDone: false,
+    // picture: uploadPreviewImage.value,    
   }
   payload.cardList.push(newCard)
   payload.is_adding_card = false
@@ -385,38 +385,46 @@ const deleteTask = (payload) => {
   cardChangedInitialize()
   addWorkCardOnce.value = true
 }
-// 增加白板
-const addContainer = (newContainerTitle) => {
-  if (!newContainerTitle) return state.isAddingContainer = false
-  const newContainer = {
-    id: Date.now(),
-    key: Date.now(),
-    name: newContainerTitle,
-    is_editing_container: false,
-    is_adding_card: false,
-    selected_done: "all",
-    doneStatus: [
-      {
-        "key": "all"
-      },
-      {
-        "key": "done"
-      },
-      {
-        "key": "undone"
+// 增加白板處理
+const containerHandler = (type, payload) => {
+  switch (type) {
+    case 'toggleAddContainer':
+      state.isAddingContainer = true
+      break
+    case 'deleteContainer':
+      state.isAddingContainer = false
+      break
+    case 'addContainer':
+      state.isAddingContainer = false
+      if (!payload) return state.isAddingContainer = false
+      else {
+        const newContainer = {
+          id: Date.now(),
+          key: Date.now(),
+          name: payload,
+          is_editing_container: false,
+          is_adding_card: false,
+          selected_done: "all",
+          doneStatus: [
+            {
+              "key": "all"
+            },
+            {
+              "key": "done"
+            },
+            {
+              "key": "undone"
+            }
+          ],
+          cardList: [],
+        }
+        vuello.containers.push(newContainer)
+        vuello.last_modified = new Date().toLocaleString('zh-TW')
+        store.dispatch('vuello/setVuello', vuello)
+        state.isAddingContainer = false
       }
-    ]
+      break
   }
-  vuello.containers.push(newContainer)
-  state.isAddingContainer = false
-  cardChangedInitialize()
-}
-const deleteContainer = () => {
-  state.isAddingContainer = false
-  cardChangedInitialize()
-}
-const toggleAddContainer = () => {
-  state.isAddingContainer = true
 }
 
 const cardChangedInitialize = () => {
@@ -449,7 +457,6 @@ const handleKanbanAction = (type, containerId, payload) => {
 const handleEditCard = (type, selectedCard) => {
   switch (type) {
     case 'change':
-      // console.log(1)
       selectedCard.is_editing_card = true
       state.tempCards = vuello.cards.map((card) => ({ ...card }))
       break
