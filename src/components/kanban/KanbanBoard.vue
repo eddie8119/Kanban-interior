@@ -71,7 +71,7 @@
                     <textarea v-model="newCardData.content"
                       class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
                       placeholder="新增內容" />
-                    <input class="" type="file" accept="image/*" @change="uploadFile">
+                    <!-- <input class="" type="file" accept="image/*" @change="uploadFile"> -->
                     <div class="mt-2 flex w-full place-items-center">
                       <Button type="primary" model="outline" size="sm" rounded="sm" class="mt-1">
                         新增待辦
@@ -87,7 +87,7 @@
                 <Button v-if="!container.is_adding_card" type="primary" model="outline" size="sm" rounded="sm"
                   class="mt-1" @click="toggleAddingCard(container)">
                   <PlusIcon height="15px" />
-                  施做項目
+                  施作項目
                 </Button>
               </Transition>
             </div>
@@ -258,6 +258,11 @@ const blurWorkType = (container) => {
   addWorkTypeOnce.value = true
 }
 
+// 編輯任務卡
+const editTaskCardOnce = ref(true)
+const editTaskCardId = ref(null)
+
+
 // 拖放功能
 // const startDragTask = (event, item) => {
 //   event.dataTransfer.dropEffect = 'move'
@@ -369,7 +374,7 @@ const addCard = (containerId, payload) => {
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
-    picture: uploadPreviewImage.value,
+    // picture: uploadPreviewImage.value,
     isDone: false
   }
   payload.cardList.push(newCard)
@@ -454,6 +459,7 @@ const handleKanbanAction = (type, containerId, payload) => {
 const handleEditCard = (type, selectedCard) => {
   switch (type) {
     case 'change':
+      // console.log(1)
       selectedCard.is_editing_card = true
       state.tempCards = vuello.cards.map((card) => ({ ...card }))
       break
