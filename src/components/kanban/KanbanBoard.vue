@@ -53,7 +53,7 @@
             <div class="max-h-[450px] overflow-y-auto">
               <Container group-name="col" class="flex flex-col " @drop="onCardDrop(container.id, $event)"
               :get-child-payload="getCardPayload(container.id)" drag-handle-selector=".column-drag-handle">
-              <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.id"
+              <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.key"
                 class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
                 <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
               </Draggable>
@@ -172,7 +172,7 @@ const newCardData = reactive({
   id_container: null,
   title: null,
   content: null,
-  picture: null,
+  // picture: null,
   created_at: null,
 })
 const state = reactive({
@@ -262,20 +262,6 @@ const blurWorkType = (container) => {
 const editTaskCardOnce = ref(true)
 const editTaskCardId = ref(null)
 
-
-// 拖放功能
-// const startDragTask = (event, item) => {
-//   event.dataTransfer.dropEffect = 'move'
-//   event.dataTransfer.effectAllowed = 'move'
-//   event.dataTransfer.setData('id', item.id)
-// }
-// const dropItem = (event, containerId) => {
-//   const id = event.dataTransfer.getData('id')
-//   const item = vuello.cards.find((card) => card.id == id)
-//   item.id_container = containerId
-//   vuello.last_modified = new Date().toLocaleString('zh-TW')
-//   store.dispatch('vuello/setVuello', vuello)
-// }
 const onColumnDrop = (dropResult) => {
   vuello.containers = applyDrag(vuello.containers, dropResult)
   vuello.last_modified = new Date().toLocaleString('zh-TW')
@@ -292,6 +278,7 @@ const onCardDrop = (columnId, dropResult) => {
       }
     }
     column.cardList = applyDrag(column.cardList, dropResult)
+    vuello.last_modified = new Date().toLocaleString('zh-TW')
     store.dispatch('vuello/setVuello', vuello)
   }
 }
@@ -355,13 +342,13 @@ const handleDeleteCard = (id) => {
   state.isRemovingCard = true
 }
 
-const uploadPreviewImage = reactive({})
-const uploadFile = (e) => {
-  uploadPreviewImage.value = ''
-  const files = e.target.files
-  const file = files[0]
-  uploadPreviewImage.value = { src: URL.createObjectURL(file) };
-}
+// const uploadPreviewImage = reactive({})
+// const uploadFile = (e) => {
+//   uploadPreviewImage.value = ''
+//   const files = e.target.files
+//   const file = files[0]
+//   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
+// }
 
 const addCard = (containerId, payload) => {
   if (!newCardData.title) {
@@ -371,9 +358,11 @@ const addCard = (containerId, payload) => {
   }
   const newCard = {
     id: Date.now(),
+    key: Date.now(),
     id_container: containerId,
     title: newCardData.title,
     content: newCardData.content,
+    is_editing_card: false,
     // picture: uploadPreviewImage.value,
     isDone: false
   }
@@ -401,6 +390,7 @@ const addContainer = (newContainerTitle) => {
   if (!newContainerTitle) return state.isAddingContainer = false
   const newContainer = {
     id: Date.now(),
+    key: Date.now(),
     name: newContainerTitle,
     is_editing_container: false,
     is_adding_card: false,

@@ -62,6 +62,7 @@ onBeforeMount(async () => {
         const cardsHandler = cards.map((item, index) => {
           return {
             id: index,
+            key: index,
             id_container: item.id_container,
             title: item.title,
             content: item.content,
@@ -72,6 +73,7 @@ onBeforeMount(async () => {
         const containersHandler = containers.map((item, index) => {
           return {
             id: index,
+            key: index,
             name: item,
             is_editing_container: false,
             is_adding_card: false,
