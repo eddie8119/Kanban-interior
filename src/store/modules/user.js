@@ -18,7 +18,7 @@ export const user = {
   state() {
     return {
       user: null,
-      userTask: {},
+      userTask: null,
       profileId: null,
       profileEmail: null,
       profileUsername: null,
@@ -30,18 +30,18 @@ export const user = {
     SET_USER(state, payload) {
       state.user = payload
     },
-    SET_USER_TASK(state, doc) {
-      state.userTask = doc.task
-    },
     SET_PROFILE_ID(state, payload) {
       state.profileId = payload
     },
     SET_PROFILE_USERNAME(state, payload) {
       state.profileUsername = payload
     },
-    SET_PROFILE_INFO(state, doc) {
-      state.profileEmail = doc.email
-      state.profileUsername = doc.username
+    SET_USER_TASK(state, dbResults) {
+      state.userTask = dbResults.task
+    },
+    SET_PROFILE_INFO(state, dbResults) {
+      state.profileEmail = dbResults.email
+      state.profileUsername = dbResults.username
     },
     SET_PROFILE_INFO_INIT(state) {
       state.profileEmail = null
@@ -116,10 +116,9 @@ export const user = {
           const dbResults = docSnap.data()
           commit("SET_PROFILE_INFO", dbResults)
           commit("SET_USER_TASK", dbResults)
-
-          console.log(state.profileUsername)
-          console.log(state.profileEmail)
-          console.log(state.userTask)
+          // console.log(state.profileUsername)
+          // console.log(state.profileEmail)
+          // console.log(state.userTask)
 
         } else {
           await router.replace('/')
