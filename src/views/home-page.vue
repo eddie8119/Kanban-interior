@@ -1,4 +1,4 @@
-<template>  
+<template>
   <Loading v-if="loading" />
   <div v-if="payload" class="flex h-screen flex-col p-4">
     <div class="flex justify-between ">
@@ -15,7 +15,7 @@
             <input ref="projectTitleInput" v-model="payload.title" type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
               placeholder="取名工程案" @focus="$event.target.select()" @blur="state.is_editing_title = false"
-              @keypress.enter="handleEditTitle('save')" />
+              @change="handleEditTitle('save')" @touchmove="handleEditTitle('save')" />
           </div>
         </Transition>
         <h3 class="my-2 text-sm">
@@ -96,6 +96,7 @@ onBeforeMount(async () => {
 
         data.cards = cardsHandler
         data.containers = containersHandler
+        data.last_modified = new Date().toLocaleString('zh-TW')
         store.dispatch('vuello/setVuello', data)
       })
   } else {
@@ -105,21 +106,19 @@ onBeforeMount(async () => {
 })
 
 const handleEditTitle = (type) => {
-  if (type === 'edit') {
-    state.is_editing_title = true
-    state.temp_title = payload.value.title
-    const inputElement = projectTitleInput.value;
-    inputElement.focus();
-    inputElement.select();
-  } else if (type === 'save') {
-    payload.value.last_modified = new Date().toLocaleString('zh-TW')
-    store.dispatch('vuello/setVuello', payload.value)
-    state.is_editing_title = false
-  } else {    
-    payload.value.title = state.temp_title
-    payload.value.last_modified = new Date().toLocaleString('zh-TW')
-    store.dispatch('vuello/setVuello', payload.value)
-    state.is_editing_title = false
+  switch (type) {
+    case 'edit':
+      state.is_editing_title = true
+      state.temp_title = payload.value.title
+      const inputElement = projectTitleInput.value
+      inputElement.focus()
+      inputElement.select()
+      break
+    case 'save':
+      payload.value.last_modified = new Date().toLocaleString('zh-TW')
+      store.dispatch('vuello/setVuello', payload.value)
+      state.is_editing_title = false
+      break
   }
 }
 </script>
