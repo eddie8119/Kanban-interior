@@ -37,7 +37,7 @@ export const user = {
       state.profileUsername = payload
     },
     SET_USER_TASK(state, dbResults) {
-      state.userTask = dbResults.task
+      // state.userTask = dbResults.task
     },
     SET_PROFILE_INFO(state, dbResults) {
       state.profileEmail = dbResults.email

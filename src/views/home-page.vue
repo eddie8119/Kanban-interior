@@ -1,7 +1,7 @@
 <template>
   <Loading v-if="loading" />
-  <div v-if="payload" class="flex h-screen flex-col p-4">
-    <div class="flex justify-between ">
+  <div v-if="payload" class="w-full flex-col p-4 ">
+    <div class="flex justify-between">
       <div>
         <Transition name="fade" mode="out-in">
           <div v-if="!state.is_editing_title">
@@ -23,7 +23,7 @@
         </h3>
       </div>
     </div>
-    <KanbanBoard :payload="payload" @addContainer="displayContainerModal = true" />
+    <KanbanBoard :payload="payload" />
   </div>
   <!-- Container Modal -->
   <ContainerModal :value="displayContainerModal" @close="displayContainerModal = false" />
