@@ -9,7 +9,7 @@
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
           <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
-          <a class="link" role="link" href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:"
+          <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影
           </a>
