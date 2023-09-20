@@ -2,12 +2,12 @@
   <div class="profile">
     <!-- <Modal v-if="modalActive" :modalMessage="modalMessage" v-on:close-modal="closeModal" /> -->
     <div class="container">
-      <h2>Account Settings</h2>
+      <h2>帳號設定</h2>
       <div class="profile-info">
         <div class="initials">{{ $store.state.profileInitials }}</div>
         <div class="admin-badge">
           <adminIcon class="icon" />
-          <span>admin</span>
+          <span>管理</span>
         </div>
         <div class="input">
           <label for="username">名稱:</label>

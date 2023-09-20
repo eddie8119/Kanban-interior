@@ -5,18 +5,18 @@
     <div class="form-wrap">
       <form class="reset">
         <p class="login-register">
-          Back to
-          <router-link class="router-link" :to="{ name: 'Login' }">Login</router-link>
+          返回
+          <router-link class="router-link" :to="{ name: 'Login' }">登入</router-link>
         </p>
-        <h2>Reset Password</h2>
-        <p>Forgot your passowrd? Enter your email to reset it</p>
+        <h2>重新設密碼</h2>
+        <p>忘記密碼了嗎？ 輸入您的電子郵件以重置它</p>
         <div class="inputs">
           <div class="input">
             <input type="text" placeholder="Email" v-model="email" />
             <emailIcon class="icon" />
           </div>
         </div>
-        <button @click.prevent="resetPassword">Reset</button>
+        <button @click.prevent="resetPassword">重置</button>
         <div class="angle"></div>
       </form>
       <div class="background"></div>
