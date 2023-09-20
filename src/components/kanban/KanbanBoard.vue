@@ -132,7 +132,7 @@ const props = defineProps({
   },
 })
 //select區
-const selectedGlobal = ref("全部")
+const selectedGlobal = ref("all")
 const doneStatusListGlobal = reactive([
   {
     key: "all",
@@ -148,7 +148,6 @@ const doneStatusListGlobal = reactive([
   }
 ])
 const changeSelectGlobal = (value) => {
-  selectedGlobal.value = value
   vuello.containers.map(container => container.selected_done = value)
 }
 const changeSelect = (container, value) => {
