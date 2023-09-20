@@ -1,7 +1,7 @@
 <template>
   <div id="app" @click="clearMenu">
     <Navigation />
-    <div class="pt-[70px]">
+    <div class="pt-[70px] h-[100vh]">
       <router-view />
     </div>
     <!-- <Copyright /> -->

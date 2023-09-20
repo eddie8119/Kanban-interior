@@ -16,8 +16,8 @@
         <div class="flex">
           <SaveIcon height="30px" class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
             @click="handleEditCard('save', card)" />
-          <CloseIcon height="30px" class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-            @click="handleEditCard('cancel', card)" />
+          <!-- <CloseIcon height="30px" class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
+            @click="handleEditCard('cancel', card)" /> -->
         </div>
       </div>
     </div>

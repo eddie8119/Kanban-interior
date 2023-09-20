@@ -99,11 +99,14 @@
   </div>
 
   <!-- Confirmation Modal -->
-  <ConfirmationModal :value="state.isRemovingContainer" @confirm="deleteDialog('container')"
+  <ConfirmationModal :value="state.isRemovingContainer" 
+    @confirm="deleteDialog('container')"
     @close="state.isRemovingContainer = false">
     本欄位和之中的卡片將會一併刪除，確認嗎?
   </ConfirmationModal>
-  <ConfirmationModal :value="state.isRemovingCard" @confirm="deleteDialog('card')" @close="state.isRemovingCard = false">
+  <ConfirmationModal :value="state.isRemovingCard" 
+    @confirm="deleteDialog('card')" 
+    @close="state.isRemovingCard = false">
     確認刪除此項施做卡片?
   </ConfirmationModal>
 </template>
@@ -170,13 +173,12 @@ const newCardData = reactive({
   id_container: null,
   title: null,
   content: null,
-  // picture: null,
-  created_at: null,
 })
 const state = reactive({
   isDraggable: false,
   isAddingContainer: false,
   isRemovingContainer: false,
+  isAddingCard: false,
   isRemovingCard: false,
   selectedContainerId: null,
   selectedCardId: null,
@@ -295,10 +297,18 @@ const deleteDialog = (type) => {
     vuello.cards = vuello.cards.filter(
       (card) => card.id_container !== state.selectedContainerId
     )
-  } else {
+  }
+  if (type === 'card') {    
     vuello.cards = vuello.cards.filter(
       (card) => card.id !== state.selectedCardId
     )
+    vuello.containers.forEach(
+      (item) => {        
+        item.cardList = item.cardList.filter(
+        (card) => card.id !== state.selectedCardId
+      )
+      }
+    )       
   }
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
@@ -349,9 +359,9 @@ const handleDeleteCard = (id) => {
 //   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
 // }
 
-const addCard = (containerId, payload) => {
+const addCard = (containerId, container) => {
   if (!newCardData.title) {
-    payload.is_adding_card = false
+    container.is_adding_card = false
     addWorkCardOnce.value = true
     return
   }
@@ -362,18 +372,23 @@ const addCard = (containerId, payload) => {
     title: newCardData.title,
     content: newCardData.content,
     is_editing_card: false,
-    isDone: false,
-    // picture: uploadPreviewImage.value,    
+    isDone: false,  
   }
-  payload.cardList.push(newCard)
-  payload.is_adding_card = false
-  if (payload) {
-    payload.is_editing_container
-      ? (payload.is_editing_container = false)
-      : (payload.is_editing_card = false)
+
+  vuello.cards.push(newCard)
+  vuello.containers.map( item => {
+    if(item.id === containerId){
+      return item.cardList.push(newCard)
+    }
+  })  
+  if (container) {
+    container.is_editing_container
+      ? (container.is_editing_container = false)
+      : (container.is_editing_card = false)
   }
   cardChangedInitialize()
   addWorkCardOnce.value = true
+  container.is_adding_card = false
 }
 const leaveAddCard = () => {
   payload.is_adding_card = false

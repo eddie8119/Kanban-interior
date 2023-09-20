@@ -1,8 +1,5 @@
 <template>
-  <Container
-    >
-
-  </Container>
+  <Container></Container>
 </template>
 
 <script>
