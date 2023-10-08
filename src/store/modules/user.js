@@ -23,6 +23,7 @@ export const user = {
       profileEmail: null,
       profileUsername: null,
       profileInitials: null,
+      checkLogin: false,
     }
   },
 
@@ -48,45 +49,59 @@ export const user = {
       state.profileUsername = null
     },
     SET_PROFILE_INITIALS(state) {
-      state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join("")
+      state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join('')
+    },
+    SET_CHECKLOGIN(state, payload) {
+      state.checkLogin = payload
     },
   },
 
   actions: {
-    async registerUser({ }, payload) {
+    async registerUser({}, payload) {
       const { formData, data } = payload
-      await createUserWithEmailAndPassword(fbAuth, formData.email, formData.password)
+      await createUserWithEmailAndPassword(
+        fbAuth,
+        formData.email,
+        formData.password
+      )
         .then((res) => {
           if (res) {
             const userId = fbAuth.currentUser.uid
             try {
-              setDoc(doc(db, "users", userId), {
+              setDoc(doc(db, 'users', userId), {
                 username: formData.username,
                 password: formData.password,
                 email: formData.email,
-                task: data
+                task: data,
               })
             } catch (err) {
-              alert("創建帳號失敗:", err)
+              alert('創建帳號失敗:', err)
             }
           }
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.code === 'auth/email-already-in-use') {
-            alert("此Email已經註冊")
+            alert('此Email已經註冊')
           }
         })
     },
-    loginUser(state, payload) {
-      signInWithEmailAndPassword(fbAuth, payload.email, payload.password)
-        .then(async res => {
+    async loginUser(state, payload) {
+      const router = useRouter()
+      await signInWithEmailAndPassword(fbAuth, payload.email, payload.password)
+        .then(async (res) => {
           if (res) {
-            alert("登入成功")
+            if (res.user.uid) {
+              alert('登入成功')
+              commit('SET_CHECKLOGIN', true)
+            }
           }
         })
-        .catch(err => {
-          if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-            alert("無效憑證")
+        .catch((err) => {
+          if (
+            err.code === 'auth/user-not-found' ||
+            err.code === 'auth/wrong-password'
+          ) {
+            alert('無效憑證, 在確認一次輸入')
           }
         })
     },
@@ -94,42 +109,39 @@ export const user = {
       await signOut(fbAuth)
         .then(() => {
           const userId = fbAuth.currentUser.uid
-          setDoc(doc(db, "users", userId), {
+          setDoc(doc(db, 'users', userId), {
             // data
           })
 
-          dispatch("cleanInfo")
+          dispatch('cleanInfo')
         })
         .catch((err) => {
           console.log(err.message)
         })
-      alert("帳號成功登出")
+      alert('帳號成功登出')
     },
     handleAuthStateChanged({ commit, dispatch, state }) {
-      console.log("handleAuthStateChanged")
+      // console.log('handleAuthStateChanged')
       const router = useRouter()
       onAuthStateChanged(fbAuth, async (user) => {
         if (user) {
-          commit("SET_USER", user)
-          commit("SET_PROFILE_ID", user.uid)
-          const docSnap = await getDoc(doc(db, "users", user.uid))
+          commit('SET_USER', user)
+          commit('SET_PROFILE_ID', user.uid)
+          const docSnap = await getDoc(doc(db, 'users', user.uid))
           const dbResults = docSnap.data()
-          commit("SET_PROFILE_INFO", dbResults)
-          commit("SET_USER_TASK", dbResults)
-          // console.log(state.profileUsername)
-          // console.log(state.profileEmail)
-          // console.log(state.userTask)
-
+          commit('SET_PROFILE_INFO', dbResults)
+          commit('SET_USER_TASK', dbResults)
         } else {
           await router.replace('/')
-          dispatch("cleanInfo")
+          dispatch('cleanInfo')
         }
       })
     },
     async cleanInfo({ commit }) {
-      commit("SET_USER", null)
+      commit('SET_USER', null)
       commit('SET_PROFILE_INFO_INIT')
       commit('SET_USER_TASK', null)
+      commit('SET_CHECKLOGIN', false)
     },
     async updateUserSettings({ commit, state }) {
       // const docRef = doc(db, "users", state.profileId)
@@ -160,5 +172,8 @@ export const user = {
     getProfileInitials(state) {
       return state.profileInitials
     },
-  }
+    getCheckLogin(state) {
+      return state.checkLogin
+    },
+  },
 }
