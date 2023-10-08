@@ -16,8 +16,6 @@
         <div class="flex">
           <SaveIcon height="30px" class="mr-2 cursor-pointer rounded-full bg-blue-500 p-1 text-white hover:bg-blue-700"
             @click="handleEditCard('save', card)" />
-          <!-- <CloseIcon height="30px" class="cursor-pointer rounded-full p-1 text-red-500 hover:bg-red-600 hover:text-white"
-            @click="handleEditCard('cancel', card)" /> -->
         </div>
       </div>
     </div>
@@ -34,7 +32,7 @@
               class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
               @click.stop="" />
           </div>
-          <div class="max-h-[60px] overflow-hidden">
+          <div class="max-h-[60px] overflow-y-auto">
             <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
           </div>
         </div>

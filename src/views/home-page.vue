@@ -14,7 +14,7 @@
           <div v-else class="flex place-items-center">
             <input ref="projectTitleInput" v-model="payload.title" type="text"
               class="block w-[230px] rounded-lg border border-gray-300 bg-gray-50 p-2 text-xl text-gray-900 transition duration-300 ease-in-out focus:border-blue-500 focus:ring-blue-500"
-              placeholder="取名工程案" @focus="$event.target.select()" @blur="state.is_editing_title = false"
+              placeholder="工程案取名" @focus="$event.target.select()" @blur="state.is_editing_title = false"
               @change="handleEditTitle('save')" @touchmove="handleEditTitle('save')" />
           </div>
         </Transition>
@@ -55,7 +55,7 @@ onBeforeMount(async () => {
   loading.value = true
   // const data = JSON.parse(localStorage.getItem('myTask'))
   const data = store.getters['vuello/getVuelloDatas']
-  if (!data) {
+  if (data) {
     await axios.get('/sample-data.json')
       .then(({ data }) => {
         const { containers, cards } = data

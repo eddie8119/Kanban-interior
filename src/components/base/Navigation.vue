@@ -11,7 +11,7 @@
           <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
-            室內攝影
+            室內攝影服務
           </a>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
@@ -58,7 +58,7 @@
               <div class="option">
                 <router-link class="option" :to="{ name: 'Profile' }">
                   <userIcon class="icon" />
-                  <p>Profile</p>
+                  <p>個人資料</p>
                 </router-link>
               </div>
               <!-- <div v-if="admin" class="option">
@@ -94,7 +94,7 @@
         <router-link class="py-[15px]" :to="{ name: 'Home' }">工進手帳</router-link>
         <a class="py-[15px]" role="link"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
-          網站意見
+          網站意見反饋
         </a>
         <a class="py-[15px]" role="link"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
