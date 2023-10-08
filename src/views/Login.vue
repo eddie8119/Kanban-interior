@@ -16,7 +16,7 @@
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
-      <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">忘記你的密碼?</router-link>
+      <!-- <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"><span class="text-funsugarMain">忘記</span> 你的密碼?</router-link> -->
       <button class="btn-style" @click.prevent="login">登入</button>
       <div class="angle"></div>
     </form>

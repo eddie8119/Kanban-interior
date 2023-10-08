@@ -59,12 +59,12 @@
               </div>
             </div>
             <div class="options">
-              <div class="option">
+              <!-- <div class="option">
                 <router-link class="option" :to="{ name: 'Profile' }">
                   <userIcon class="icon" />
                   <p>個人資料</p>
                 </router-link>
-              </div>
+              </div> -->
               <!-- <div v-if="admin" class="option">
                 <router-link class="option" :to="{ name: '' }">                  
                   <p>Admin</p>
