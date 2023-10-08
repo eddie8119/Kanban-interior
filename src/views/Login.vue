@@ -30,6 +30,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import emailIcon from "../components/icons/emailIcon.vue"
 import passwordIcon from "../components/icons/passwordIcon.vue"
+import { fbAuth } from '../firebase/firebase'
 
 const store = useStore()
 const router = useRouter()
@@ -39,10 +40,13 @@ const formData = reactive({
 })
 const error = ref(null)
 const errorMsg = ref('')
+const user = computed(() => store.getters['user/getUser'])
 
 const login = async () => {
-  await store.dispatch('user/loginUser', formData)
-  router.replace("/")
+  await store.dispatch('user/loginUser', formData).then(res => console.log(res)) 
+  if(fbAuth.currentUser){
+    router.replace("/")
+  }
 }
 
 </script>
