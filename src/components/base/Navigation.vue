@@ -15,7 +15,7 @@
           </a> 
           <a class="link" role="link" href="https://tanxin.space/"
             target="_blank">
-            室內官網服務
+            室內網站服務
           </a>         
           <router-link v-if="!user" class="btn-style" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
@@ -103,7 +103,7 @@
         </a>  
         <a class="mobileNav-link" role="link" href="https://tanxin.space/"
             target="_blank">
-            室內官網服務
+            室內網站服務
         </a>  
         <a class="mobileNav-link" role="link"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">

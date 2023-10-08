@@ -26,7 +26,7 @@
     <KanbanBoard :payload="payload" />
   </div>
   <!-- Container Modal -->
-  <ContainerModal :value="displayContainerModal" @close="displayContainerModal = false" />
+  <ContainerModal :value="displayContainerModal" @closeContainerModal="closeContainerModal" />
 </template>
 
 <script setup>
@@ -40,7 +40,7 @@ import Loading from '@/components/base/Loading.vue'
 
 const store = useStore()
 
-const displayContainerModal = ref(false)
+const displayContainerModal = ref(true)
 const state = reactive({
   is_editing_title: false,
   temp_title: null,
@@ -55,7 +55,7 @@ onBeforeMount(async () => {
   loading.value = true
   // const data = JSON.parse(localStorage.getItem('myTask'))
   const data = store.getters['vuello/getVuelloDatas']
-  if (data) {
+  if (!data) {
     await axios.get('/sample-data.json')
       .then(({ data }) => {
         const { containers, cards } = data
@@ -122,6 +122,10 @@ const handleEditTitle = (type) => {
       state.is_editing_title = false
       break
   }
+}
+
+const closeContainerModal = () =>{
+  displayContainerModal.value = false
 }
 </script>
 
