@@ -7,13 +7,17 @@
           :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
       <div class="nav-links flex items-center justify-end">
-        <ul v-show="device !== 'mobile'" class="flex font-medium mr-[32px]">
+        <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">
           <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影服務
-          </a>
-          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">登入/註冊</router-link>
+          </a> 
+          <a class="link" role="link" href="https://tanxin.space/"
+            target="_blank">
+            室內官網服務
+          </a>         
+          <router-link v-if="!user" class="btn-style" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
         <div v-if="user" :class="[device === 'mobile' ? 'mr-[40px]' : '']" @click="toggleProfileMenu" class="               
         relative
@@ -81,27 +85,31 @@
       <ul class="mobile-nav 
       top-0
       left-0
-      w-[70%]
+      w-[65%]
       h-full
       fixed
       flex flex-col     
       max-w-[250px]
-      text-[#fff]
-      bg-main 
+      text-main
+      bg-[#f3f3f3]
+      rounded-r-[20px]
       p-[20px] 
       z-[10] 
       " v-show="mobileNav">
-        <router-link class="py-[15px]" :to="{ name: 'Home' }">工進手帳</router-link>
-        <a class="py-[15px]" role="link"
+        <router-link class="mobileNav-link " :to="{ name: 'Home' }">室內工地手帳</router-link>
+        <a class="mobileNav-link" role="link"
+          href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
+          室內攝影服務
+        </a>  
+        <a class="mobileNav-link" role="link" href="https://tanxin.space/"
+            target="_blank">
+            室內官網服務
+        </a>  
+        <a class="mobileNav-link" role="link"
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
           網站意見反饋
-        </a>
-        <a class="py-[15px]" role="link"
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
-          室內攝影服務
-        </a>
-        <!-- <router-link v-if="admin" class="link" :to="{ name: '' }">Create Post</router-link> -->
-        <router-link v-if="!user" class="py-[15px]" :to="{ name: 'Login' }">登入/註冊</router-link>
+        </a> 
+        <router-link v-if="!user" class="btn-style text-center" :to="{ name: 'Login' }">登入/註冊</router-link>
       </ul>
     </transition>
   </header>
@@ -150,6 +158,7 @@ watch(windowWidth, () => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/identityForm.scss";
 .box-shadow {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -157,6 +166,11 @@ watch(windowWidth, () => {
 .link {
   @apply px-[8px] hover:text-funsugarMain duration-300;
 }
+
+.mobileNav-link {
+  @apply text-center py-[15px] hover:text-funsugarMain duration-300;
+}
+
 
 
 .nav-links {
