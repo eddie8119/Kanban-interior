@@ -91,12 +91,12 @@
       flex flex-col     
       max-w-[250px]
       text-main
-      bg-[#f3f3f3]
+      bg-main-gray
       rounded-r-[20px]
       p-[20px] 
       z-[10] 
       " v-show="mobileNav">
-        <router-link class="mobileNav-link " :to="{ name: 'Home' }">室內工地手帳</router-link>
+        <router-link class="mobileNav-link " :to="{ name: 'Home' }" @click="toggleMobileNav">室內工地手帳</router-link>
         <a class="mobileNav-link" role="link"
           href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
           室內攝影服務
@@ -109,7 +109,7 @@
           href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
           網站意見反饋
         </a> 
-        <router-link v-if="!user" class="btn-style text-center" :to="{ name: 'Login' }">登入/註冊</router-link>
+        <router-link v-if="!user" class="btn-style text-center" :to="{ name: 'Login' }" @click="toggleMobileNav">登入/註冊</router-link>
       </ul>
     </transition>
   </header>

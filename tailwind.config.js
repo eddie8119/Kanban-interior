@@ -1,3 +1,4 @@
+const { gray } = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
@@ -20,12 +21,13 @@ module.exports = {
     extend: {
       colors: {
         main: '#303030',
+        'main-gray': '#f3f3f3',
         funsugarMain: '#ffcc00',
       },
       minHeight: {
         innerPage: 'calc(100vh-70px)',
-        'innerPage-mobile': 'calc(100vh - 106px)'
+        'innerPage-mobile': 'calc(100vh - 106px)',
       },
-    }
-  }
+    },
+  },
 }

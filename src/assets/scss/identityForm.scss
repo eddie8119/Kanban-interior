@@ -11,7 +11,7 @@
       .input {  
         @apply relative w-full flex items-center justify-center mb-[8px] ; 
         input {
-          @apply w-full h-[50px]  border-none bg-[#f2f7f6] p-[4px] pl-[30px]; 
+          @apply rounded-lg w-full h-[50px]  border-none bg-main-gray p-[4px] pl-[30px]; 
           &:focus {
             outline: none;
           }
