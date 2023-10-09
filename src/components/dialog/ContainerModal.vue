@@ -6,7 +6,7 @@
         <div class="relative rounded-lg bg-white shadow">
           <div class="flex items-center justify-between rounded-t border-b p-5">
             <h3 class="text-xl font-semibold text-gray-900">
-              室內工地手帳 | 最少幫設計師省 3000 元
+              室內工地手帳 | 要幫室內設計師省 3000 元
             </h3>
             <div class="flex justify-end p-2">
               <button type="button"
@@ -18,15 +18,19 @@
           </div>
           <div class="space-y-6 p-6 max-h-[300px] overflow-auto">
             <p class="text-base leading-relaxed text-gray-500">
-              使用方式: <br>
+              為什麼能幫你省 3000 : <br>
+              在工地有時自己一個遺漏，至少就是一個點工 3000 起跳，
+              若是還有材料費，另一個工種的點工...。都是公司額外的成本負擔。
+              「室內工地手帳」就是要便於你紀錄提醒，希望能幫每個設計師，大大減少遺漏工項的機會。
+            </p>
+            <p class="text-base leading-relaxed text-gray-500">
+              使用操作方式 : <br>
               可以在桌機與手機上直接使用，您記錄的資料只會獨立存在該機器上。如果你想要在
               辦公室使用電腦，在工地使用手機彼此資料可以互通的話，就需要註冊帳號。          
             </p>
             <p class="text-base leading-relaxed text-gray-500">
-              為什麼能幫你省 3000: <br>
-              在工地有時自己一個漏掉，就是至少要點一個工，300起跳了，
-              更不用說可能還有材料費，另一個工種的點工...。都是公司衍伸的成本負擔。
-              「 室內工地手帳」便於你紀錄提醒，希望能幫每個設計師，大大減少遺漏工項的機會。
+              本手帳網站紀錄 : <br>
+              2023 / 10 : 測試版上線，提供第一線設計師體驗，歡迎設計師 email 交流。  
             </p>
           </div>
           <div class="flex items-center justify-end space-x-2 rounded-b border-t border-gray-200 px-6 py-4">
