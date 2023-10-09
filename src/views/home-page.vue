@@ -51,12 +51,18 @@ const projectTitleInput = ref(null)
 const loading = ref(false)
 
 const payload = computed(() => store.getters['vuello/getVuelloDatas'])
-const getUser = computed(() => store.getters['vuello/getUser'])
+const getUser = computed(() => store.getters['user/getUser'])
+const getUserTask = computed(() => store.getters['user/getUserTask'])
 
 onBeforeMount(async () => {
   loading.value = true
-  // const data = JSON.parse(localStorage.getItem('myTask'))
-  const data = store.getters['vuello/getVuelloDatas']
+  
+  let data = undefined  
+  if(getUserTask.value) {
+    data = store.getters['user/getUserTask']
+  } else {
+    data = store.getters['vuello/getVuelloDatas']
+  }
   if (!data) {
     await axios.get('/sample-data.json')
       .then(({ data }) => {

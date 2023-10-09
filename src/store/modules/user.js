@@ -38,7 +38,7 @@ export const user = {
       state.profileUsername = payload
     },
     SET_USER_TASK(state, dbResults) {
-      // state.userTask = dbResults.task
+      state.userTask = dbResults.task
     },
     SET_PROFILE_INFO(state, dbResults) {
       state.profileEmail = dbResults.email
@@ -47,6 +47,7 @@ export const user = {
     SET_PROFILE_INFO_INIT(state) {
       state.profileEmail = null
       state.profileUsername = null
+      state.userTask = null
     },
     SET_PROFILE_INITIALS(state) {
       state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join('')
@@ -124,7 +125,6 @@ export const user = {
         })
     },
     handleAuthStateChanged({ commit, dispatch, state }) {
-      // console.log('handleAuthStateChanged')
       const router = useRouter()
       onAuthStateChanged(fbAuth, async (user) => {
         if (user) {
@@ -143,7 +143,7 @@ export const user = {
     async cleanInfo({ commit }) {
       commit('SET_USER', null)
       commit('SET_PROFILE_INFO_INIT')
-      commit('SET_USER_TASK', null)
+      commit('SET_PROFILE_ID', null)
       commit('SET_CHECKAUTHENTICATION', false)
     },
     async updateUserSettings({ commit, state }) {
