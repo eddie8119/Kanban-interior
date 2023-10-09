@@ -1,4 +1,4 @@
-import {initializeApp} from "firebase/app";
+import { initializeApp } from 'firebase/app'
 import {
   getFirestore,
   collection,
@@ -13,7 +13,7 @@ import {
   orderBy,
   onSnapshot,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
 } from 'firebase/firestore'
 import {
   getAuth,
@@ -21,30 +21,33 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  sendPasswordResetEmail
-} from "firebase/auth";
+  sendPasswordResetEmail,
+} from 'firebase/auth'
 
 var firebaseConfig = {
-  apiKey: "AIzaSyDZE5297XjsKrSTqQN8bMecu4SRqG3e1W8",
-  authDomain: "vue-fire-auth-a07e3.firebaseapp.com",
-  databaseURL: "https://vue-fire-auth-a07e3-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "vue-fire-auth-a07e3",
-  storageBucket: "vue-fire-auth-a07e3.appspot.com",
-  messagingSenderId: "72244899703",
-  appId: "1:72244899703:web:53c290b8844648886b7b72"
-};
+  apiKey: 'AIzaSyBjYSRdoP0-MLmEumELc5FUn91vfB5hl_I',
+  authDomain: 'interior-construction-helper.firebaseapp.com',
+  projectId: 'interior-construction-helper',
+  storageBucket: 'interior-construction-helper.appspot.com',
+  messagingSenderId: '458434206018',
+  appId: '1:458434206018:web:9e41b80ef50ab7cd6650db',
+}
 
-const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig)
 
 const fbAuth = getAuth(firebaseApp)
 const db = getFirestore(firebaseApp)
 
 fbAuth.getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(fbAuth, user => {
-      unsubscribe();
-      resolve(user);
-    }, reject);
+    const unsubscribe = onAuthStateChanged(
+      fbAuth,
+      (user) => {
+        unsubscribe()
+        resolve(user)
+      },
+      reject
+    )
   })
 }
 
