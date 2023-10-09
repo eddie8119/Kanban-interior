@@ -40,14 +40,23 @@ const formData = reactive({
 const error = ref(null)
 const errorMsg = ref('')
 const user = computed(() => store.getters['user/getUser'])
-const checkLogin = computed(() => store.getters['user/getCheckLogin'])
-
+const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
 
 const login = async () => {
-  await store.dispatch('user/loginUser', formData)
-  .then(() => {
-    if (checkLogin) router.replace("/")
-  })  
+  if (
+    formData.email !== '' &&
+    formData.password !== ''
+  ) {
+    error.value = false
+    errorMsg.value = ''    
+    await store.dispatch('user/loginUser', formData)
+    .then(() => {
+      if (checkAuthentication) router.replace("/")
+    }) 
+  } else {
+    error.value = true
+    errorMsg.value = '請填完所有表格'
+  } 
 }
 
 </script>

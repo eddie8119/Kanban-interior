@@ -44,6 +44,7 @@ const formData = reactive({
 })
 const error = ref(null)
 const errorMsg = ref('')
+const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
 
 const register = async() => {
   if (
@@ -55,7 +56,7 @@ const register = async() => {
     errorMsg.value = ''    
     const data = store.getters['vuello/getVuelloDatas']   
     await store.dispatch('user/registerUser', {formData, data}).then(() => {
-      // router.replace("/")
+      if (checkAuthentication) router.replace("/")
     })        
   } else {
     error.value = true
