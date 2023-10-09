@@ -27,7 +27,7 @@
         w-[40px]
         h-[40px]
         text-[#fff]
-        bg-main
+        bg-main       
         hover:bg-funsugarMain
         duration-300
         rounded-full
@@ -81,7 +81,7 @@
       <menuIcon v-show="device === 'mobile'" class=" absolute   right-[25px] h-[25px] cursor-pointer"
         @click="toggleMobileNav" />
     </nav>
-    <transition name="mobile-nav">
+    <transition name="mobile-nav" class="box-shadow" @click="toggleMobileNav">
       <ul class="mobile-nav 
       top-0
       left-0
@@ -96,7 +96,7 @@
       p-[20px] 
       z-[10] 
       " v-show="mobileNav">
-        <router-link class="mobileNav-link " :to="{ name: 'Home' }" @click="toggleMobileNav">室內工地手帳</router-link>
+        <router-link class="mobileNav-link " :to="{ name: 'Home' }">室內工地手帳</router-link>
         <a class="mobileNav-link" role="link"
           href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
           室內攝影服務
