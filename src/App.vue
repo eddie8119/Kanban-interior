@@ -3,8 +3,7 @@
     <Navigation />
     <div class="pt-[70px] h-[100vh]">
       <router-view />
-    </div>
-    <!-- <Copyright /> -->
+    </div>    
     <!-- <transition name="fade" mode="out-in">
       <ActionResponse :dialogData="getAlertDialog.dialogData" @closeAlert="closeAlertDialog"></ActionResponse>
     </transition> -->
@@ -13,7 +12,6 @@
 
 <script>
 import Navigation from "./components/base/Navigation.vue"
-import Copyright from "./components/base/Copyright.vue"
 import { defineComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
 
@@ -22,7 +20,7 @@ import ActionResponse from "@/components/dialog/ActionRespon.vue"
 // import Modal from "@/components/dialog/Modal.vue"
 
 export default {
-  components: { Navigation, Copyright, ActionResponse },
+  components: { Navigation, ActionResponse },
   methods: {
     ...mapActions(['handleAuthStateChanged'])
   },
@@ -62,10 +60,6 @@ export default {
     closeModal() {
       this.$store.commit("app/SET_ALERT_DIALOG", false)
     },
-    checkRoute(){      
-      if (this.$route.path === "/") true
-      else false
-    }
   }
 }
 </script>

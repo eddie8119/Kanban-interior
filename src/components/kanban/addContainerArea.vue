@@ -21,7 +21,7 @@
         <Button type="primary" model="outline" size="sm" rounded="sm"
           @click="containerHandler('toggleAddContainer', null)">
           <PlusIcon height="15px" />
-          新增工程類種
+          新增工程種類
         </Button>
       </Transition>
     </div>

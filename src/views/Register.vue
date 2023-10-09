@@ -42,12 +42,10 @@ const formData = reactive({
   email: 'demo@gmail.com',
   password: '123123'
 })
-
 const error = ref(null)
 const errorMsg = ref('')
 
-
-const register = () => {
+const register = async() => {
   if (
     formData.email !== '' &&
     formData.password !== '' &&
@@ -56,8 +54,9 @@ const register = () => {
     error.value = false
     errorMsg.value = ''    
     const data = store.getters['vuello/getVuelloDatas']   
-    store.dispatch('user/registerUser', {formData, data})    
-    router.replace("/")
+    await store.dispatch('user/registerUser', {formData, data}).then(() => {
+      // router.replace("/")
+    })        
   } else {
     error.value = true
     errorMsg.value = '請填完所有表格'
