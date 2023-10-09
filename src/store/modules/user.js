@@ -23,7 +23,7 @@ export const user = {
       profileEmail: null,
       profileUsername: null,
       profileInitials: null,
-      checkLogin: false,
+      checkAuthentication: false,
     }
   },
 
@@ -51,8 +51,8 @@ export const user = {
     SET_PROFILE_INITIALS(state) {
       state.profileInitials = state.profileUsername.match(/(\b\S)?/g).join('')
     },
-    SET_CHECKLOGIN(state, payload) {
-      state.checkLogin = payload
+    SET_CHECKAUTHENTICATION(state, payload) {
+      state.checkAuthentication = payload
     },
   },
 
@@ -77,6 +77,8 @@ export const user = {
             } catch (err) {
               alert('創建帳號失敗:', err)
             }
+            alert('註冊成功')
+            commit('SET_CHECKAUTHENTICATION', true)
           }
         })
         .catch((error) => {
@@ -89,11 +91,11 @@ export const user = {
       const router = useRouter()
       await signInWithEmailAndPassword(fbAuth, payload.email, payload.password)
         .then(async (res) => {
-          if (res) {
-            if (res.user.uid) {
-              alert('登入成功')
-              commit('SET_CHECKLOGIN', true)
-            }
+          if (res.user.uid) {
+            alert('登入成功')
+            commit('SET_CHECKAUTHENTICATION', true)
+          } else {
+            alert('尚未登入')
           }
         })
         .catch((err) => {
@@ -105,20 +107,21 @@ export const user = {
           }
         })
     },
-    async logoutUser({ dispatch }) {
+    async logoutUser({ dispatch }, payload) {
+      const { data } = payload
+      const userId = fbAuth.currentUser.uid
+      const userDocRef = doc(db, 'users', userId)
+      await updateDoc(userDocRef, {
+        task: data,
+      })
       await signOut(fbAuth)
         .then(() => {
-          const userId = fbAuth.currentUser.uid
-          setDoc(doc(db, 'users', userId), {
-            // data
-          })
-
           dispatch('cleanInfo')
+          alert('帳號成功登出')
         })
         .catch((err) => {
           console.log(err.message)
         })
-      alert('帳號成功登出')
     },
     handleAuthStateChanged({ commit, dispatch, state }) {
       // console.log('handleAuthStateChanged')
@@ -141,7 +144,7 @@ export const user = {
       commit('SET_USER', null)
       commit('SET_PROFILE_INFO_INIT')
       commit('SET_USER_TASK', null)
-      commit('SET_CHECKLOGIN', false)
+      commit('SET_CHECKAUTHENTICATION', false)
     },
     async updateUserSettings({ commit, state }) {
       // const docRef = doc(db, "users", state.profileId)
@@ -172,8 +175,8 @@ export const user = {
     getProfileInitials(state) {
       return state.profileInitials
     },
-    getCheckLogin(state) {
-      return state.checkLogin
+    getCheckAuthentication(state) {
+      return state.checkAuthentication
     },
   },
 }
