@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full h-[36px] flex items-center justify-center">
-    <p class="text-xs text-[#bdbdbd] text-center">Copyright © 方生糖設計</p>
+  <div class="w-full bg-[#fff] fixed bottom-0 h-[36px] flex items-center justify-center">
+    <p class="text-xs text-[#bdbdbd] text-center">Copyright ©<a href="https://www.youtube.com/channel/UCcxgscLIUaSjm5amHfx09hg"  target="_blank">方生糖100個台灣人的家</a></p>
   </div>
 </template>
 

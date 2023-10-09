@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loading" />
-  <div v-if="payload" class="w-full flex-col p-4 ">
+  <div v-if="payload" class="w-full flex-col p-4 min-h-[calc(100vh-106px)]">
     <div class="flex justify-between">
       <div>
         <Transition name="fade" mode="out-in">
@@ -23,8 +23,9 @@
         </h3>
       </div>
     </div>
-    <KanbanBoard :payload="payload" />
+    <KanbanBoard :payload="payload"/>  
   </div>
+  <Copyright />
   <!-- Container Modal -->
   <ContainerModal :value="displayContainerModal" @closeContainerModal="closeContainerModal" />
 </template>
@@ -37,6 +38,7 @@ import axios from 'axios'
 import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/dialog/ContainerModal.vue'
 import Loading from '@/components/base/Loading.vue'
+import Copyright from "@/components/base/Copyright.vue"
 
 const store = useStore()
 
@@ -45,11 +47,11 @@ const state = reactive({
   is_editing_title: false,
   temp_title: null,
 })
-// const payload = ref(null)
 const projectTitleInput = ref(null)
 const loading = ref(false)
 
 const payload = computed(() => store.getters['vuello/getVuelloDatas'])
+const getUser = computed(() => store.getters['vuello/getUser'])
 
 onBeforeMount(async () => {
   loading.value = true
@@ -127,5 +129,12 @@ const handleEditTitle = (type) => {
 const closeContainerModal = () =>{
   displayContainerModal.value = false
 }
+
+watch(getUser, (newValue) => {
+  if (newValue) {
+    displayContainerModal.value = false;
+  }
+});
+
 </script>
 
