@@ -25,12 +25,15 @@
             </p>
             <p class="text-base leading-relaxed text-gray-500">
               使用操作方式 : <br>
-              可以在桌機與手機上直接使用，您記錄的資料只會獨立存在該機器上。如果你想要在
-              辦公室使用電腦，在工地使用手機彼此資料可以互通的話，就需要註冊帳號。          
+              可以在桌機與手機上直接使用，無須註冊，但您記錄的資料只會獨立存在該機器上。
+              如果你想要在辦公室使用電腦，在工地使用手機，彼此資料可以互通的話，就需要註冊帳號。
+              "但是請一定要先登出，才能在另外一台機器登入，不然資料會存不到。"
+
             </p>
             <p class="text-base leading-relaxed text-gray-500">
               本手帳網站紀錄 : <br>
-              2023 / 10 : 測試版上線，提供第一線設計師體驗，歡迎設計師 email 交流。  
+              2023 / 10 : 測試版上線，提供第一線設計師體驗。<br>
+              核心功能已完成，還有地方會再優化，歡迎設計師 email 交流。  
             </p>
           </div>
           <div class="flex items-center justify-end space-x-2 rounded-b border-t border-gray-200 px-6 py-4">
