@@ -1,4 +1,5 @@
 <template>
+  <Loading v-if="loading" />
   <div class="form-wrap">
     <form class="login">
       <router-link class="flex mb-[32px]" :to="{ name: 'Register' }">
@@ -30,28 +31,34 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import emailIcon from "../components/icons/emailIcon.vue"
 import passwordIcon from "../components/icons/passwordIcon.vue"
+import Loading from "../components/base/Loading.vue"
 
 const store = useStore()
 const router = useRouter()
 const formData = reactive({
-  email: 'demo@gmail.com',
+  email: 'wang8119@gmail.com',
   password: '123123'
 })
 const error = ref(null)
 const errorMsg = ref('')
 const user = computed(() => store.getters['user/getUser'])
 const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
+const loading = ref(false)
 
 const login = async () => {
   if (
     formData.email !== '' &&
     formData.password !== ''
   ) {
+    loading.value = true
     error.value = false
     errorMsg.value = ''    
     await store.dispatch('user/loginUser', formData)
     .then(() => {
-      if (checkAuthentication) router.replace("/")
+      if (checkAuthentication) {
+        loading.value = false
+        router.replace("/")
+      } 
     }) 
   } else {
     error.value = true
