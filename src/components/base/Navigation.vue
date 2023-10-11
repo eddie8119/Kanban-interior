@@ -147,7 +147,7 @@ const toggleProfileMenu = (e) => {
 const logoutUser = async () => {
   const data = store.getters['vuello/getVuelloDatas']  
   await store.dispatch('user/logoutUser', {data}).then(() => {
-    window.location.reload()
+    // window.location.reload()
   })  
 }
 
