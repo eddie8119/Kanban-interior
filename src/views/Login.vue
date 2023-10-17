@@ -36,8 +36,8 @@ import Loading from "../components/base/Loading.vue"
 const store = useStore()
 const router = useRouter()
 const formData = reactive({
-  email: 'wang8119@gmail.com',
-  password: '123123'
+  email: '',
+  password: ''
 })
 const error = ref(null)
 const errorMsg = ref('')

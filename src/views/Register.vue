@@ -40,9 +40,9 @@ import Loading from "../components/base/Loading.vue"
 const store = useStore()
 const router = useRouter()
 const formData = reactive({
-  username: 'demo',
-  email: 'wang8119@gmail.com',
-  password: '123123'
+  username: '',
+  email: '',
+  password: ''
 })
 const error = ref(null)
 const errorMsg = ref('')
@@ -58,14 +58,19 @@ const register = async() => {
     loading.value = true
     error.value = false
     errorMsg.value = ''    
-    const data = store.getters['vuello/getVuelloDatas']   
-    await store.dispatch('user/registerUser', {formData, data}).then(() => {
-      loading.value = false
+    const data = store.getters['vuello/getVuelloDatas']
+
+    await store.dispatch('user/registerUser', {formData, data})
+    .then(() => {      
       if (checkAuthentication) {
+        formData.email = ''
+        formData.password = ''
+        formData.username = ''
         loading.value = false
         router.replace("/")
       } 
-    })        
+    }) 
+    .catch(error => console.log(error))      
   } else {
     error.value = true
     errorMsg.value = '請填完所有表格'

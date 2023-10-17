@@ -1,6 +1,6 @@
 <template>
   <Loading v-if="loading" />
-  <div v-if="payload" class="w-full flex-col p-4 min-h-[calc(100vh-106px)]">
+  <div v-if="payload" class="w-full flex-col p-4 pb-0 min-h-[calc(100vh-106px)]">
     <div class="flex justify-between">
       <div>
         <Transition name="fade" mode="out-in">

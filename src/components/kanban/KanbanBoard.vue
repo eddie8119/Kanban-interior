@@ -20,7 +20,7 @@
       </Button>
     </div>
   </div>
-  <div class="flex h-full w-full overflow-auto rounded-lg px-2 py-3">
+  <div class="flex h-[calc(100vh-226px)]  w-full overflow-auto rounded-lg px-2 py-3">
     <TransitionGroup name="list">
       <Container orientation="horizontal" @drop="onColumnDrop($event)" drag-handle-selector=".column-drag-handle">
         <Draggable v-for="container in vuello.containers" :key="container.key" class="mx-1">

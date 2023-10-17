@@ -81,3 +81,14 @@ const handleDeleteCard = (id) => {
   emit('handleDeleteCard', id)
 }
 </script>
+<style scoped>
+.close::before, .close::after {
+  position: absolute;
+  top:-12px;
+  left: 10px;  
+  content: "";
+  height: 25px;
+  width: 3pt;
+  background-color: black;
+}
+</style>

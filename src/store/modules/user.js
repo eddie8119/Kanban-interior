@@ -88,8 +88,7 @@ export const user = {
           }
         })
     },
-    async loginUser(state, payload) {
-      const router = useRouter()
+    async loginUser({}, payload) {
       await signInWithEmailAndPassword(fbAuth, payload.email, payload.password)
         .then(async (res) => {
           if (res.user.uid) {

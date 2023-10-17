@@ -243,7 +243,7 @@ watch(windowWidth, () => {
 }
 
 .mobile-nav-enter {
-  transform: translateX(-250px);
+  transform: translateX(-100px);
 }
 
 .mobile-nav-enter-to {

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './tailwind.css'
 import App from './App.vue'
+
 import router from '@/router/index.js'
 import { store } from './store/index.js'
 import JsonExcel from 'vue-json-excel3'
