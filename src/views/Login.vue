@@ -40,9 +40,10 @@
   })
   const error = ref(false)
   const errorMsg = ref('')
+  const loading = ref(false)
   const user = computed(() => store.getters['user/getUser'])
   const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
-  const loading = ref(false)
+  
   const login = async () => {
     if (formData.email !== "" && formData.password !== "") {
       loading.value = true

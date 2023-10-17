@@ -60,33 +60,38 @@ export const user = {
   actions: {
     async registerUser({ commit }, payload) {
       const { formData, data } = payload
-      await createUserWithEmailAndPassword(
-        fbAuth,
-        formData.email,
-        formData.password
-      )
-        .then((res) => {
-          if (res) {
-            const userId = fbAuth.currentUser.uid
-            try {
-              setDoc(doc(db, 'users', userId), {
-                username: formData.username,
-                password: formData.password,
-                email: formData.email,
-                task: data,
-              })
-            } catch (err) {
-              alert('創建帳號失敗:', err)
-            }
+
+      try {
+        const res = await createUserWithEmailAndPassword(
+          fbAuth,
+          formData.email,
+          formData.password
+        )
+        if (res) {
+          const userId = fbAuth.currentUser.uid
+
+          try {
+            await setDoc(doc(db, 'users', userId), {
+              username: formData.username,
+              password: formData.password,
+              email: formData.email,
+              task: data,
+            })
             alert('註冊成功')
             commit('SET_CHECKAUTHENTICATION', true)
+          } catch (err) {
+            alert('創建帳號失敗:', err.message)
           }
-        })
-        .catch((error) => {
-          if (error.code === 'auth/email-already-in-use') {
-            alert('此Email已經註冊')
-          }
-        })
+        }
+      } catch (error) {
+        console.log('error', error)
+        if (error.code === 'auth/email-already-in-use') {
+          alert('此Email已經註冊')
+        }
+        if (error.code === 'auth/weak-password') {
+          alert('密碼至少要6位數')
+        }
+      }
     },
     async loginUser({ commit }, payload) {
       try {
