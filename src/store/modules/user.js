@@ -58,7 +58,7 @@ export const user = {
   },
 
   actions: {
-    async registerUser({}, payload) {
+    async registerUser({ commit }, payload) {
       const { formData, data } = payload
       await createUserWithEmailAndPassword(
         fbAuth,
@@ -88,24 +88,20 @@ export const user = {
           }
         })
     },
-    async loginUser({}, payload) {
-      await signInWithEmailAndPassword(fbAuth, payload.email, payload.password)
-        .then(async (res) => {
-          if (res.user.uid) {
-            alert('登入成功')
-            commit('SET_CHECKAUTHENTICATION', true)
-          } else {
-            alert('尚未登入')
-          }
-        })
-        .catch((err) => {
-          if (
-            err.code === 'auth/user-not-found' ||
-            err.code === 'auth/wrong-password'
-          ) {
-            alert('無效憑證, 在確認一次輸入')
-          }
-        })
+    async loginUser({ commit }, payload) {
+      try {
+        const res = await signInWithEmailAndPassword(
+          fbAuth,
+          payload.email,
+          payload.password
+        )
+        if (res.user.uid) {
+          alert('登入成功')
+          commit('SET_CHECKAUTHENTICATION', true)
+        }
+      } catch (err) {
+        alert('無效憑證, 再確認一次輸入')
+      }
     },
     async logoutUser({ dispatch }, payload) {
       const { data } = payload

@@ -26,61 +26,49 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import emailIcon from "../components/icons/emailIcon.vue"
-import passwordIcon from "../components/icons/passwordIcon.vue"
-import Loading from "../components/base/Loading.vue"
-
-const store = useStore()
-const router = useRouter()
-const formData = reactive({
-  email: '',
-  password: ''
-})
-const error = ref(null)
-const errorMsg = ref('')
-const user = computed(() => store.getters['user/getUser'])
-const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
-const loading = ref(false)
-
-const login = async () => {
-  if (
-    formData.email !== '' &&
-    formData.password !== ''
-  ) {
-    loading.value = true
-    error.value = false
-    errorMsg.value = ''    
-    await store.dispatch('user/loginUser', formData)
-    .then(() => {
-      if (checkAuthentication) {
-        loading.value = false
-        router.replace("/")
-      } 
-    }) 
-  } else {
-    error.value = true
-    errorMsg.value = '請填完所有表格'
-  } 
-}
-
+  import { ref, reactive, computed, watch } from 'vue'
+  import { useStore } from 'vuex'
+  import { useRouter } from 'vue-router'
+  import emailIcon from "../components/icons/emailIcon.vue"
+  import passwordIcon from "../components/icons/passwordIcon.vue"
+  import Loading from "../components/base/Loading.vue"
+  const store = useStore()
+  const router = useRouter()
+  const formData = reactive({
+    email: '',
+    password: ''
+  })
+  const error = ref(false)
+  const errorMsg = ref('')
+  const user = computed(() => store.getters['user/getUser'])
+  const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
+  const loading = ref(false)
+  const login = async () => {
+    if (formData.email !== "" && formData.password !== "") {
+      loading.value = true
+      await store.dispatch("user/loginUser", formData)
+      if (checkAuthentication.value) router.replace("/")
+      loading.value = false
+    } else {
+      error.value = true
+      errorMsg.value = "請填完所有表格"
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/identityForm.scss";
+  @import "@/assets/scss/identityForm.scss";
 
-.background-identity {
-  display: none;
-  flex: 2;
-  background-size: cover;
-  background-image: url("../assets/background.png");
-  width: 100%;
-  height: 100%;
+  .background-identity {
+    display: none;
+    flex: 2;
+    background-size: cover;
+    background-image: url("../assets/background.png");
+    width: 100%;
+    height: 100%;
 
-  @media (min-width: 900px) {
-    display: initial;
+    @media (min-width: 900px) {
+      display: initial;
+    }
   }
-}
 </style>
