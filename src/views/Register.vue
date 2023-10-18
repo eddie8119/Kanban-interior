@@ -23,7 +23,7 @@
           <input type="password" placeholder="密碼再確認" v-model="formData.checkPassword" />
           <passwordIcon class="icon" />
         </div>
-        <div v-show="error" class="error">{{ this.errorMsg }}</div>
+        <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <button class="btn-style" @click.prevent="register">註冊</button>
       <div class="angle"></div>

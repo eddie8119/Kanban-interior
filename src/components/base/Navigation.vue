@@ -149,9 +149,6 @@ const logoutUser = async () => {
   const data = store.getters['vuello/getVuelloDatas']  
   await store.dispatch('user/logoutUser', {data})
   store.commit("app/SET_LOADING", false)
-  // .then(() => {
-  //   // window.location.reload()
-  // })  
 }
 
 watch(windowWidth, () => {
@@ -175,7 +172,6 @@ watch(windowWidth, () => {
 .mobileNav-link {
   @apply text-center py-[15px] hover:text-funsugarMain duration-300;
 }
-
 
 
 .nav-links {
