@@ -1,7 +1,7 @@
 <template>
   <div id="app" @click="clearMenu">
-    <Navigation />
-    <div class="pt-[70px] h-[100vh]">
+    <Navigation />    
+    <div class="pt-[70px] h-[100vh]">      
       <router-view />
     </div>    
     <!-- <transition name="fade" mode="out-in">
@@ -15,8 +15,8 @@ import Navigation from "./components/base/Navigation.vue"
 import { defineComponent } from 'vue'
 import { mapActions, mapGetters } from 'vuex'
 
-//dialog
 import ActionResponse from "@/components/dialog/ActionRespon.vue"
+
 // import Modal from "@/components/dialog/Modal.vue"
 
 export default {
@@ -24,19 +24,19 @@ export default {
   methods: {
     ...mapActions(['handleAuthStateChanged'])
   },
-  computed: {
-    ...mapGetters(["getAlertDialog"])
+  computed: {    
+    ...mapGetters(["getAlertDialog",])
   },
   created() {
     this.$store.commit("app/SET_DIALOG", false)
     this.$store.commit("app/SET_LOADING", false)
+    this.$store.commit("menu/CLEAR_ALL_MENU")   
     this.detectWindowWidth()
     this.detectWindowHeight()
     this.detectWindowScrollY()   
   },
   mounted() {  
-    this.$store.dispatch('user/handleAuthStateChanged')
-    this.$store.commit("menu/CLEAR_ALL_MENU")
+    this.$store.dispatch('user/handleAuthStateChanged')    
     window.addEventListener("resize", this.detectWindowWidth)
     window.addEventListener("resize", this.detectWindowHeight)
     window.addEventListener("scroll", this.detectWindowScrollY)

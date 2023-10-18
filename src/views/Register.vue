@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="loading" />
+  <Loading v-show="loading" />
   <div class="form-wrap ">
     <form class="register">
       <router-link class="flex mb-[32px]" :to="{ name: 'Login' }">
@@ -16,7 +16,7 @@
           <emailIcon class="icon" />
         </div>
         <div class="input">
-          <input type="password" placeholder="密碼(至少6位)" v-model="formData.password" />
+          <input type="password" placeholder="密碼(至少6位數)" v-model="formData.password" />
           <passwordIcon class="icon" />
         </div>
         <div class="input">
@@ -50,8 +50,10 @@
   })
   const error = ref(null)
   const errorMsg = ref('')
-  const loading = ref(false)
+
   const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
+  const loading = computed(() => store.getters['app/getLoading'])
+  
   const register = async () => {
     if (
       formData.email !== '' &&
@@ -60,15 +62,15 @@
       formData.checkPassword !== ''
     ) {
       if (formData.password !== formData.checkPassword) alert('確認密碼與密碼不符')
-      else {
-        loading.value = true
+      else {        
+        store.commit("app/SET_LOADING", true)
         const data = store.getters['vuello/getVuelloDatas']
         await store.dispatch('user/registerUser', {
           formData,
           data
         })
         if (checkAuthentication.value) router.replace("/")
-        loading.value = false
+        store.commit("app/SET_LOADING", false)
       }
     } else {
       error.value = true

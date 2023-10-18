@@ -145,10 +145,13 @@ const toggleProfileMenu = (e) => {
 }
 
 const logoutUser = async () => {
+  store.commit("app/SET_LOADING", true)
   const data = store.getters['vuello/getVuelloDatas']  
-  await store.dispatch('user/logoutUser', {data}).then(() => {
-    // window.location.reload()
-  })  
+  await store.dispatch('user/logoutUser', {data})
+  store.commit("app/SET_LOADING", false)
+  // .then(() => {
+  //   // window.location.reload()
+  // })  
 }
 
 watch(windowWidth, () => {

@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="loading" />
+  <Loading v-show="loading" />
   <div class="form-wrap">
     <form class="login">
       <router-link class="flex mb-[32px]" :to="{ name: 'Register' }">
@@ -40,16 +40,24 @@
   })
   const error = ref(false)
   const errorMsg = ref('')
-  const loading = ref(false)
+ 
   const user = computed(() => store.getters['user/getUser'])
   const checkAuthentication = computed(() => store.getters['user/getCheckAuthentication'])
+  const loading = computed(() => store.getters['app/getLoading'])
   
   const login = async () => {
-    if (formData.email !== "" && formData.password !== "") {
-      loading.value = true
-      await store.dispatch("user/loginUser", formData)
-      if (checkAuthentication.value) router.replace("/")
-      loading.value = false
+    if (formData.email !== "" && formData.password !== "") {      
+      store.commit("app/SET_LOADING", true)
+
+      try {
+        await store.dispatch("user/loginUser", formData)
+        if (checkAuthentication.value) router.replace("/")
+      } catch {
+        error.value = true
+        errorMsg.value = "登入失敗，請再次確認輸入"
+      } finally {
+        store.commit("app/SET_LOADING", false)
+      }      
     } else {
       error.value = true
       errorMsg.value = "請填完所有表格"

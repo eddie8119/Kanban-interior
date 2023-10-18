@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="loading" />
+  <Loading v-show="loading" />
   <div v-if="payload" class="w-full flex-col p-4 pb-0 min-h-[calc(100vh-106px)]">
     <div class="flex justify-between">
       <div>
@@ -41,21 +41,20 @@ import Loading from '@/components/base/Loading.vue'
 import Copyright from "@/components/base/Copyright.vue"
 
 const store = useStore()
-
 const displayContainerModal = ref(true)
 const state = reactive({
   is_editing_title: false,
   temp_title: null,
 })
 const projectTitleInput = ref(null)
-const loading = ref(false)
 
 const payload = computed(() => store.getters['vuello/getVuelloDatas'])
 const getUser = computed(() => store.getters['user/getUser'])
 const getUserTask = computed(() => store.getters['user/getUserTask'])
+const loading = computed(() => store.getters['app/getLoading'])
 
 onBeforeMount(async () => {
-  loading.value = true
+  store.commit("app/SET_LOADING", true)
   
   let data = undefined  
   if(getUserTask.value) {
@@ -112,7 +111,7 @@ onBeforeMount(async () => {
   } else {
     payload.value = data
   }
-  loading.value = false
+  store.commit("app/SET_LOADING", false)
 })
 
 const handleEditTitle = (type) => {

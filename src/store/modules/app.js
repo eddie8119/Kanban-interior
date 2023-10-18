@@ -12,27 +12,25 @@ export const app = {
   },
   mutations: {
     SET_DIALOG(state, payload) {
-      state.dialog = payload;
+      state.dialog = payload
     },
     SET_ALERT_DIALOG(state, payload) {
-      state.alertDialog = payload;
+      state.alertDialog = payload
     },
     SET_LOADING(state, payload) {
-      state.loading = payload;
+      state.loading = payload
     },
     SET_WINDOW_WIDTH(state, payload) {
-      state.windowWidth = payload;
+      state.windowWidth = payload
     },
     SET_WINDOW_HEIGHT(state, payload) {
-      state.windowHeight = payload;
+      state.windowHeight = payload
     },
     SET_WINDOW_SCROLLY(state, payload) {
-      state.windowScrollY = payload;
+      state.windowScrollY = payload
     },
   },
-  actions: {
-
-  },
+  actions: {},
   getters: {
     getDialog(state) {
       return state.dialog
@@ -40,7 +38,7 @@ export const app = {
     getAlertDialog(state) {
       return state.alertDialog
     },
-    getloading(state) {
+    getLoading(state) {
       return state.loading
     },
     getWindowWidth(state) {
@@ -52,5 +50,5 @@ export const app = {
     getWindowScrollY(state) {
       return state.windowScrollY
     },
-  }
+  },
 }

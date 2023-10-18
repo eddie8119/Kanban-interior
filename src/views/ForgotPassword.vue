@@ -1,7 +1,7 @@
 <template>
   <div class="reset-password">
     <!-- <Modal :modalMessage="modalMessage" @close-modal="closeModal" /> -->
-    <Loading v-if="loading" />
+    <Loading v-show="loading" />
     <div class="form-wrap">
       <form class="reset">           
         <router-link class="flex mb-[32px]" :to="{ name: 'Login' }">返回<span class="text-funsugarMain">登入</span></router-link> 
@@ -36,27 +36,29 @@ import emailIcon from "../components/icons/emailIcon.vue"
 import Modal from "../components/dialog/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 
+const store = useStore()
 const email = ref('')
 const error = ref(null)
 const errorMsg = ref('')
 const modalActive = ref(false)
 const modalMessage = ref('')
-const loading = ref(false)
+
+const loading = computed(() => store.getters['app/getLoading'])
 
 const resetPassword = async() => {
-  if (email.value !== '') {
-    loading.value = true
+  if (email.value !== '') {    
+    store.commit("app/SET_LOADING", true)
     error.value = false
     errorMsg.value = ''
     await firebase.auth().sendPasswordResetEmail(email.value)
       .then(() => {
         modalMessage.value = "如果帳號存在,你將接收到 email "
-        loading.value = false
+        store.commit("app/SET_LOADING", false)
         modalActive.value = true
       })
       .catch((err) => {
         modalMessage.value = err.message
-        loading.value = false
+        store.commit("app/SET_LOADING", false)
         modalActive.value = true
       })
   } else {
