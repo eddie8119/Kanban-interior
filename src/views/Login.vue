@@ -48,6 +48,8 @@
   const login = async () => {
     if (formData.email !== "" && formData.password !== "") {      
       store.commit("app/SET_LOADING", true)
+      formData.email = formData.email.trim()
+      formData.password = formData.password.trim()
 
       try {
         await store.dispatch("user/loginUser", formData)

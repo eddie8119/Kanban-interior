@@ -64,7 +64,13 @@
       if (formData.password !== formData.checkPassword) alert('確認密碼與密碼不符')
       else {        
         store.commit("app/SET_LOADING", true)
+        formData.email = formData.email.trim()
+        formData.username = formData.username.trim()
+        formData.password = formData.password.trim()
+        formData.checkPassword = formData.checkPassword.trim()
+
         const data = store.getters['vuello/getVuelloDatas']
+
         await store.dispatch('user/registerUser', {
           formData,
           data
