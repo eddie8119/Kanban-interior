@@ -133,7 +133,7 @@ const props = defineProps({
     default: () => { },
   },
 })
-//select區
+//select 完成狀態區
 const selectedGlobal = ref("all")
 const doneStatusListGlobal = reactive([
   {
@@ -212,8 +212,7 @@ watch(
   { deep: true },
 )
 const containerCardLength = (container) => {
-  const cardList = container.cardList
-  return Object.keys(cardList).length
+  return Object.keys(container.cardList).length
 }
 const cardListFilter = (cardList, selected) => {
   switch (selected) {
@@ -226,7 +225,7 @@ const cardListFilter = (cardList, selected) => {
   }
 }
 
-// 工種輸入框
+// 編輯 工種輸入框
 const addWorkTypeOnce = ref(true)
 const addWorkTypeOnceId = ref(null)
 
@@ -258,10 +257,7 @@ const blurWorkType = (container) => {
   addWorkTypeOnce.value = true
 }
 
-// 編輯任務卡
-const editTaskCardOnce = ref(true)
-const editTaskCardId = ref(null)
-
+// smooth-dnd方法
 const onColumnDrop = (dropResult) => {
   vuello.containers = applyDrag(vuello.containers, dropResult)
   vuello.last_modified = new Date().toLocaleString('zh-TW')
@@ -287,7 +283,7 @@ const getCardPayload = (columnId) => {
     vuello.containers.find(container => container.id === columnId).cardList[index]
 }
 
-// 
+// 確認刪除容器和卡片
 const deleteDialog = (type) => {
   if (type === 'container') {
     vuello.containers = vuello.containers.filter(
@@ -307,7 +303,9 @@ const deleteDialog = (type) => {
         (card) => card.id !== state.selectedCardId
       )
       }
-    )       
+    )    
+    editTaskCardId.value = null
+    editTaskCardOnce.value = true    
   }
   vuello.last_modified = new Date().toLocaleString('zh-TW')
   store.dispatch('vuello/setVuello', vuello)
@@ -349,15 +347,6 @@ const handleDeleteCard = (id) => {
   state.selectedCardId = id
   state.isRemovingCard = true
 }
-
-// const uploadPreviewImage = reactive({})
-// const uploadFile = (e) => {
-//   uploadPreviewImage.value = ''
-//   const files = e.target.files
-//   const file = files[0]
-//   uploadPreviewImage.value = { src: URL.createObjectURL(file) };
-// }
-
 const addCard = (containerId, container) => {
   if (!newCardData.title) {
     container.is_adding_card = false
@@ -388,10 +377,6 @@ const addCard = (containerId, container) => {
   cardChangedInitialize()
   addWorkCardOnce.value = true
   container.is_adding_card = false
-}
-const leaveAddCard = () => {
-  payload.is_adding_card = false
-  cardChangedInitialize()
 }
 const deleteTask = (payload) => {
   payload.is_adding_card = false
@@ -467,17 +452,30 @@ const handleKanbanAction = (type, containerId, payload) => {
   }
   cardChangedInitialize()
 }
+
+// 編輯 施作任務卡
+const editTaskCardOnce = ref(true)
+const editTaskCardId = ref(null)
+
 const handleEditCard = (type, selectedCard) => {
   switch (type) {
     case 'change':
-      selectedCard.is_editing_card = true
-      state.tempCards = vuello.cards.map((card) => ({ ...card }))
+      if (editTaskCardOnce.value) {
+        editTaskCardId.value = selectedCard.id
+        editTaskCardOnce.value = false
+        selectedCard.is_editing_card = true
+        state.tempCards = vuello.cards.map((card) => ({ ...card }))
+      } else {
+        alert("還有任務卡片 尚未完成")
+      }
       break
     case 'save':
-      handleKanbanAction(null, null, selectedCard)
+      editTaskCardId.value = null
+      editTaskCardOnce.value = true
+      handleKanbanAction(null, null, selectedCard)      
       break
     case 'isdone':
-      selectedCard.isDone = !selectedCard.isDone
+      selectedCard.isDone = !selectedCard.isDone      
       handleKanbanAction(null, null, selectedCard)
       break
     case 'cancel':
@@ -488,7 +486,6 @@ const handleEditCard = (type, selectedCard) => {
       break
   }
 }
-
 </script>
 
 <style>

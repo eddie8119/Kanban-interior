@@ -30,7 +30,7 @@
             </div>
             <MoveIcon height="25px"
               class="column-drag-handle cursor-grab rounded-full p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-700"
-              @click.stop="" />
+               />
           </div>
           <div class="max-h-[60px] overflow-y-auto">
             <p class="mt-1 whitespace-pre-wrap font-sans text-sm">{{ card.content }}</p>
@@ -44,14 +44,7 @@
           py-1" :class="[card.isDone ? 'bg-[#f4592b]' : 'bg-[#5cdb95] text-white']"
             @click="handleEditCard('isdone', card)">{{
               card.isDone ? '完成' : '未完成' }}
-          </button>
-          <!-- <select class="w-[20%] h-[40px] mr-3 border rounded-lg flex items-center justify-center"
-            v-model="selectedGlobal">
-            <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
-              @click="changeSelectGlobal(list.key)">
-              {{ list.name }}
-            </option>
-          </select> -->
+          </button>  
         </div>
       </div>
     </div>
@@ -61,7 +54,6 @@
 <script setup>
 import Button from '@/components/base/Button.vue'
 import MoveIcon from '@/components/icons/MoveIcon.vue'
-import CloseIcon from '@/components/icons/CloseIcon.vue'
 import SaveIcon from '@/components/icons/SaveIcon.vue'
 
 const props = defineProps({
