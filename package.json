@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
-    "build": "^0.1.4",
     "click-outside-vue3": "^4.0.1",
     "firebase": "^10.2.0",
     "firebase-tools": "^0.1.6",
@@ -18,8 +17,7 @@
     "vue-router": "^4.2.2",
     "vue3-smooth-dnd": "^0.0.5",
     "vuex": "^4.0.2",
-    "vuex-persistedstate": "^4.1.0",
-    "yarn": "^1.22.19"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.0",

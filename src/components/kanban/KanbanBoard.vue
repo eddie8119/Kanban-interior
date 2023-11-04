@@ -2,21 +2,20 @@
   <div class="w-full grid grid-cols-1 gap-y-4 md:flex md:justify-between">
     <div class="flex items-center">
       <p class="mr-4 text-sm">全案狀態篩選:</p>
-      <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal">
-        <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key"
-          @click="changeSelectGlobal(list.key)">
+      <select class="w-[200px] h-[40px] mr-3 border rounded-lg flex items-center justify-center" v-model="selectedGlobal" @change="changeSelectGlobal(selectedGlobal)">
+        <option :value="list.key" v-for="list of doneStatusListGlobal" :key="list.key">
           {{ list.name }}
         </option>
       </select>
     </div>
     <div class="flex items-center">
-      <Button type="primary" model="outline" size="sm" rounded="sm">
+      <Button type="primary" model="outline" size="sm" rounded="sm" @click="updateJson()">
+        先刷新資料
+      </Button>
+      <Button class="ml-2" type="primary" model="outline" size="sm" rounded="sm">
         <download-excel :data="json_data">
           輸出 Excel 報表
         </download-excel>
-      </Button>
-      <Button class="ml-2" type="primary" model="outline" size="sm" rounded="sm" @click="updateJson()">
-        先刷新資料
       </Button>
     </div>
   </div>
@@ -40,9 +39,8 @@
               </Transition>
               <select v-if="checkSelectShow(container.cardList) === true"
                 class="w-[100px] h-[40px] mr-3 border-none  rounded-lg flex items-center justify-center"
-                v-model="container.selected_done">
-                <option :value="list.key" v-for="list of container.doneStatus" :key="list.key"
-                  @click="changeSelect(container, list.key)">
+                v-model="container.selected_done" @change="changeSelect(container, container.selected_done)">
+                <option :value="list.key" v-for="list of container.doneStatus" :key="list.key">
                   {{ list.name }}
                 </option>
               </select>
@@ -79,6 +77,7 @@
                       <CloseIcon height="30px"
                         class="cursor-pointer rounded-full ml-2 p-1 text-red-500 hover:bg-red-600 hover:text-white"
                         @click="deleteTask(container)" />
+                        <!-- <span>123</span> -->
                     </div>
                   </form>
                 </div>
