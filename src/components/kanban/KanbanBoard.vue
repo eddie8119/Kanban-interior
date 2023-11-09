@@ -227,34 +227,16 @@ const cardListFilter = (cardList, selected) => {
 
 // 編輯 工種輸入框
 const addWorkTypeOnce = ref(true)
-const addWorkTypeOnceId = ref(null)
 
 const addWorkType = (container) => {
-  if (!addWorkTypeOnce.value) {
-    if (addWorkTypeOnceId.value !== container.id) {
-      vuello.containers.map(container => {
-        container.is_adding_card = false
-        container.is_editing_container = false
-      })
-      addWork()
-    }
-  } else {
-    // 檢查項目編輯狀態
-    vuello.containers.map(container => {
-      container.is_adding_card = false
-    })
-    addWork()
-  }
-  function addWork() {
-    addWorkCardOnce.value = true
-    container.is_editing_container = true
-    addWorkTypeOnceId.value = container.id
-    addWorkTypeOnce.value = false
-  }
+  vuello.containers.forEach(container => {
+    container.is_adding_card = false
+    container.is_editing_container = false
+  })
+  container.is_editing_container = true
 }
 const blurWorkType = (container) => {
-  container.is_editing_container = false
-  addWorkTypeOnce.value = true
+  container.is_editing_container = false  
 }
 
 // smooth-dnd方法
@@ -314,30 +296,13 @@ const deleteDialog = (type) => {
 }
 // 個別工種任務增建
 const addWorkCardOnce = ref(true)
-const addWorkCardOnceId = ref(null)
 
 const toggleAddingCard = (container) => {
-  if (!addWorkCardOnce.value) {
-    if (addWorkCardOnceId.value !== container.id) {
-      vuello.containers.map(container => {
-        container.is_adding_card = false
-        container.is_editing_container = false
-      })
-      addWork()
-    }
-  } else {
-    // 檢查title編輯狀態
-    vuello.containers.map(container => {
-      container.is_editing_container = false
-    })
-    addWork()
-  }
-  function addWork() {
-    addWorkTypeOnce.value = true
-    container.is_adding_card = true
-    addWorkCardOnceId.value = container.id
-    addWorkCardOnce.value = false
-  }
+  vuello.containers.forEach(container => {
+    container.is_adding_card = false
+    container.is_editing_container = false
+  })
+  container.is_adding_card = true
 }
 const handleDeleteContainer = (id) => {
   state.selectedContainerId = id
