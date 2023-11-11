@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-between text-gray-text cursor-pointer my-[24px] mx-[2px] text-[14px]">
-    <div class="flex">
+  <div class="flex items-center justify-between text-gray-text cursor-pointer my-[20px] mx-[2px] text-[14px]">
+    <div class="flex items-center">
       <span
         v-for="filter in filters"
         :key="filter.value"

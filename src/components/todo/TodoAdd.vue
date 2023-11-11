@@ -1,7 +1,7 @@
 <template>
   <div class="input-add w-full flex items-center relative">
     <input type="text" placeholder="輸入待辦" class="w-full py-[16px] border-none rounded-[48px] text-[16px] shadow-main-box-shadow cursor-pointer placeholder-gray-300" v-model="todoContent" @keyup.enter="addTodo" />
-    <Button class="w-[46px] h-[46px] bg-funsugarMain-gradient rounded-full absolute right-0 color-main"
+    <Button class="w-[46px] h-[46px] bg-funsugarMain rounded-full absolute right-2 color-main"
         @click="addTodo">
         <div class="w-full h-full flex items-center justify-center text-white">
           <PlusIcon height="25px" />   

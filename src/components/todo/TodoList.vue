@@ -1,5 +1,5 @@
 <template>
-  <div class="max-h-[250px] overflow-y-auto grid grid-cols-1 gap-3">
+  <div class="overflow-y-auto grid grid-cols-1 gap-3">
     <TodoItem    
       v-for="todo in todos"
       :key="todo.id"

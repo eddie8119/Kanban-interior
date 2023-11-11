@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full h-[calc(100vh-70px)] py-[10vh] flex items-start justify-center">
-    <div class="w-[60%] max-w-[400px] rounded-3xl py-[48px] px-[28px] bg-main-gray shadow-main-box-shadow grid grid-cols-1 gap-2">
-        <h1 class="text-center mb-[12px] text-[28px]">工地待辦事項速記</h1>
+  <div class="w-full h-[calc(100vh-70px)] flex items-start justify-center py-6 sm:py-12">
+    <div class="w-[90%] h-full max-w-[400px] rounded-3xl py-[45px] px-[28px] bg-main-gray shadow-main-box-shadow ">
+        <h1 class="text-center mb-[20px] text-[28px]">工地待辦事項速記</h1>
         <TodoAdd @addTodo="addTodo" />
         <TodoFilter @changeFilter="filter = $event" @clearDone="clearDone" :selected="filter"/>
-        <TodoList :todos="filteredTodos"/>
+        <TodoList :todos="filteredTodos" class="max-h-[calc(100vh-430px)]"/>
     </div> 
   </div> 
 </template>
