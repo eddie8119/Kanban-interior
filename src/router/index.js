@@ -1,8 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import homePage from '../views/home-page.vue'
+import HomePage from '../views/home-page.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import TodoList from '../views/TodoList.vue'
 import Profile from '../views/Profile.vue'
 import { fbAuth } from '../firebase/firebase'
 
@@ -10,7 +11,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: homePage,
+    component: HomePage,
+  },
+  {
+    path: '/todoList',
+    name: 'TodoList',
+    component: TodoList,
   },
   {
     path: '/login',

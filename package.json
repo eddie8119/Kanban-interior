@@ -12,6 +12,7 @@
     "firebase": "^10.2.0",
     "firebase-tools": "^0.1.6",
     "prettier": "^2.5.1",
+    "uuid": "^9.0.1",
     "vue": "^3.2.31",
     "vue-json-excel3": "^1.0.1",
     "vue-router": "^4.2.2",

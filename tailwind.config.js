@@ -23,10 +23,18 @@ module.exports = {
         main: '#303030',
         'main-gray': '#f3f3f3',
         funsugarMain: '#ffcc00',
+        'gray-text': '#bdbdbd',
       },
       minHeight: {
         innerPage: 'calc(100vh-70px)',
         'innerPage-mobile': 'calc(100vh - 106px)',
+      },
+      backgroundImage: {
+        'funsugarMain-gradient':
+          'linear-gradient(to right, #ffcc00, #231d1d 89%, #2f2525)',
+      },
+      boxShadow: {
+        'main-box-shadow': '0px 0px 24px rgba(0, 0, 0, 0.15)',
       },
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <Loading v-show="loading" />
-  <div class="form-wrap ">
+  <div class="form-wrap">
     <form class="register">
       <router-link class="flex mb-[32px]" :to="{ name: 'Login' }">
         <p>已經有帳號了? <span class="text-funsugarMain">登入</span> </p>

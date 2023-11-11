@@ -9,7 +9,7 @@
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">
           <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
-          <router-link class="link" :to="{ name: 'TodoList' }">隨手筆記</router-link>
+          <router-link class="link" :to="{ name: 'TodoList' }">工地待辦速記</router-link>
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影服務
@@ -28,8 +28,8 @@
         w-[40px]
         h-[40px]
         text-[#fff]
-        bg-main       
-        hover:bg-funsugarMain
+        bg-funsugarMain-gradient      
+        hover:bg-main
         duration-300
         rounded-full
         cursor-pointer        
