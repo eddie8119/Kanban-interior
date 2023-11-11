@@ -7,9 +7,9 @@
           :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
       <div class="nav-links flex items-center justify-end">
-        <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">
-          <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
-          <router-link class="link" :to="{ name: 'TodoList' }">工地待辦速記</router-link>
+        <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">     
+          <router-link class="link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
+          <router-link class="link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>        
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影服務
@@ -97,7 +97,8 @@
       p-[20px] 
       z-[10] 
       " v-show="mobileNav">
-        <router-link class="mobileNav-link " :to="{ name: 'Home' }">室內工地手帳</router-link>
+        <router-link class="mobileNav-link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
+        <router-link class="mobileNav-link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>
         <a class="mobileNav-link" role="link"
           href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
           室內攝影服務
@@ -117,12 +118,16 @@
 </template>
 
 <script setup>
-// import adminIcon from "../assets/Icons/user-crown-light.svg";
 import { ref, reactive, watch, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
+import router from '@/router'
+import { useRoute } from 'vue-router'
 import userIcon from "../icons/UserIcon.vue"
 import menuIcon from "../icons/MenuIcon.vue"
 import signOutIcon from "../icons/SignOutIcon.vue"
+
+const route=useRoute();
+const path = computed(() =>route.path)
 
 const store = useStore()
 const profileMenu = ref(false)
