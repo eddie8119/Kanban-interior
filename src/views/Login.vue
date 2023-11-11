@@ -9,11 +9,11 @@
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="formData.email" />
-          <emailIcon class="icon" />
+          <EmailIcon class="icon" />
         </div>
         <div class="input">
           <input type="password" placeholder="Password" v-model="formData.password" />
-          <passwordIcon class="icon" />
+          <PasswordIcon class="icon" />
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
@@ -29,8 +29,8 @@
   import { ref, reactive, computed, watch } from 'vue'
   import { useStore } from 'vuex'
   import { useRouter } from 'vue-router'
-  import emailIcon from "../components/icons/EmailIcon.vue"
-  import passwordIcon from "../components/icons/PasswordIcon.vue"
+  import EmailIcon from "../components/icons/EmailIcon.vue"
+  import PasswordIcon from "../components/icons/PasswordIcon.vue"
   import Loading from "../components/base/Loading.vue"
   const store = useStore()
   const router = useRouter()

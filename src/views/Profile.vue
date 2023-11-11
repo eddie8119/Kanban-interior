@@ -6,7 +6,7 @@
       <div class="profile-info">
         <div class="initials">{{ $store.state.profileInitials }}</div>
         <div class="admin-badge">
-          <adminIcon class="icon" />
+          <AdminIcon class="icon" />
           <span>管理</span>
         </div>
         <div class="input">
@@ -27,7 +27,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 // import Modal from "../components/Modal";
-import adminIcon from "../components/icons/AdminIcon.vue"
+import AdminIcon from "../components/icons/AdminIcon.vue"
 
 const store = useStore()
 const modalMessage = ref("Changes were saved!")
