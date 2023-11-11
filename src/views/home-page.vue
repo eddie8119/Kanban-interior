@@ -32,7 +32,7 @@
 
 <script setup>
 import { fbAuth } from '../firebase/firebase.js'
-import { ref, reactive, watch, computed, onBeforeMount } from 'vue'
+import { ref, reactive, watch, computed, onBeforeMount, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
@@ -114,6 +114,13 @@ onBeforeMount(async () => {
   store.commit("app/SET_LOADING", false)
 })
 
+onBeforeUnmount(() => {
+  payload.value.containers.forEach(container => {
+    container.is_adding_card = false
+    container.is_editing_container = false
+  });
+})
+
 const handleEditTitle = (type) => {
   switch (type) {
     case 'edit':
@@ -131,7 +138,7 @@ const handleEditTitle = (type) => {
   }
 }
 
-const closeContainerModal = () =>{
+const closeContainerModal = () => {
   displayContainerModal.value = false
 }
 
