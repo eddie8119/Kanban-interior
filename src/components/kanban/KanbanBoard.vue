@@ -53,7 +53,7 @@
                 :get-child-payload="getCardPayload(container.id)" drag-handle-selector=".column-drag-handle">
                 <Draggable v-for="card in cardListFilter(container.cardList, container.selected_done) " :key="card.key"
                   class="m-[6px] cursor-pointer rounded-lg bg-white p-2">
-                  <taskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
+                  <TaskPreview :card="card" @handleEditCard="handleEditCard" @handleDeleteCard="handleDeleteCard" />
                 </Draggable>
               </Container>
             </div>
@@ -92,7 +92,7 @@
             </div>
           </div>
         </Draggable>
-        <addContainerArea :is-addingContainer="state.isAddingContainer" @containerHandler='containerHandler' />
+        <AddContainerArea :is-addingContainer="state.isAddingContainer" @containerHandler='containerHandler' />
       </Container>
     </TransitionGroup>
   </div>
@@ -122,9 +122,9 @@ import MoveIcon from '@/components/icons/MoveIcon.vue'
 import CloseIcon from '@/components/icons/CloseIcon.vue'
 import TrashIcon from '@/components/icons/TrashIcon.vue'
 import PlusIcon from '@/components/icons/PlusIcon.vue'
-import taskPreview from './taskPreview.vue'
-import addContainerArea from './addContainerArea.vue'
-import smoothdemo from './smoothdemo.vue'
+import TaskPreview from './TaskPreview.vue'
+import AddContainerArea from './AddContainerArea.vue'
+import smoothdemo from './Smoothdemo.vue'
 
 const props = defineProps({
   payload: {

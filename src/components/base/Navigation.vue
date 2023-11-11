@@ -9,6 +9,7 @@
       <div class="nav-links flex items-center justify-end">
         <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">
           <router-link class="link" :to="{ name: 'Home' }">室內工地手帳</router-link>
+          <router-link class="link" :to="{ name: 'TodoList' }">隨手筆記</router-link>
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影服務
@@ -16,7 +17,7 @@
           <a class="link" role="link" href="https://tanxin.space/"
             target="_blank">
             室內網站服務
-          </a>         
+          </a>               
           <router-link v-if="!user" class="btn-style" :to="{ name: 'Login' }">登入/註冊</router-link>
         </ul>
         <div v-if="user" :class="[device === 'mobile' ? 'mr-[40px]' : '']" @click="toggleProfileMenu" class="               
@@ -119,9 +120,9 @@
 // import adminIcon from "../assets/Icons/user-crown-light.svg";
 import { ref, reactive, watch, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
-import userIcon from "../../components/icons/userIcon.vue"
-import menuIcon from "../../components/icons/menuIcon.vue"
-import signOutIcon from "../../components/icons/signOutIcon.vue"
+import userIcon from "../icons/UserIcon.vue"
+import menuIcon from "../icons/MenuIcon.vue"
+import signOutIcon from "../icons/SignOutIcon.vue"
 
 const store = useStore()
 const profileMenu = ref(false)

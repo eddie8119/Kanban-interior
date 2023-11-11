@@ -27,7 +27,7 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 // import Modal from "../components/Modal";
-import adminIcon from "../components/icons/adminIcon.vue"
+import adminIcon from "../components/icons/AdminIcon.vue"
 
 const store = useStore()
 const modalMessage = ref("Changes were saved!")

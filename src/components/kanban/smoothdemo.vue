@@ -5,7 +5,7 @@
 <script>
 import { Container, Draggable } from 'vue3-smooth-dnd'
 import { applyDrag, generateItems, generateWords } from '../../utils/helpers'
-import KanbanItem from '../kanban/KanbanItem.vue'
+import KanbanItem from './KanbanItem.vue'
 
 // mock
 const scene = {

@@ -32,7 +32,7 @@ import { useStore } from 'vuex'
 // import {
 //   sendPasswordResetEmail,
 // } from 'firebase/auth'
-import emailIcon from "../components/icons/emailIcon.vue"
+import emailIcon from "../components/icons/EmailIcon.vue"
 import Modal from "../components/dialog/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 

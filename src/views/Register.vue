@@ -36,9 +36,9 @@
   import { ref, reactive, computed, watch } from 'vue'
   import { useStore } from 'vuex'
   import { useRouter } from 'vue-router'
-  import emailIcon from "../components/icons/emailIcon.vue"
-  import passwordIcon from "../components/icons/passwordIcon.vue"
-  import userIcon from "../components/icons/userIcon.vue"
+  import emailIcon from "../components/icons/EmailIcon.vue"
+  import passwordIcon from "../components/icons/PasswordIcon.vue"
+  import userIcon from "../components/icons/UserIcon.vue"
   import Loading from "../components/base/Loading.vue"
   const store = useStore()
   const router = useRouter()
