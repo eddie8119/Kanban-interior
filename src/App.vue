@@ -29,7 +29,8 @@ export default {
   },
   created() {
     this.$store.commit("app/SET_DIALOG", false)
-    this.$store.commit("app/SET_LOADING", false)
+    this.$store.commit("app/SET_LOADING", false)    
+    this.$store.commit("todo/SET_CLEAR_SHOWTODOSLIDE")
     this.$store.commit("menu/CLEAR_ALL_MENU")   
     this.detectWindowWidth()
     this.detectWindowHeight()

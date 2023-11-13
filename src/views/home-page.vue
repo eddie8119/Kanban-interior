@@ -1,4 +1,4 @@
-<template>
+<template> 
   <Loading v-show="loading" />
   <div v-if="payload" class="w-full flex-col p-4 pb-0 min-h-[calc(100vh-106px)]">
     <div class="flex justify-between">
@@ -23,8 +23,10 @@
         </h3>
       </div>
     </div>
-    <KanbanBoard :payload="payload"/>  
+    <KanbanBoard :payload="payload"/>    
   </div>
+  <TodoSlide class="absolute "/>  
+  <TodoShowBtn class="absolute right-6 bottom-[50px]" @click="toggleTodoSlide"/>  
   <Copyright />
   <!-- Container Modal -->
   <ContainerModal :value="displayContainerModal" @closeContainerModal="closeContainerModal" />
@@ -39,6 +41,8 @@ import KanbanBoard from '@/components/kanban/KanbanBoard.vue'
 import ContainerModal from '@/components/dialog/ContainerModal.vue'
 import Loading from '@/components/base/Loading.vue'
 import Copyright from "@/components/base/Copyright.vue"
+import TodoShowBtn from "@/components/todo/TodoShowBtn.vue"
+import TodoSlide from "@/components/todo/TodoSlide.vue"
 
 const store = useStore()
 const displayContainerModal = ref(true)
@@ -119,6 +123,7 @@ onBeforeUnmount(() => {
     container.is_adding_card = false
     container.is_editing_container = false
   });
+  store.commit("todo/SET_CLEAR_SHOWTODOSLIDE")
 })
 
 const handleEditTitle = (type) => {
@@ -147,6 +152,11 @@ watch(getUser, (newValue) => {
     displayContainerModal.value = false;
   }
 });
+
+// 開關
+const toggleTodoSlide = () => {
+  store.commit("todo/SET_SHOWTODOSLIDE")
+}
 
 </script>
 

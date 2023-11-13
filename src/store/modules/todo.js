@@ -3,12 +3,19 @@ export const todo = {
   state() {
     return {
       todo: [],
+      showTodoSlide: false,
     }
   },
   mutations: {
     SET_TODO(state, data) {
       state.todo = data
       localStorage.setItem('myTodo', JSON.stringify(data))
+    },
+    SET_SHOWTODOSLIDE(state) {
+      state.showTodoSlide = !state.showTodoSlide
+    },
+    SET_CLEAR_SHOWTODOSLIDE(state) {
+      state.showTodoSlide = false
     },
   },
   actions: {
@@ -19,6 +26,9 @@ export const todo = {
   getters: {
     getTodoDatas(state) {
       return state.todo
+    },
+    getShowTodoSlide(state) {
+      return state.showTodoSlide
     },
   },
 }
