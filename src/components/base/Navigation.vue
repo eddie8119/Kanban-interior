@@ -35,7 +35,7 @@
         cursor-pointer        
         " ref="profile">
           <span class="pointer-events-none">{{ store.state.profileInitials }}</span>
-          <div v-show="profileMenu" class="
+          <div v-show="isProfileMenu" class="
           absolute
           top-[60px]
           right-0
@@ -130,11 +130,10 @@ const route=useRoute();
 const path = computed(() =>route.path)
 
 const store = useStore()
-const profileMenu = ref(false)
 const mobileNav = ref(false)
 const profile = ref(null)
 
-const profileMenuGlobal = computed(() => store.getters['menu/getProfileMenu'])
+const isProfileMenu = computed(() => store.getters['menu/getProfileMenu'])
 const user = computed(() => store.getters['user/getUser'])
 const windowWidth = computed(() => store.getters['app/getWindowWidth'])
 const device = computed(() => {
@@ -145,9 +144,8 @@ const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value
 }
 
-const toggleProfileMenu = (e) => {
-  profileMenu.value = !profileMenu.value
-  store.commit('menu/SET_PROFILE_MENU', profileMenu.value)
+const toggleProfileMenu = () => { 
+  store.commit('menu/SET_PROFILE_MENU')
 }
 
 const logoutUser = async () => {

@@ -1,5 +1,5 @@
 <template>
-  <transition v-show="isShowTodoSlide" name="todo-slide">
+  <transition class="hidden sm:block" v-show="isShowTodoSlide" name="todo-slide">
     <div
       class="top-0 left-0 w-[65%] h-full fixed flex max-w-[550px] bg-main-gray rounded-r-[20px] z-[10]"
     >
@@ -16,18 +16,18 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from "vue";
-import { useStore } from "vuex";
-import TodoComponent from "./TodoComponent.vue";
-import Button from "@/components/base/Button.vue";
-import CloseIcon from "@/components/icons/CloseIcon.vue";
+  import { ref, reactive, computed, watch } from "vue";
+  import { useStore } from "vuex";
+  import TodoComponent from "./TodoComponent.vue";
+  import Button from "@/components/base/Button.vue";
+  import CloseIcon from "@/components/icons/CloseIcon.vue";
 
-const store = useStore();
-const isShowTodoSlide = computed(() => store.getters["todo/getShowTodoSlide"]);
+  const store = useStore();
+  const isShowTodoSlide = computed(() => store.getters["todo/getShowTodoSlide"]);
 
-const closeTodoSlide = () => {
-  store.commit("todo/SET_CLEAR_SHOWTODOSLIDE");
-};
+  const closeTodoSlide = () => {
+    store.commit("todo/SET_CLEAR_SHOWTODOSLIDE");
+  };
 </script>
 
 <style lang="scss" scoped>

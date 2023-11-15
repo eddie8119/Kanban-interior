@@ -1,5 +1,5 @@
 <template>
-  <div id="app" @click="clearMenu">
+  <div id="app">
     <Navigation />    
     <div class="pt-[70px] h-[100vh]">      
       <router-view />
