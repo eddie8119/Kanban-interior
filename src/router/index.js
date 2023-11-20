@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import TodoList from '../views/TodoList.vue'
+import Scheduler from '../views/Scheduler.vue'
 import Profile from '../views/Profile.vue'
 import { fbAuth } from '../firebase/firebase'
 
@@ -12,6 +13,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomePage,
+  },
+  {
+    path: '/scheduler',
+    name: 'Scheduler',
+    component: Scheduler,
   },
   {
     path: '/todoList',
