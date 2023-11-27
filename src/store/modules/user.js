@@ -60,7 +60,6 @@ export const user = {
   actions: {
     async registerUser({ commit }, payload) {
       const { formData, data } = payload
-
       try {
         const res = await createUserWithEmailAndPassword(
           fbAuth,
@@ -91,6 +90,16 @@ export const user = {
         if (error.code === 'auth/weak-password') {
           alert('密碼至少要6位數')
         }
+      }
+    },
+    async passwordReset({ commit }, payload) {
+      const router = useRouter()
+      try {
+        await sendPasswordResetEmail(fbAuth, payload)
+        alert('如果帳號存在,你將接收到 email')
+        router.replace('/login')
+      } catch (error) {
+        alert('重置失敗，請再次確認輸入')
       }
     },
     async loginUser({ commit }, payload) {

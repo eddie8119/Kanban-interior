@@ -25,19 +25,12 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-// import {  sendPasswordResetEmail } from '../firebase/firebase.js'
-// import "firebase/auth"
-
-// import { initializeApp } from 'firebase/app'
-// import {
-//   sendPasswordResetEmail,
-// } from 'firebase/auth'
 import emailIcon from "../components/icons/EmailIcon.vue"
 import Modal from "../components/dialog/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 
 const store = useStore()
-const email = ref('')
+const email = ref('wang8119@gmail.com')
 const error = ref(null)
 const errorMsg = ref('')
 const modalActive = ref(false)
@@ -47,20 +40,21 @@ const loading = computed(() => store.getters['app/getLoading'])
 
 const resetPassword = async() => {
   if (email.value !== '') {    
-    store.commit("app/SET_LOADING", true)
-    error.value = false
-    errorMsg.value = ''
-    await firebase.auth().sendPasswordResetEmail(email.value)
-      .then(() => {
-        modalMessage.value = "如果帳號存在,你將接收到 email "
-        store.commit("app/SET_LOADING", false)
-        modalActive.value = true
-      })
-      .catch((err) => {
-        modalMessage.value = err.message
-        store.commit("app/SET_LOADING", false)
-        modalActive.value = true
-      })
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value.trim())) {
+      error.value = true
+      errorMsg.value = '請輸入正確的Email格式'
+      return
+    }
+    store.commit("app/SET_LOADING", true)           
+    try {
+      await store.dispatch("user/passwordReset", email.value.trim())   
+    } catch {
+      error.value = true
+      errorMsg.value = "重置失敗，請再次確認輸入"
+    } finally {
+      store.commit("app/SET_LOADING", false)
+    }
   } else {
     error.value = true
     errorMsg.value = '請填完表格'
