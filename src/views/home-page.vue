@@ -147,11 +147,11 @@ const closeContainerModal = () => {
   displayContainerModal.value = false
 }
 
-watch(getUser, (newValue) => {
-  if (newValue) {
-    displayContainerModal.value = false;
-  }
-});
+watch(() => getUser.value, (newValue) => {
+    if (newValue) {
+      displayContainerModal.value = false;
+    }
+  }, { immediate: true });
 
 // 開關
 const toggleTodoSlide = () => {
