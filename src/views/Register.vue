@@ -25,7 +25,10 @@
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
-      <button class="btn-style" @click.prevent="register">註冊</button>
+      <div class="flex flex-col">
+        <button class="btn-style mb-2" @click.prevent="register">註冊</button>
+        <!-- <button class="btn-style " @click.prevent="registerGoogle">Google註冊</button> -->
+      </div>     
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>
@@ -82,6 +85,11 @@
       error.value = true
       errorMsg.value = '請填完所有表格'
     }
+  }
+
+  const registerGoogle = async () => {    
+    await store.dispatch('user/registerGoogleUser')
+    if (checkAuthentication.value) router.replace("/")   
   }
 </script>
 

@@ -30,7 +30,7 @@ import Modal from "../components/dialog/Modal.vue"
 import Loading from "../components/base/Loading.vue"
 
 const store = useStore()
-const email = ref('wang8119@gmail.com')
+const email = ref('')
 const error = ref(null)
 const errorMsg = ref('')
 const modalActive = ref(false)

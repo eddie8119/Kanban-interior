@@ -10,7 +10,7 @@
         <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">     
           <router-link class="link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
           <router-link class="link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>   
-          <router-link class="link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link>     
+          <!-- <router-link class="link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link>      -->
           <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
             target="_blank">
             室內攝影服務
@@ -100,7 +100,7 @@
       " v-show="mobileNav">
         <router-link class="mobileNav-link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
         <router-link class="mobileNav-link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>
-        <router-link class="mobileNav-link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link>
+        <!-- <router-link class="mobileNav-link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link> -->
         <a class="mobileNav-link" role="link"
           href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
           室內攝影服務

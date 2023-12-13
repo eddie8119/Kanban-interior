@@ -11,6 +11,7 @@ import {
   doc,
   updateDoc,
 } from '../../firebase/firebase'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 
 export const user = {
@@ -92,6 +93,28 @@ export const user = {
         }
       }
     },
+    async registerGoogleUser({ commit }) {
+      const provider = new GoogleAuthProvider()
+      try {
+        const result = await signInWithPopup(fbAuth, provider)
+        // The signed-in user info.
+        const user = result.user
+        console.log(user)
+        if (res) {
+        }
+        // const userId = fbAuth.currentUser.uid
+        // await setDoc(doc(db, 'users', userId), {
+        //   username: '',
+        //   password: '',
+        //   email: '',
+        //   task: data,
+        // })
+        // alert('註冊成功')
+        // commit('SET_CHECKAUTHENTICATION', true)
+      } catch (err) {
+        alert('創建帳號失敗:')
+      }
+    },
     async passwordReset({ commit }, payload) {
       const router = useRouter()
       try {
@@ -165,6 +188,7 @@ export const user = {
       // commit("SET_PROFILE_INFO_INIT")
     },
   },
+
   getters: {
     getUser(state) {
       return state.user

@@ -22,6 +22,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  GoogleAuthProvider,
 } from 'firebase/auth'
 
 var firebaseConfig = {
@@ -60,6 +61,7 @@ export {
   onAuthStateChanged,
   signOut,
   sendPasswordResetEmail,
+  GoogleAuthProvider,
   addDoc,
   setDoc,
   updateDoc,
