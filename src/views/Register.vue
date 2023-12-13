@@ -26,8 +26,8 @@
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <div class="flex flex-col">
-        <button class="btn-style mb-2" @click.prevent="register">註冊</button>
-        <!-- <button class="btn-style " @click.prevent="registerGoogle">Google註冊</button> -->
+        <button class="btn-style mb-2" @click.prevent="register">email註冊</button>
+        <button class="btn-style " @click.prevent="registerGoogle">Google註冊</button>
       </div>     
       <div class="angle"></div>
     </form>
@@ -87,9 +87,12 @@
     }
   }
 
-  const registerGoogle = async () => {    
-    await store.dispatch('user/registerGoogleUser')
-    if (checkAuthentication.value) router.replace("/")   
+  const registerGoogle = async () => { 
+    store.commit("app/SET_LOADING", true);   
+    const data = store.getters['vuello/getVuelloDatas'];
+    await store.dispatch('user/registerGoogleUser', { data })
+    if (checkAuthentication.value) router.replace("/")
+    store.commit("app/SET_LOADING", false);   
   }
 </script>
 

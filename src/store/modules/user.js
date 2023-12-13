@@ -10,8 +10,9 @@ import {
   getDoc,
   doc,
   updateDoc,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from '../../firebase/firebase'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 
 export const user = {
@@ -84,7 +85,6 @@ export const user = {
           }
         }
       } catch (error) {
-        console.log('error', error)
         if (error.code === 'auth/email-already-in-use') {
           alert('此Email已經註冊')
         }
@@ -93,38 +93,31 @@ export const user = {
         }
       }
     },
-    async registerGoogleUser({ commit }) {
+    async registerGoogleUser({ commit }, payload) {
+      const { data } = payload
       const provider = new GoogleAuthProvider()
       try {
         const result = await signInWithPopup(fbAuth, provider)
-        // The signed-in user info.
         const user = result.user
-        console.log(user)
-        if (res) {
+        if (user) {
+          const userId = user.uid
+          try {
+            await setDoc(doc(db, 'users', userId), {
+              username: user.displayName,
+              email: user.email,
+              task: data,
+            })
+            alert('註冊成功')
+            commit('SET_CHECKAUTHENTICATION', true)
+          } catch (err) {
+            alert('創建帳號失敗:', err.message)
+          }
         }
-        // const userId = fbAuth.currentUser.uid
-        // await setDoc(doc(db, 'users', userId), {
-        //   username: '',
-        //   password: '',
-        //   email: '',
-        //   task: data,
-        // })
-        // alert('註冊成功')
-        // commit('SET_CHECKAUTHENTICATION', true)
-      } catch (err) {
-        alert('創建帳號失敗:')
-      }
-    },
-    async passwordReset({ commit }, payload) {
-      const router = useRouter()
-      try {
-        await sendPasswordResetEmail(fbAuth, payload)
-        alert('如果帳號存在,你將接收到 email')
-        router.replace('/login')
       } catch (error) {
-        alert('重置失敗，請再次確認輸入')
+        alert('Google創建帳號失敗:', error)
       }
     },
+    // 登入
     async loginUser({ commit }, payload) {
       try {
         const res = await signInWithEmailAndPassword(
@@ -138,6 +131,35 @@ export const user = {
         }
       } catch (err) {
         alert('無效憑證, 再確認一次輸入')
+      }
+    },
+    async loginWithGoogle({ commit }) {
+      const provider = new GoogleAuthProvider()
+      try {
+        const result = await signInWithPopup(fbAuth, provider)
+        const user = result.user
+        if (user) {
+          const userDoc = await getDoc(doc(db, 'users', user.uid))
+          if (userDoc.exists()) {
+            commit('SET_USER', user)
+            alert('登入成功')
+            commit('SET_CHECKAUTHENTICATION', true)
+          } else {
+            alert('此 Google 帳號尚未註冊')
+          }
+        }
+      } catch (error) {
+        alert('Google登入帳號失敗:', error)
+      }
+    },
+    async passwordReset({ commit }, payload) {
+      const router = useRouter()
+      try {
+        await sendPasswordResetEmail(fbAuth, payload)
+        alert('如果帳號存在,你將接收到 email')
+        router.replace('/login')
+      } catch (error) {
+        alert('重置失敗，請再次確認輸入')
       }
     },
     async logoutUser({ dispatch }, payload) {

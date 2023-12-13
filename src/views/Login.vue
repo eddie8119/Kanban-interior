@@ -18,7 +18,10 @@
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }"><span class="text-funsugarMain">忘記</span> 你的密碼?</router-link>
-      <button class="btn-style" @click.prevent="login">登入</button>
+      <div class="flex flex-col">
+        <button class="btn-style mb-2" @click.prevent="login">email登入</button>
+        <button class="btn-style " @click.prevent="signInGoogle">Google登入</button>
+      </div> 
       <div class="angle"></div>
     </form>
     <div class="background-identity"></div>
@@ -65,6 +68,12 @@
       errorMsg.value = "請填完所有表格"
     }
   }
+  const signInGoogle = async () => {  
+    store.commit("app/SET_LOADING", true);
+    await store.dispatch('user/loginWithGoogle');
+    if (checkAuthentication.value) router.replace("/");
+    store.commit("app/SET_LOADING", false);
+  };
 </script>
 
 <style lang="scss" scoped>
