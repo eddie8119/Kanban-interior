@@ -1,12 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomePage from '../views/home-page.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import ForgotPassword from '../views/ForgotPassword.vue'
-import TodoList from '../views/TodoList.vue'
-import Scheduler from '../views/Scheduler.vue'
-import Profile from '../views/Profile.vue'
-import { fbAuth } from '../firebase/firebase'
+import HomePage from '@/views/home-page.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
+import TodoList from '@/views/TodoList.vue'
+import Material from '@/views/Material.vue'
+import Scheduler from '@/views/Scheduler.vue'
+import Profile from '@/views/Profile.vue'
+import { fbAuth } from '@/firebase/firebase'
 
 const routes = [
   {
@@ -24,6 +25,12 @@ const routes = [
     name: 'TodoList',
     component: TodoList,
   },
+  {
+    path: '/material',
+    name: 'Material',
+    component: Material,
+  },
+
   {
     path: '/login',
     name: 'Login',
