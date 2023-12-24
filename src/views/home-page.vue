@@ -157,6 +157,7 @@ watch(() => getUser.value, (newValue) => {
 const toggleTodoSlide = () => {
   store.commit("todo/SET_SHOWTODOSLIDE")
 }
+store.commit('app/CLEAR_ALL_DROPDOWN')
 
 </script>
 

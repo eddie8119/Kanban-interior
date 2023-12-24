@@ -8,6 +8,7 @@ export const app = {
       windowWidth: 0,
       windowHeight: 0,
       windowScrollY: 0,
+      menuDropdown: null,
     }
   },
   mutations: {
@@ -29,6 +30,12 @@ export const app = {
     SET_WINDOW_SCROLLY(state, payload) {
       state.windowScrollY = payload
     },
+    SET_MENUDROPDOWN(state, payload) {
+      state.menuDropdown = payload
+    },
+    CLEAR_ALL_DROPDOWN(state) {
+      state.menuDropdown = null
+    },
   },
   actions: {},
   getters: {
@@ -49,6 +56,9 @@ export const app = {
     },
     getWindowScrollY(state) {
       return state.windowScrollY
+    },
+    getMenuDropdown(state) {
+      return state.menuDropdown
     },
   },
 }

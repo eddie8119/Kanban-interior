@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="clearMenu">
     <Navigation />    
     <div class="pt-[70px] h-[100vh]">      
       <router-view />
@@ -23,13 +23,19 @@ export default {
     ...mapActions(['handleAuthStateChanged'])
   },
   computed: {    
-    ...mapGetters(["getAlertDialog",])
+    ...mapGetters(["getAlertDialog"])
+  },
+  watch: {
+    '$route'() {     
+      this.$store.commit('app/CLEAR_ALL_DROPDOWN')      
+    }
   },
   created() {
     this.$store.commit("app/SET_DIALOG", false)
     this.$store.commit("app/SET_LOADING", false)    
     this.$store.commit("todo/SET_CLEAR_SHOWTODOSLIDE")
-    this.$store.commit("menu/CLEAR_ALL_MENU")   
+    this.$store.commit("menu/CLEAR_ALL_MENU")  
+    this.$store.commit("app/CLEAR_ALL_DROPDOWN")    
     this.detectWindowWidth()
     this.detectWindowHeight()
     this.detectWindowScrollY()   
@@ -50,8 +56,8 @@ export default {
     detectWindowScrollY() {
       this.$store.commit("app/SET_WINDOW_SCROLLY", window.scrollY)
     },
-    clearMenu() {
-      this.$store.commit("menu/CLEAR_ALL_MENU")
+    clearMenu() {     
+      this.$store.commit("app/CLEAR_ALL_DROPDOWN")
     },
     closeAlertDialog() {
       this.$store.commit("app/SET_ALERT_DIALOG", false)

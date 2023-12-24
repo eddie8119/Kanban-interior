@@ -7,21 +7,32 @@
           :to="{ name: 'Home' }">DesignerHelper</router-link>
       </div>
       <div class="nav-links flex items-center justify-end">
-        <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px]">     
-          <router-link class="link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
-          <router-link class="link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>   
-          <!-- <router-link class="link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link>      -->
-          <a class="link" role="link" href="https://funsugar-interior-photographer.netlify.app/"
-            target="_blank">
-            室內攝影服務
-          </a> 
-          <a class="link" role="link" href="https://tanxin.space/"
-            target="_blank">
-            室內網站服務
-          </a>               
-          <router-link v-if="!user" class="btn-style" :to="{ name: 'Login' }">登入/註冊</router-link>
+        <ul v-show="device !== 'mobile'" class="flex items-center font-medium mr-[32px] ">    
+            <li v-for="list in navLinksList" :key="list.id" class="link px-2">
+              <div class="relative flex flex-col " @click.stop="toggleMenuName(list.name)">
+                {{ list.name }}
+                <div 
+                :class="[menuDropdown === list.name ? 'scale-y-100 z-10' : 'scale-y-0']"
+                class="
+                  p-4 
+                  absolute 
+                  top-[50px] left-0  
+                  transform -translate-x-[10%]   
+                  flex flex-col
+                  gap-y-3  
+                  menuBasic  
+                  ">                
+                    <li v-for="item in list.includeList" :key="item.id" class=" text-[#fff] whitespace-nowrap link">                  
+                        <a v-if="item.path.includes('http')" :href="item.path" target="_blank">{{ item.name }}</a>
+                        <router-link v-else :to="item.path">{{ item.name }}</router-link> 
+                    </li>  
+                </div>
+              </div>
+            </li>
+            <router-link v-if="!user" class="btn-style" :to="{ name: 'Login' }">登入/註冊</router-link>        
         </ul>
-        <div v-if="user" :class="[device === 'mobile' ? 'mr-[40px]' : '']" @click="toggleProfileMenu" class="               
+        
+        <div v-if="user" :class="[device === 'mobile' ? 'mr-[40px]' : '']" @click.stop="toggleMenuName(`profileMenu`)" class="               
         relative
         flex
         items-center
@@ -36,16 +47,14 @@
         cursor-pointer        
         " ref="profile">
           <span class="pointer-events-none">{{ store.state.profileInitials }}</span>
-          <div v-show="isProfileMenu" class="
+          <div 
+          class="
           absolute
           top-[60px]
           right-0
           w-[250px]
-          bg-main
-          box-shadow    
-          rounded-lg      
-          profile-menu          
-          ">
+          menuBasic         
+          " :class="[menuDropdown === 'profileMenu' ? 'scale-y-100 z-10' : 'scale-y-0']">
             <div class="info flex items-center p-[15px] border-b-[#fff]">
               <p class="initials
               w-[40px]
@@ -95,25 +104,22 @@
       text-main
       bg-main-gray
       rounded-r-[20px]
-      p-[20px] 
+      p-5 
+      pt-12
       z-[10] 
+      gap-4
       " v-show="mobileNav">
-        <router-link class="mobileNav-link" :class="[path === '/' ? 'text-funsugarMain':'']" :to="{ name: 'Home' }">室內工地手帳</router-link>
-        <router-link class="mobileNav-link" :class="[path === '/todoList' ? 'text-funsugarMain':'']" :to="{ name: 'TodoList' }">工地待辦速記</router-link>
-        <!-- <router-link class="mobileNav-link" :class="[path === '/scheduler' ? 'text-funsugarMain':'']" :to="{ name: 'Scheduler' }">行事曆</router-link> -->
-        <a class="mobileNav-link" role="link"
-          href="https://funsugar-interior-photographer.netlify.app/" target="_blank">
-          室內攝影服務
-        </a>  
-        <a class="mobileNav-link" role="link" href="https://tanxin.space/"
-            target="_blank">
-            室內網站服務
-        </a>  
-        <a class="mobileNav-link" role="link"
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:" target="_blank">
-          網站意見反饋
-        </a> 
+
+        <li v-for="list in navLinksList" :key="list.id" >
+          <div class="relative flex flex-col items-center gap-2" >           
+            <li v-for="item in list.includeList" :key="item.id" class="  whitespace-nowrap link ">                  
+                    <a v-if="item.path.includes('http')" :href="item.path" target="_blank">{{ item.name }}</a>
+                    <router-link v-else :to="item.path">{{ item.name }}</router-link> 
+            </li>
+          </div>
+        </li>
         <router-link v-if="!user" class="btn-style text-center" :to="{ name: 'Login' }" @click="toggleMobileNav">登入/註冊</router-link>
+        <button v-if="user" @click.prevent="logoutUser" class="btn-style text-center"> 登出 </button>
       </ul>
     </transition>
   </header>
@@ -128,14 +134,60 @@ import userIcon from "../icons/UserIcon.vue"
 import menuIcon from "../icons/MenuIcon.vue"
 import signOutIcon from "../icons/SignOutIcon.vue"
 
-const route=useRoute();
+const route = useRoute();
 const path = computed(() =>route.path)
 
 const store = useStore()
 const mobileNav = ref(false)
 const profile = ref(null)
+const navLinksList = reactive([
+  {
+    id: 1,
+    name: '室內工地管理', 
+    includeList:[
+      {
+        id: 1,
+        name: '室內工地手帳',
+        path: '/'
+      },
+      {
+        id: 2,
+        name: '工地待辦速記',
+        path: '/todoList'
+      },
+      // {
+      //   id: 3,
+      //   name: '材料進料紀錄',
+      //   path: '/material'
+      // }, 
+      {
+        id: 4,
+        name: '網站意見反饋',
+        path: 'https://mail.google.com/mail/?view=cm&fs=1&to=funsugar8119@gmail.com&body=詢問:'
+      }
 
-const isProfileMenu = computed(() => store.getters['menu/getProfileMenu'])
+    ]     
+  },
+  {
+    id: 2,
+    name: '室內周邊服務', 
+    includeList:[
+      {
+        id: 1,
+        name: '室內攝影服務',
+        path: 'https://funsugar-interior-photographer.netlify.app/'
+      },
+      {
+        id: 2,
+        name: '室內網站服務',
+        path: 'https://tanxin.space/'
+      },
+    ]     
+  }
+])
+
+
+const menuDropdown = computed(() => store.getters['app/getMenuDropdown'])
 const user = computed(() => store.getters['user/getUser'])
 const windowWidth = computed(() => store.getters['app/getWindowWidth'])
 const device = computed(() => {
@@ -146,8 +198,8 @@ const toggleMobileNav = () => {
   mobileNav.value = !mobileNav.value
 }
 
-const toggleProfileMenu = () => { 
-  store.commit('menu/SET_PROFILE_MENU')
+const toggleMenuName = (name) => { 
+  store.commit('app/SET_MENUDROPDOWN', name)
 }
 
 const logoutUser = async () => {
@@ -162,7 +214,6 @@ watch(windowWidth, () => {
     mobileNav.value = false
   }
 })
-
 </script>
 
 <style lang="scss" scoped>
@@ -172,7 +223,7 @@ watch(windowWidth, () => {
 }
 
 .link {
-  @apply px-[8px] hover:text-funsugarMain duration-300;
+  @apply hover:text-funsugarMain duration-300;
 }
 
 .mobileNav-link {
@@ -257,5 +308,8 @@ watch(windowWidth, () => {
 
 .mobile-nav-leave-to {
   transform: translateX(-250px);
+}
+.menuBasic {
+  @apply bg-main  box-shadow rounded-lg profile-menu  
 }
 </style>

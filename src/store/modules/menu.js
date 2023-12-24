@@ -1,22 +1,9 @@
 export const menu = {
   namespaced: true,
   state() {
-    return {
-      profileMenu: true,
-    }
+    return {}
   },
-  mutations: {
-    SET_PROFILE_MENU(state) {
-      state.profileMenu = !state.profileMenu
-    },
-    CLEAR_ALL_MENU(state) {
-      state.profileMenu = false
-    },
-  },
+  mutations: {},
   actions: {},
-  getters: {
-    getProfileMenu(state) {
-      return state.profileMenu
-    },
-  },
+  getters: {},
 }
